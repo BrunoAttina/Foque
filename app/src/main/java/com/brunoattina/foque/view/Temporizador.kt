@@ -27,6 +27,7 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun Temporizador (navController: NavController){
     // Variaveis
+        val dataSource = DataSource()
 
     var date by remember { mutableStateOf("") }
     var timer by remember { mutableStateOf("") }

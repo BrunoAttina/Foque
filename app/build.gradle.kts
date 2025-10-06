@@ -2,6 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+
+    //Inicio da importação do Google Services
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -60,4 +63,10 @@ dependencies {
     val nav_version = "2.9.4"
 
     implementation("androidx.navigation:navigation-compose:$nav_version")
+
+    //Gerenciador de Versão do Firebase
+    implementation(platform("com.google.firebase:firebase-bom:34.1.0"))
+
+    implementation("com.google.firebase:firebase-common")
+    implementation("com.google.firebase:firebase-firestore")
 }

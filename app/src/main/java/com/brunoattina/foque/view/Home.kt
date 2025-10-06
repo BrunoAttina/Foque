@@ -16,6 +16,10 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Home(navController: NavController){
+
+    //Variaveis
+        val dataSource = DataSource()
+
     Scaffold(modifier = Modifier.fillMaxSize(),
         topBar = {
             TopAppBar(title = { Text("Foco") })
