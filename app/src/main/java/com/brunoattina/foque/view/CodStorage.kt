@@ -42,6 +42,9 @@ fun CodStorage (navController: NavController){
 
     }
 
+    //recarregar a pagina
+    //navController.popBackStack()
+
     //Funções
 
     suspend fun temporizador(){

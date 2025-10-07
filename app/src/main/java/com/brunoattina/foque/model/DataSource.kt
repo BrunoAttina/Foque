@@ -11,21 +11,27 @@ class DataSource {
      * @param titulo O título da experiência a ser salva.
      * @param descricao A descrição da experiência.
      */
-    fun salvarExperiencia(titulo: String, descricao: String) {
+
+    fun consultarExperiencia() {
+
+
+    }
+
+    fun criarExperiencia() {
+
+
+    }
+
+    fun salvarExperiencia(experiencia: Int, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
         // Cria um mapa com os dados recebidos como parâmetros.
-        val experiencia = hashMapOf(
-            "titulo" to titulo,
-            "descricao" to descricao
+        val map = hashMapOf(
+            "experiencia" to experiencia
         )
 
         // Salva os dados na coleção "personagem".
         db.collection("personagem")
-            .add(experiencia)
-            .addOnSuccessListener { documentReference ->
-                println("Documento salvo com ID: ${documentReference.id}")
-            }
-            .addOnFailureListener { e ->
-                println("Erro ao salvar documento: $e")
-            }
+            .add(map)
+            .addOnSuccessListener { onSuccess() }
+            .addOnFailureListener { e -> onFailure(e)
     }
 }
