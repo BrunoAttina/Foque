@@ -18,7 +18,7 @@ foque/
 ├── index.ts         # registro do componente raiz
 ├── app.json         # configuração Expo
 ├── assets/          # ícones e splash
-└── Documentação/    # esta documentação
+└── Documentacao/    # esta documentação
 ```
 
 **[pendente]** Decidir a organização do código. O `AGENTS.md` pede Expo Router com rotas em `src/app/` e componentes, hooks e utilitários fora dela. Ainda não foi implementado.
