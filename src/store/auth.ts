@@ -2,6 +2,7 @@ import type { Session } from '@supabase/supabase-js';
 import { create } from 'zustand';
 
 import { buscarPerfil, type Perfil } from '../services/auth';
+import { sincronizar } from '../services/sincronizacao';
 import { supabase } from '../services/supabase';
 import { useSessao } from './sessao';
 import { useTarefas } from './tarefas';
@@ -11,8 +12,11 @@ function limparDadosLocais() {
   useTarefas.setState({ tarefas: [] });
   useSessao.setState({
     status: 'idle',
+    sessaoId: null,
     tarefa: null,
+    inicio: null,
     endAt: null,
+    fim: null,
     motivoCancelamento: null,
     pontosUltimaSessao: 0,
     pontosTotais: 0,
@@ -65,6 +69,8 @@ export const useAuth = create<AuthState>((set, get) => {
         setTimeout(async () => {
           await carregarPerfil(session);
           set({ carregando: false });
+          // Envia sessões que ficaram na fila e traz os pontos do servidor.
+          if (session) sincronizar(session.user.id);
         }, 0);
       });
 

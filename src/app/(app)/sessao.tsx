@@ -5,6 +5,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Botao } from '../../components/Botao';
 import { mensagens } from '../../domain/mensagens';
+import { registrarSessaoFinalizada } from '../../services/sincronizacao';
+import { useAuth } from '../../store/auth';
 import { useSessao } from '../../store/sessao';
 
 function formatarTempo(ms: number) {
@@ -52,9 +54,24 @@ export default function TelaSessao() {
     return () => clearInterval(intervalo);
   }, [status, endAt, concluir]);
 
-  // Quando a sessão termina, de qualquer forma, vai para o resultado.
+  // Quando a sessão termina, de qualquer forma: grava na fila, envia e vai para o resultado.
   useEffect(() => {
-    if (status === 'done' || status === 'cancelled') router.replace('/resultado');
+    if (status !== 'done' && status !== 'cancelled') return;
+    const s = useSessao.getState();
+    const userId = useAuth.getState().session?.user.id;
+    if (userId && s.sessaoId && s.tarefa && s.inicio !== null && s.fim !== null) {
+      // Sem await: a tela de resultado aparece na hora; o envio segue em segundo plano.
+      registrarSessaoFinalizada({
+        id: s.sessaoId,
+        userId,
+        tarefa: s.tarefa.nome,
+        duracaoMinutos: s.tarefa.duracaoMinutos,
+        inicio: new Date(s.inicio).toISOString(),
+        fim: new Date(s.fim).toISOString(),
+        status: status === 'done' ? 'concluida' : 'cancelada',
+      });
+    }
+    router.replace('/resultado');
   }, [status, router]);
 
   if (!tarefa) {

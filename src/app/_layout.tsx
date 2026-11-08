@@ -1,7 +1,9 @@
 import { SplashScreen, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
+import { AppState } from 'react-native';
 
+import { sincronizar } from '../services/sincronizacao';
 import { useAuth } from '../store/auth';
 
 // Mantém a splash até a sessão salva no aparelho ser lida.
@@ -13,6 +15,15 @@ export default function RootLayout() {
   const perfil = useAuth((s) => s.perfil);
 
   useEffect(() => useAuth.getState().iniciar(), []);
+
+  // Ao voltar para o app, tenta enviar sessões que ficaram na fila offline.
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', (estado) => {
+      const userId = useAuth.getState().session?.user.id;
+      if (estado === 'active' && userId) sincronizar(userId);
+    });
+    return () => subscription.remove();
+  }, []);
 
   useEffect(() => {
     if (!carregando) SplashScreen.hide();

@@ -71,7 +71,7 @@ A migração para o Expo Router já foi feita: o entry point é `expo-router/ent
 | `follows` | `follower_id`, `following_id` | Cada um vê as relações em que participa; segue e deixa de seguir em nome próprio | Criada (`0001`) |
 | `progress` | user_id, `pontos_totais` | O próprio usuário e quem o segue leem; só funções do servidor alteram | Criada (`0001`) |
 | `tasks` | id, user_id, nome, duração | Só o dono | Planejada |
-| `focus_sessions` | id, user_id, task_id, início, fim, status, pontos | Só o dono | Planejada |
+| `focus_sessions` | id (gerado no aparelho), user_id, tarefa, duração, início, fim, status, pontos | Só o dono lê; só a função `registrar_sessao` escreve | Criada (`0002`) |
 
 As respostas do roteiro (profissão e rotina) entram em `profiles` ou numa tabela própria quando a tela de perguntas for feita.
 
@@ -89,6 +89,14 @@ Regras de acesso: a chave pública do Supabase fica no app, e cada tabela tem RL
 - Cliente em `src/services/supabase.ts`, conforme o guia do Expo. A sessão de login fica no aparelho, via `expo-sqlite/localStorage`.
 - Variáveis em `.env.local` (fora do git): `EXPO_PUBLIC_SUPABASE_URL` e `EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY`. O modelo fica em `.env.example`.
 - Só a **publishable key** vai para o app. A secret key e a `service_role` nunca entram no código.
+
+## Sessões, fila offline e pontos
+1. Ao terminar (concluída ou cancelada), a sessão vai para a tabela `fila_sessoes` do SQLite do aparelho (`src/services/filaSessoes.ts`), com um UUID gerado no aparelho.
+2. O app chama `registrar_sessao` no Supabase. Com sucesso, a sessão sai da fila. Sem conexão, ela fica e é reenviada ao entrar no app ou ao voltar para ele.
+3. A função valida a sessão, calcula os pontos (1 por minuto completo, só se concluída) e soma em `progress`. Reenviar o mesmo UUID não soma de novo.
+4. Os pontos mostrados no app são os do servidor mais os das sessões concluídas ainda na fila (`src/services/sincronizacao.ts`).
+
+Validações no servidor: duração de 1 a 240 min; fim não pode estar no futuro (5 min de tolerância); início de no máximo 48 h atrás; sessão concluída precisa durar pelo menos a duração da tarefa (5 s de tolerância) e não pode se sobrepor a outra sessão concluída. Sessões rejeitadas por dado inválido são descartadas da fila.
 
 ## Autenticação no app
 - `src/store/auth.ts` ouve as mudanças de login do Supabase e guarda a sessão e o perfil (@).

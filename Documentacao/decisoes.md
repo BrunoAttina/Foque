@@ -28,6 +28,9 @@ Formato: data, decisão, motivo. Decisões em aberto ficam na seção final.
 | 2026-11-08 | O @ é visível para qualquer usuário logado; nível e pontos, só para quem segue (e para o próprio usuário). | Permite buscar pessoas sem expor o progresso para quem não segue. Aplicado com RLS no Supabase. |
 | 2026-11-08 | Começar pelo login com e-mail e senha. Google e Apple depois. | O login social exige configurar credenciais nos consoles do Google e da Apple e deep links. |
 | 2026-11-08 | Esquema do banco versionado em `supabase/migrations/`, aplicado pelo SQL Editor. | Mantém o histórico do banco no repositório sem precisar da CLI do Supabase agora. |
+| 2026-11-08 | Sessões registradas pela função `registrar_sessao`, com UUID gerado no aparelho. | Os pontos são calculados no servidor, e reenviar a mesma sessão pela fila offline não duplica pontos. |
+| 2026-11-08 | O servidor rejeita sessão concluída mais curta que a duração, sobreposta a outra, no futuro ou com mais de 48 h. | Reduz o abuso por manipulação do relógio ou chamadas forjadas, sem serviço de tempo externo. |
+| 2026-11-08 | Sessões canceladas também são registradas, com 0 pontos. | Guarda o histórico completo para estatísticas futuras. |
 
 ## Decisões em aberto
 - **Geração do roteiro por IA:** avaliar depois do MVP, considerando custo por uso, internet e privacidade.
