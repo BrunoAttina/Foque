@@ -8,6 +8,7 @@ import { LinhaPessoa } from '../../components/LinhaPessoa';
 import { normalizarUsername } from '../../domain/usuario';
 import { buscarPessoas, ErroSocial, type Pessoa } from '../../services/social';
 import { useAuth } from '../../store/auth';
+import { cores, espaco, tipografia } from '../../theme';
 
 export default function TelaBuscar() {
   const router = useRouter();
@@ -65,17 +66,19 @@ export default function TelaBuscar() {
               autoFocus
               maxLength={20}
             />
-            {carregando ? <ActivityIndicator /> : null}
+            {carregando ? <ActivityIndicator color={cores.primary} /> : null}
             {erro ? <Text style={styles.erro}>{erro}</Text> : null}
           </View>
         }
         ListEmptyComponent={
           termo && !carregando && !erro ? (
-            <Text style={styles.vazio}>Ninguém encontrado com @{termo}.</Text>
-          ) : undefined
+            <Text style={styles.vazio}>Nenhuma foca encontrada com @{termo}. 🧊</Text>
+          ) : (
+            <Text style={styles.vazio}>Digite o começo do @ de alguém para encontrar e seguir.</Text>
+          )
         }
         renderItem={({ item }) => (
-          <LinhaPessoa username={item.username} onPress={() => router.push(`/perfil/${item.username}`)} />
+          <LinhaPessoa username={item.username} onPress={() => router.push(`/usuario/${item.username}`)} />
         )}
       />
     </SafeAreaView>
@@ -85,21 +88,23 @@ export default function TelaBuscar() {
 const styles = StyleSheet.create({
   tela: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: cores.surface,
   },
   conteudo: {
-    padding: 16,
+    padding: espaco.margemMobile,
   },
   cabecalho: {
-    gap: 12,
-    marginBottom: 8,
+    gap: espaco.sm + 4,
+    marginBottom: espaco.md,
   },
   erro: {
-    color: '#b91c1c',
+    ...tipografia.bodySm,
+    color: cores.error,
   },
   vazio: {
-    color: '#6b7280',
+    ...tipografia.bodyMd,
+    color: cores.onSurfaceVariant,
     textAlign: 'center',
-    marginTop: 16,
+    marginTop: espaco.md,
   },
 });

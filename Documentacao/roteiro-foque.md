@@ -78,4 +78,18 @@ O Foque mostra de 1 a 3 sugestões por vez, escolhidas pela dificuldade principa
 | Sessão cancelada | "Você saiu do Foque e a sessão foi encerrada. Desta vez, sem pontos." |
 | Subiu de nível | "Você subiu para o nível {nível} de foco!" |
 
-*Tom: direto e acolhedor. Frases curtas, sem julgamento quando a pessoa cancela a sessão.*
+*Tom original: direto e acolhedor. Frases curtas, sem julgamento quando a pessoa cancela a sessão.*
+
+## Personalidade (a partir do redesign)
+O Foque virou uma foca **exigente e sarcástica, mas que torce pela pessoa**. Ele provoca antes da sessão ("Ler um livro por 25 minutos? Ou vai abrir o TikTok de novo, humano? 👀"), vigia durante e comemora ou consola depois, sempre sem humilhar. As falas ficam em `src/domain/mensagens.ts` (`falas`), uma sorteada por vez:
+
+| Momento | Exemplo |
+| --- | --- |
+| Antes de focar | "Se você largar o celular por 25 minutos, eu paro de te julgar. Talvez. 👀" |
+| Sem missão | "Nenhuma missão? Escolhe uma coisa importante pra hoje, humano. 🧊" |
+| Durante a sessão | "Tô de olho. Nem pense em sair do app. 👀" |
+| Concluída | "Gelo intacto. Peixe merecido. 🐟" |
+| Cancelada | "Tudo bem, até as focas escorregam. Bora de novo? 🧊" |
+| Dicas (aba Foca) | As sugestões desta página, reescritas na voz do Foque. |
+
+A **Regra do Gelo Fino** resume a mecânica: "A cada 1 minuto de foco você ganha 1 ponto. Se sair do app ou bloquear a tela, o gelo quebra e a sessão é perdida!"

@@ -1,11 +1,18 @@
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useRouter } from 'expo-router';
-import { StyleSheet, Text, View } from 'react-native';
+import { useState } from 'react';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { BalaoFala } from '../../components/BalaoFala';
 import { Botao } from '../../components/Botao';
-import { mensagens, pontosDeFoco } from '../../domain/mensagens';
+import { CartaoNivel } from '../../components/CartaoNivel';
+import { Mascote } from '../../components/Mascote';
+import { falas, mensagens } from '../../domain/mensagens';
+import { tituloDoNivel } from '../../domain/niveis';
 import { nivelPorPontos } from '../../domain/pontos';
 import { useSessao } from '../../store/sessao';
+import { cores, espaco, raio, tipografia } from '../../theme';
 
 export default function TelaResultado() {
   const router = useRouter();
@@ -15,6 +22,7 @@ export default function TelaResultado() {
   const pontosTotais = useSessao((s) => s.pontosTotais);
 
   const concluida = status === 'done';
+  const [fala] = useState(() => (concluida ? falas.concluida() : falas.cancelada()));
   const nivelAtual = nivelPorPontos(pontosTotais);
   const subiuDeNivel = concluida && nivelPorPontos(pontosTotais - pontosUltimaSessao) < nivelAtual;
 
@@ -28,17 +36,38 @@ export default function TelaResultado() {
 
   return (
     <SafeAreaView style={styles.tela}>
-      <View style={styles.centro}>
-        <Text style={[styles.titulo, !concluida && styles.tituloCancelado]}>
-          {concluida ? 'Muito bem!' : 'Sessão encerrada'}
+      <ScrollView contentContainerStyle={styles.conteudo}>
+        <Text style={[styles.titulo, { color: concluida ? cores.secondary : cores.tertiary }]}>
+          {concluida ? 'Gelo intacto!' : 'O gelo quebrou'}
         </Text>
+
+        <View style={styles.mascote}>
+          <BalaoFala texto={fala} />
+          <Mascote tamanho={150} emoji={concluida ? '🦭' : '🥶'} />
+        </View>
+
+        {concluida ? (
+          <View style={styles.pontos}>
+            <MaterialIcons name="diamond" size={28} color={cores.primaryContainer} />
+            <Text style={styles.textoPontos}>+{pontosUltimaSessao} pts</Text>
+          </View>
+        ) : null}
+
         <Text style={styles.mensagem}>{mensagem}</Text>
-        {subiuDeNivel ? <Text style={styles.nivel}>{mensagens.subiuDeNivel(nivelAtual)}</Text> : null}
-        <Text style={styles.total}>
-          Nível de foco {nivelAtual} · {pontosDeFoco(pontosTotais)}
-        </Text>
-      </View>
-      <Botao titulo="Voltar às tarefas" onPress={voltar} />
+
+        {subiuDeNivel ? (
+          <View style={styles.subiu}>
+            <MaterialIcons name="celebration" size={24} color="#ffffff" />
+            <Text style={styles.textoSubiu}>
+              {mensagens.subiuDeNivel(nivelAtual)} {tituloDoNivel(nivelAtual)}!
+            </Text>
+          </View>
+        ) : null}
+
+        <CartaoNivel pontos={pontosTotais} />
+      </ScrollView>
+
+      <Botao titulo={concluida ? 'Bora de novo' : 'Tentar de novo'} icone="ac-unit" grande onPress={voltar} />
     </SafeAreaView>
   );
 }
@@ -46,36 +75,59 @@ export default function TelaResultado() {
 const styles = StyleSheet.create({
   tela: {
     flex: 1,
-    backgroundColor: '#fff',
-    padding: 24,
-    gap: 16,
+    backgroundColor: cores.surface,
+    padding: espaco.lg,
+    gap: espaco.md,
   },
-  centro: {
-    flex: 1,
-    alignItems: 'center',
+  conteudo: {
+    flexGrow: 1,
     justifyContent: 'center',
-    gap: 16,
+    gap: espaco.md,
   },
   titulo: {
-    fontSize: 30,
-    fontWeight: '700',
-    color: '#15803d',
+    ...tipografia.displayMobile,
+    textAlign: 'center',
   },
-  tituloCancelado: {
-    color: '#374151',
+  mascote: {
+    alignItems: 'center',
+    gap: espaco.xs,
+  },
+  pontos: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'center',
+    gap: espaco.sm,
+    backgroundColor: cores.surfaceContainerLowest,
+    borderRadius: raio.full,
+    borderWidth: 2,
+    borderColor: cores.iceBorder,
+    paddingHorizontal: espaco.lg,
+    paddingVertical: espaco.sm,
+  },
+  textoPontos: {
+    ...tipografia.headlineLg,
+    color: cores.primary,
   },
   mensagem: {
-    fontSize: 18,
+    ...tipografia.bodyLg,
+    color: cores.onSurfaceVariant,
     textAlign: 'center',
   },
-  nivel: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: '#1d4ed8',
-    textAlign: 'center',
+  subiu: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: espaco.sm,
+    backgroundColor: cores.amber,
+    borderRadius: raio.lg,
+    padding: espaco.md,
+    borderBottomWidth: 4,
+    borderBottomColor: cores.amberDeep,
   },
-  total: {
-    fontSize: 16,
-    color: '#6b7280',
+  textoSubiu: {
+    ...tipografia.headlineSm,
+    color: '#ffffff',
+    flexShrink: 1,
+    textAlign: 'center',
   },
 });

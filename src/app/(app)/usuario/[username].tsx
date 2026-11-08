@@ -1,10 +1,13 @@
-import { Stack, useLocalSearchParams } from 'expo-router';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { Avatar } from '../../../components/Avatar';
 import { Botao } from '../../../components/Botao';
-import { pontosDeFoco } from '../../../domain/mensagens';
+import { CartaoNivel } from '../../../components/CartaoNivel';
+import { tituloDoNivel } from '../../../domain/niveis';
 import { nivelPorPontos } from '../../../domain/pontos';
 import {
   buscarPessoaPorUsername,
@@ -16,6 +19,7 @@ import {
   seguir,
 } from '../../../services/social';
 import { useAuth } from '../../../store/auth';
+import { cartao, cores, espaco, tipografia } from '../../../theme';
 
 type Estado =
   | { tipo: 'carregando' }
@@ -23,7 +27,8 @@ type Estado =
   | { tipo: 'erro'; mensagem: string }
   | { tipo: 'pronto'; pessoa: Pessoa; seguindo: boolean; pontos: number | null };
 
-export default function TelaPerfil() {
+export default function TelaUsuario() {
+  const router = useRouter();
   const { username } = useLocalSearchParams<{ username: string }>();
   const meuId = useAuth((s) => s.session?.user.id);
   const [estado, setEstado] = useState<Estado>({ tipo: 'carregando' });
@@ -70,10 +75,10 @@ export default function TelaPerfil() {
     <SafeAreaView style={styles.tela} edges={['bottom', 'left', 'right']}>
       <Stack.Screen options={{ title: username ? `@${username}` : 'Perfil' }} />
       <ScrollView contentContainerStyle={styles.conteudo}>
-        {estado.tipo === 'carregando' ? <ActivityIndicator /> : null}
+        {estado.tipo === 'carregando' ? <ActivityIndicator color={cores.primary} /> : null}
 
         {estado.tipo === 'nao-encontrado' ? (
-          <Text style={styles.texto}>Não encontramos @{username}.</Text>
+          <Text style={styles.texto}>Não encontramos @{username}. 🧊</Text>
         ) : null}
 
         {estado.tipo === 'erro' ? (
@@ -85,27 +90,31 @@ export default function TelaPerfil() {
 
         {estado.tipo === 'pronto' ? (
           <View style={styles.bloco}>
-            <View style={styles.avatar}>
-              <Text style={styles.inicial}>{estado.pessoa.username[0]?.toUpperCase()}</Text>
+            <View style={styles.identidade}>
+              <Avatar username={estado.pessoa.username} tamanho={96} />
+              <Text style={styles.username}>@{estado.pessoa.username}</Text>
+              {estado.pontos !== null ? (
+                <Text style={styles.titulo}>{tituloDoNivel(nivelPorPontos(estado.pontos))}</Text>
+              ) : null}
             </View>
-            <Text style={styles.username}>@{estado.pessoa.username}</Text>
 
             {estado.pontos !== null ? (
-              <View style={styles.progresso}>
-                <Text style={styles.nivel}>Nível de foco {nivelPorPontos(estado.pontos)}</Text>
-                <Text style={styles.texto}>{pontosDeFoco(estado.pontos)}</Text>
-              </View>
+              <CartaoNivel pontos={estado.pontos} />
             ) : (
-              <Text style={styles.texto}>
-                Siga @{estado.pessoa.username} para ver o nível e os pontos de foco.
-              </Text>
+              <View style={[cartao, styles.bloqueado]}>
+                <MaterialIcons name="lock" size={28} color={cores.primaryContainer} />
+                <Text style={styles.textoBloqueado}>
+                  Siga @{estado.pessoa.username} para ver o nível e os pontos de foco.
+                </Text>
+              </View>
             )}
 
             {estado.pessoa.id === meuId ? (
-              <Text style={styles.texto}>Este é o seu perfil.</Text>
+              <Botao titulo="Este é você · ver meu perfil" variante="secundario" onPress={() => router.push('/perfil')} />
             ) : (
               <Botao
                 titulo={salvando ? 'Aguarde…' : estado.seguindo ? 'Deixar de seguir' : 'Seguir'}
+                icone={estado.seguindo ? 'person-remove' : 'person-add'}
                 variante={estado.seguindo ? 'secundario' : 'primario'}
                 onPress={alternarSeguir}
                 desativado={salvando}
@@ -121,53 +130,46 @@ export default function TelaPerfil() {
 const styles = StyleSheet.create({
   tela: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: cores.surface,
   },
   conteudo: {
-    padding: 24,
+    padding: espaco.lg,
   },
   bloco: {
-    gap: 16,
-    alignItems: 'stretch',
+    gap: espaco.md,
   },
-  avatar: {
-    alignSelf: 'center',
-    width: 88,
-    height: 88,
-    borderRadius: 44,
-    backgroundColor: '#dbeafe',
+  identidade: {
     alignItems: 'center',
-    justifyContent: 'center',
-  },
-  inicial: {
-    fontSize: 36,
-    fontWeight: '700',
-    color: '#1d4ed8',
+    gap: espaco.xs,
   },
   username: {
-    fontSize: 24,
-    fontWeight: '700',
-    textAlign: 'center',
+    ...tipografia.headlineLg,
+    color: cores.primary,
   },
-  progresso: {
-    backgroundColor: '#eff6ff',
-    borderRadius: 12,
-    padding: 16,
-    gap: 4,
+  titulo: {
+    ...tipografia.labelMd,
+    color: cores.onSurfaceVariant,
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+  },
+  bloqueado: {
+    flexDirection: 'row',
     alignItems: 'center',
+    gap: espaco.sm + 4,
   },
-  nivel: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: '#1d4ed8',
+  textoBloqueado: {
+    ...tipografia.bodyMd,
+    color: cores.onSurfaceVariant,
+    flex: 1,
   },
   texto: {
-    fontSize: 16,
-    color: '#4b5563',
+    ...tipografia.bodyLg,
+    color: cores.onSurfaceVariant,
     textAlign: 'center',
   },
   erro: {
-    color: '#b91c1c',
+    ...tipografia.bodyMd,
+    color: cores.error,
     textAlign: 'center',
   },
 });

@@ -1,12 +1,15 @@
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
-import { ScrollView, StyleSheet, Text } from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { BalaoFala } from '../components/BalaoFala';
 import { Botao } from '../components/Botao';
 import { Campo } from '../components/Campo';
+import { Mascote } from '../components/Mascote';
 import { validarEmail } from '../domain/usuario';
 import { entrar, ErroAuth } from '../services/auth';
+import { cores, espaco, tipografia } from '../theme';
 
 export default function TelaEntrar() {
   const router = useRouter();
@@ -35,41 +38,50 @@ export default function TelaEntrar() {
 
   return (
     <SafeAreaView style={styles.tela}>
-      <ScrollView contentContainerStyle={styles.conteudo} keyboardShouldPersistTaps="handled">
-        <Text style={styles.titulo}>Foque</Text>
-        <Text style={styles.subtitulo}>Foque no que realmente importa.</Text>
+      <KeyboardAvoidingView style={styles.tela} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+        <ScrollView contentContainerStyle={styles.conteudo} keyboardShouldPersistTaps="handled">
+          <View style={styles.topo}>
+            <Text style={styles.marca}>Foque</Text>
+            <Text style={styles.slogan}>A foca que te ajuda a focar no que importa.</Text>
+          </View>
 
-        <Campo
-          rotulo="E-mail"
-          value={email}
-          onChangeText={setEmail}
-          placeholder="voce@email.com"
-          keyboardType="email-address"
-          autoCapitalize="none"
-          autoComplete="email"
-          textContentType="emailAddress"
-        />
-        <Campo
-          rotulo="Senha"
-          value={senha}
-          onChangeText={setSenha}
-          placeholder="Sua senha"
-          secureTextEntry
-          autoComplete="password"
-          textContentType="password"
-          onSubmitEditing={enviar}
-        />
+          <View style={styles.mascote}>
+            <BalaoFala texto="De volta? Então larga o TikTok e entra logo. 👀" />
+            <Mascote tamanho={120} />
+          </View>
 
-        {erro ? <Text style={styles.erro}>{erro}</Text> : null}
+          <Campo
+            rotulo="E-mail"
+            value={email}
+            onChangeText={setEmail}
+            placeholder="voce@email.com"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            autoComplete="email"
+            textContentType="emailAddress"
+          />
+          <Campo
+            rotulo="Senha"
+            value={senha}
+            onChangeText={setSenha}
+            placeholder="Sua senha"
+            secureTextEntry
+            autoComplete="password"
+            textContentType="password"
+            onSubmitEditing={enviar}
+          />
 
-        <Botao titulo={enviando ? 'Entrando…' : 'Entrar'} onPress={enviar} desativado={enviando} />
-        <Botao
-          titulo="Criar conta"
-          variante="secundario"
-          onPress={() => router.replace('/cadastro')}
-          desativado={enviando}
-        />
-      </ScrollView>
+          {erro ? <Text style={styles.erro}>{erro}</Text> : null}
+
+          <Botao titulo={enviando ? 'Entrando…' : 'Entrar'} icone="ac-unit" onPress={enviar} desativado={enviando} />
+          <Botao
+            titulo="Criar conta"
+            variante="secundario"
+            onPress={() => router.replace('/cadastro')}
+            desativado={enviando}
+          />
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
@@ -77,26 +89,32 @@ export default function TelaEntrar() {
 const styles = StyleSheet.create({
   tela: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: cores.surface,
   },
   conteudo: {
     flexGrow: 1,
     justifyContent: 'center',
-    padding: 24,
-    gap: 16,
+    padding: espaco.lg,
+    gap: espaco.md,
   },
-  titulo: {
-    fontSize: 36,
-    fontWeight: '800',
+  topo: {
+    alignItems: 'center',
+  },
+  marca: {
+    ...tipografia.display,
+    color: cores.primary,
+  },
+  slogan: {
+    ...tipografia.bodyMd,
+    color: cores.onSurfaceVariant,
     textAlign: 'center',
   },
-  subtitulo: {
-    fontSize: 16,
-    color: '#6b7280',
-    textAlign: 'center',
-    marginBottom: 16,
+  mascote: {
+    alignItems: 'center',
+    gap: espaco.xs,
   },
   erro: {
-    color: '#b91c1c',
+    ...tipografia.bodySm,
+    color: cores.error,
   },
 });

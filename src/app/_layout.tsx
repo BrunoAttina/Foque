@@ -1,3 +1,15 @@
+import {
+  Outfit_600SemiBold,
+  Outfit_700Bold,
+  Outfit_800ExtraBold,
+} from '@expo-google-fonts/outfit';
+import {
+  PlusJakartaSans_500Medium,
+  PlusJakartaSans_600SemiBold,
+  PlusJakartaSans_700Bold,
+  PlusJakartaSans_800ExtraBold,
+} from '@expo-google-fonts/plus-jakarta-sans';
+import { useFonts } from 'expo-font';
 import { SplashScreen, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
@@ -5,14 +17,25 @@ import { AppState } from 'react-native';
 
 import { sincronizar } from '../services/sincronizacao';
 import { useAuth } from '../store/auth';
+import { cores } from '../theme';
 
-// Mantém a splash até a sessão salva no aparelho ser lida.
+// Mantém a splash até as fontes e a sessão salva no aparelho estarem prontas.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const carregando = useAuth((s) => s.carregando);
   const session = useAuth((s) => s.session);
   const perfil = useAuth((s) => s.perfil);
+
+  const [fontesProntas, erroFontes] = useFonts({
+    Outfit_600SemiBold,
+    Outfit_700Bold,
+    Outfit_800ExtraBold,
+    PlusJakartaSans_500Medium,
+    PlusJakartaSans_600SemiBold,
+    PlusJakartaSans_700Bold,
+    PlusJakartaSans_800ExtraBold,
+  });
 
   useEffect(() => useAuth.getState().iniciar(), []);
 
@@ -25,9 +48,11 @@ export default function RootLayout() {
     return () => subscription.remove();
   }, []);
 
+  // Se as fontes falharem, segue com as do sistema em vez de travar na splash.
+  const pronto = !carregando && (fontesProntas || erroFontes !== null);
   useEffect(() => {
-    if (!carregando) SplashScreen.hide();
-  }, [carregando]);
+    if (pronto) SplashScreen.hide();
+  }, [pronto]);
 
   const logado = session !== null;
   // Logado, perfil já carregado e sem @: precisa escolher antes de usar o app.
@@ -35,8 +60,8 @@ export default function RootLayout() {
 
   return (
     <>
-      <StatusBar style="auto" />
-      <Stack screenOptions={{ headerShown: false }}>
+      <StatusBar style="dark" />
+      <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: cores.surface } }}>
         <Stack.Protected guard={logado && !precisaNome}>
           <Stack.Screen name="(app)" />
         </Stack.Protected>

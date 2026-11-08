@@ -46,7 +46,8 @@ foque/
 │   ├── components/   # componentes visuais
 │   ├── domain/       # regras puras: pontos, níveis
 │   ├── services/     # Supabase, fila offline (expo-sqlite)
-│   └── store/        # estado da sessão (Zustand)
+│   ├── store/        # estado da sessão (Zustand)
+│   └── theme/        # tokens do design system (design.md)
 ├── assets/           # ícones e splash
 ├── Documentacao/     # esta documentação
 └── app.json          # configuração Expo

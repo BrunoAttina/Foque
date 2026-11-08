@@ -4,6 +4,29 @@ export const NOME_MAXIMO = 60;
 export const DURACAO_MINIMA = 1;
 export const DURACAO_MAXIMA = 240;
 
+/** Durações sugeridas na tela Focar ("tempo de mergulho"). */
+export const TEMPOS_SUGERIDOS = [15, 25, 45, 60] as const;
+
+/** Missões sugeridas para quem ainda não tem tarefas. */
+export const MISSOES_SUGERIDAS = ['Ler um livro', 'Codar', 'Estudar', 'Foco profundo'] as const;
+
+const EMOJIS: [RegExp, string][] = [
+  [/\b(ler|leitura|livro)/i, '📖'],
+  [/\b(cod|program|dev)/i, '💻'],
+  [/\b(estud|prova|aula|curso)/i, '✍️'],
+  [/\b(trabalh|reuni|projeto)/i, '💼'],
+  [/\b(exerc|trein|academia|corr)/i, '🏋️'],
+  [/\b(medit|respir)/i, '🧘'],
+  [/\b(escrev|redaç)/i, '📝'],
+  [/\b(música|musica|instrumento|violão|piano)/i, '🎸'],
+  [/\b(limp|arrum|casa)/i, '🧹'],
+];
+
+/** Emoji da missão pelo nome. Padrão: 🎯. */
+export function emojiDaTarefa(nome: string): string {
+  return EMOJIS.find(([regra]) => regra.test(nome))?.[1] ?? '🎯';
+}
+
 export type ResultadoValidacao =
   | { ok: true; nome: string; duracaoMinutos: number }
   | { ok: false; erro: string };

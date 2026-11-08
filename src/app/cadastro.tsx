@@ -1,12 +1,15 @@
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
-import { ScrollView, StyleSheet, Text } from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { BalaoFala } from '../components/BalaoFala';
 import { Botao } from '../components/Botao';
 import { Campo } from '../components/Campo';
+import { Mascote } from '../components/Mascote';
 import { normalizarUsername, validarEmail, validarSenha, validarUsername } from '../domain/usuario';
 import { cadastrar, ErroAuth, usernameDisponivel } from '../services/auth';
+import { cores, espaco, tipografia } from '../theme';
 
 export default function TelaCadastro() {
   const router = useRouter();
@@ -45,6 +48,10 @@ export default function TelaCadastro() {
     return (
       <SafeAreaView style={styles.tela}>
         <ScrollView contentContainerStyle={styles.conteudo}>
+          <View style={styles.mascote}>
+            <BalaoFala texto="Quase lá! Confirma o e-mail e volta aqui. Eu espero. 🐟" />
+            <Mascote tamanho={120} />
+          </View>
           <Text style={styles.titulo}>Confirme seu e-mail</Text>
           <Text style={styles.texto}>
             Enviamos um link de confirmação para {email.trim()}. Abra o link e depois volte aqui para entrar.
@@ -57,52 +64,61 @@ export default function TelaCadastro() {
 
   return (
     <SafeAreaView style={styles.tela}>
-      <ScrollView contentContainerStyle={styles.conteudo} keyboardShouldPersistTaps="handled">
-        <Text style={styles.titulo}>Criar conta</Text>
-        <Text style={styles.texto}>Escolha seu @. É assim que outras pessoas vão te encontrar.</Text>
+      <KeyboardAvoidingView style={styles.tela} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+        <ScrollView contentContainerStyle={styles.conteudo} keyboardShouldPersistTaps="handled">
+          <View style={styles.mascote}>
+            <BalaoFala texto="Uma foca nova no pedaço? Escolhe um @ à altura. 🦭" />
+            <Mascote tamanho={110} />
+          </View>
 
-        <Campo
-          rotulo="Nome de usuário"
-          prefixo="@"
-          value={username}
-          onChangeText={(texto) => setUsername(normalizarUsername(texto))}
-          placeholder="seu.nome"
-          autoCapitalize="none"
-          autoCorrect={false}
-          maxLength={20}
-          autoComplete="username-new"
-        />
-        <Campo
-          rotulo="E-mail"
-          value={email}
-          onChangeText={setEmail}
-          placeholder="voce@email.com"
-          keyboardType="email-address"
-          autoCapitalize="none"
-          autoComplete="email"
-          textContentType="emailAddress"
-        />
-        <Campo
-          rotulo="Senha"
-          value={senha}
-          onChangeText={setSenha}
-          placeholder="Pelo menos 8 caracteres"
-          secureTextEntry
-          autoComplete="new-password"
-          textContentType="newPassword"
-          onSubmitEditing={enviar}
-        />
+          <View>
+            <Text style={styles.titulo}>Criar conta</Text>
+            <Text style={styles.texto}>Seu @ é como outras pessoas vão te encontrar.</Text>
+          </View>
 
-        {erro ? <Text style={styles.erro}>{erro}</Text> : null}
+          <Campo
+            rotulo="Nome de usuário"
+            prefixo="@"
+            value={username}
+            onChangeText={(texto) => setUsername(normalizarUsername(texto))}
+            placeholder="seu.nome"
+            autoCapitalize="none"
+            autoCorrect={false}
+            maxLength={20}
+            autoComplete="username-new"
+          />
+          <Campo
+            rotulo="E-mail"
+            value={email}
+            onChangeText={setEmail}
+            placeholder="voce@email.com"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            autoComplete="email"
+            textContentType="emailAddress"
+          />
+          <Campo
+            rotulo="Senha"
+            value={senha}
+            onChangeText={setSenha}
+            placeholder="Pelo menos 8 caracteres"
+            secureTextEntry
+            autoComplete="new-password"
+            textContentType="newPassword"
+            onSubmitEditing={enviar}
+          />
 
-        <Botao titulo={enviando ? 'Criando conta…' : 'Criar conta'} onPress={enviar} desativado={enviando} />
-        <Botao
-          titulo="Já tenho conta"
-          variante="secundario"
-          onPress={() => router.replace('/entrar')}
-          desativado={enviando}
-        />
-      </ScrollView>
+          {erro ? <Text style={styles.erro}>{erro}</Text> : null}
+
+          <Botao titulo={enviando ? 'Criando conta…' : 'Criar conta'} icone="pets" onPress={enviar} desativado={enviando} />
+          <Botao
+            titulo="Já tenho conta"
+            variante="secundario"
+            onPress={() => router.replace('/entrar')}
+            desativado={enviando}
+          />
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
@@ -110,23 +126,28 @@ export default function TelaCadastro() {
 const styles = StyleSheet.create({
   tela: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: cores.surface,
   },
   conteudo: {
     flexGrow: 1,
     justifyContent: 'center',
-    padding: 24,
-    gap: 16,
+    padding: espaco.lg,
+    gap: espaco.md,
+  },
+  mascote: {
+    alignItems: 'center',
+    gap: espaco.xs,
   },
   titulo: {
-    fontSize: 28,
-    fontWeight: '700',
+    ...tipografia.headlineLg,
+    color: cores.onSurface,
   },
   texto: {
-    fontSize: 16,
-    color: '#4b5563',
+    ...tipografia.bodyMd,
+    color: cores.onSurfaceVariant,
   },
   erro: {
-    color: '#b91c1c',
+    ...tipografia.bodySm,
+    color: cores.error,
   },
 });

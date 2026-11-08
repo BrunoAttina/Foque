@@ -17,7 +17,7 @@ interface TarefasState {
   /** Busca as tarefas no servidor. Sem conexão, mantém a cópia local. */
   carregar: (userId: string) => Promise<void>;
   /** Cria no servidor. Lança ErroTarefas sem conexão. */
-  adicionar: (nome: string, duracaoMinutos: number) => Promise<void>;
+  adicionar: (nome: string, duracaoMinutos: number) => Promise<Tarefa>;
   /** Remove no servidor. Lança ErroTarefas sem conexão. */
   remover: (id: string) => Promise<void>;
   limpar: () => void;
@@ -47,6 +47,7 @@ export const useTarefas = create<TarefasState>()(
       adicionar: async (nome, duracaoMinutos) => {
         const tarefa = await criarTarefa(nome, duracaoMinutos);
         set((estado) => ({ tarefas: [...estado.tarefas, tarefa] }));
+        return tarefa;
       },
 
       remover: async (id) => {

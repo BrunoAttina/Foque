@@ -1,12 +1,15 @@
 import { useState } from 'react';
-import { ScrollView, StyleSheet, Text } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { BalaoFala } from '../components/BalaoFala';
 import { Botao } from '../components/Botao';
 import { Campo } from '../components/Campo';
+import { Mascote } from '../components/Mascote';
 import { normalizarUsername, validarUsername } from '../domain/usuario';
 import { definirUsername, ErroAuth, sair, usernameDisponivel } from '../services/auth';
 import { useAuth } from '../store/auth';
+import { cores, espaco, tipografia } from '../theme';
 
 // Para quem entrou sem @ (ex.: login social, ou @ ocupado no momento do cadastro).
 export default function TelaEscolherNome() {
@@ -44,8 +47,15 @@ export default function TelaEscolherNome() {
   return (
     <SafeAreaView style={styles.tela}>
       <ScrollView contentContainerStyle={styles.conteudo} keyboardShouldPersistTaps="handled">
-        <Text style={styles.titulo}>Escolha seu @</Text>
-        <Text style={styles.texto}>É assim que outras pessoas vão te encontrar e te seguir no Foque.</Text>
+        <View style={styles.mascote}>
+          <BalaoFala texto="Sem @ eu nem sei como te chamar. Escolhe um aí. 🦭" />
+          <Mascote tamanho={120} />
+        </View>
+
+        <View>
+          <Text style={styles.titulo}>Escolha seu @</Text>
+          <Text style={styles.texto}>É assim que outras pessoas vão te encontrar e te seguir no Foque.</Text>
+        </View>
 
         <Campo
           rotulo="Nome de usuário"
@@ -63,7 +73,7 @@ export default function TelaEscolherNome() {
 
         <Botao titulo={enviando ? 'Salvando…' : 'Continuar'} onPress={salvar} desativado={enviando} />
         <Botao titulo="Tentar carregar de novo" variante="secundario" onPress={recarregarPerfil} desativado={enviando} />
-        <Botao titulo="Sair" variante="secundario" onPress={sair} desativado={enviando} />
+        <Botao titulo="Sair" icone="logout" variante="perigo" onPress={sair} desativado={enviando} />
       </ScrollView>
     </SafeAreaView>
   );
@@ -72,23 +82,28 @@ export default function TelaEscolherNome() {
 const styles = StyleSheet.create({
   tela: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: cores.surface,
   },
   conteudo: {
     flexGrow: 1,
     justifyContent: 'center',
-    padding: 24,
-    gap: 16,
+    padding: espaco.lg,
+    gap: espaco.md,
+  },
+  mascote: {
+    alignItems: 'center',
+    gap: espaco.xs,
   },
   titulo: {
-    fontSize: 28,
-    fontWeight: '700',
+    ...tipografia.headlineLg,
+    color: cores.onSurface,
   },
   texto: {
-    fontSize: 16,
-    color: '#4b5563',
+    ...tipografia.bodyMd,
+    color: cores.onSurfaceVariant,
   },
   erro: {
-    color: '#b91c1c',
+    ...tipografia.bodySm,
+    color: cores.error,
   },
 });

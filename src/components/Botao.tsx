@@ -1,56 +1,100 @@
-import { Pressable, StyleSheet, Text } from 'react-native';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import type { ComponentProps } from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+
+import { cores, espaco, raio, tipografia } from '../theme';
+
+type NomeIcone = ComponentProps<typeof MaterialIcons>['name'];
 
 interface BotaoProps {
   titulo: string;
   onPress: () => void;
-  variante?: 'primario' | 'secundario';
+  /** primario: azul ártico · acento: âmbar (urgência) · secundario: gelo · perigo: vermelho suave */
+  variante?: 'primario' | 'acento' | 'secundario' | 'perigo';
   desativado?: boolean;
+  icone?: NomeIcone;
+  /** Botão grande, como o "Congelar tempo & focar". */
+  grande?: boolean;
 }
 
-export function Botao({ titulo, onPress, variante = 'primario', desativado = false }: BotaoProps) {
-  const secundario = variante === 'secundario';
+const VARIANTES = {
+  primario: { face: cores.primaryContainer, base: cores.arcticDeep, texto: cores.onPrimaryContainer },
+  acento: { face: cores.amber, base: cores.amberDeep, texto: '#ffffff' },
+  secundario: { face: cores.surfaceContainerLowest, base: cores.surfaceContainerHighest, texto: cores.primary },
+  perigo: { face: cores.errorContainer, base: '#f5b5ae', texto: cores.onErrorContainer },
+};
+
+const RELEVO = 4; // altura da base em relevo
+const AFUNDA = 3; // quanto a face desce ao tocar
+
+/**
+ * Botão "3D chunky" do design.md: face colorida sobre uma base mais escura.
+ * Ao tocar, a face desce 3 px e a base fica com 1 px, como um clique físico.
+ */
+export function Botao({ titulo, onPress, variante = 'primario', desativado = false, icone, grande }: BotaoProps) {
+  const cor = VARIANTES[variante];
   return (
     <Pressable
       onPress={onPress}
       disabled={desativado}
       accessibilityRole="button"
-      style={({ pressed }) => [
-        styles.base,
-        secundario ? styles.secundario : styles.primario,
-        desativado && styles.desativado,
-        pressed && styles.pressionado,
-      ]}
+      accessibilityState={{ disabled: desativado }}
+      style={[styles.base, { backgroundColor: cor.base }, desativado && styles.desativado]}
     >
-      <Text style={[styles.texto, secundario && styles.textoSecundario]}>{titulo}</Text>
+      {({ pressed }) => (
+        <View
+          style={[
+            styles.face,
+            grande && styles.faceGrande,
+            { backgroundColor: cor.face },
+            pressed && !desativado
+              ? { marginTop: AFUNDA, marginBottom: RELEVO - AFUNDA }
+              : { marginTop: 0, marginBottom: RELEVO },
+          ]}
+        >
+          {icone ? <MaterialIcons name={icone} size={grande ? 24 : 20} color={cor.texto} /> : null}
+          <Text
+            style={[grande ? styles.textoGrande : styles.texto, { color: cor.texto }]}
+            numberOfLines={2}
+          >
+            {titulo}
+          </Text>
+        </View>
+      )}
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
   base: {
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 12,
+    borderRadius: raio.full,
+  },
+  face: {
+    minHeight: 48,
+    borderRadius: raio.full,
+    paddingHorizontal: espaco.lg,
+    paddingVertical: espaco.sm,
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
+    gap: espaco.sm,
   },
-  primario: {
-    backgroundColor: '#2563eb',
+  faceGrande: {
+    minHeight: 64,
+    paddingVertical: espaco.md,
   },
-  secundario: {
-    backgroundColor: '#e5e7eb',
+  texto: {
+    ...tipografia.labelLg,
+    textAlign: 'center',
+  },
+  textoGrande: {
+    ...tipografia.headlineSm,
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+    textAlign: 'center',
+    flexShrink: 1,
   },
   desativado: {
     opacity: 0.5,
-  },
-  pressionado: {
-    opacity: 0.8,
-  },
-  texto: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  textoSecundario: {
-    color: '#111827',
   },
 });

@@ -33,6 +33,12 @@ Formato: data, decisão, motivo. Decisões em aberto ficam na seção final.
 | 2026-11-08 | Sessões canceladas também são registradas, com 0 pontos. | Guarda o histórico completo para estatísticas futuras. |
 | 2026-11-08 | Tarefas salvas no Supabase como uma lista que continua de um dia para o outro, até a pessoa remover. | Mais simples para o MVP. Tarefas por data ou recorrentes ficam para depois. |
 | 2026-11-08 | Tarefas com cópia local para leitura offline; criar e remover exigem conexão. | Focar funciona sem internet. Uma fila offline para tarefas daria mais trabalho, e as sessões, que valem pontos, já têm a delas. |
+| 2026-11-08 | Visual pelo design system "Glacial Focus Game" (`design.md`), com tokens em `src/theme/`. Fontes Outfit e Plus Jakarta Sans; ícones Material. | Dar personalidade ao app, a partir do mockup aprovado. |
+| 2026-11-08 | Navegação com 5 abas: Ranking, Tarefas, Focar (central e inicial), Foca e Perfil. A lista "Seguindo" virou o Ranking. | Segue o mockup. O ranking entre quem você segue dá sentido competitivo à parte social. |
+| 2026-11-08 | Na tela Focar, a duração da sessão é escolhida no "tempo de mergulho" (15/25/45/60 min ou a duração da missão). | Segue o mockup. A duração da tarefa vira a sugestão inicial. |
+| 2026-11-08 | Títulos de nível (proposta): Filhote de Foca, Foca Curiosa, Foca Nadadora, Foca Ártica, Caçadora de Peixes, Guardiã do Gelo, Mergulhadora Profunda, Foca Polar, Mestre do Gelo e Lenda Glacial (10+). | O mockup usa "Nível 4: Foca Ártica". Podem ser trocados em `src/domain/niveis.ts`. |
+| 2026-11-08 | Personalidade do Foque: exigente e sarcástica, mas torcendo pela pessoa. Falas em `src/domain/mensagens.ts`. | Tom do mockup ("Ou vai abrir o TikTok de novo, humano? 👀"). |
+| 2026-11-08 | Não mostrar no app dados que ainda não existem (Onda/streak e "peixes" do mockup). | A Onda continua como ideia futura; os chips entram quando a mecânica existir. |
 
 ## Decisões em aberto
 - **Geração do roteiro por IA:** avaliar depois do MVP, considerando custo por uso, internet e privacidade.
@@ -41,3 +47,6 @@ Formato: data, decisão, motivo. Decisões em aberto ficam na seção final.
 - **Envio da fila offline:** como tratar erros, tentativas e duplicidade ao enviar sessões.
 - **Confirmação de e-mail:** o Supabase exige confirmação por padrão. O link de confirmação redireciona para a "Site URL" do projeto, que ainda não aponta para o app. Decidir se mantém a confirmação (e configura o deep link) ou desliga durante o desenvolvimento.
 - **Privacidade social:** perfil privado com aprovação, bloqueio e remoção de seguidores.
+- **Arte do mascote:** hoje é um emoji (🦭). Falta a ilustração da foca.
+- **"Peixes" do mockup:** o cabeçalho do mockup tem um terceiro contador (🐟 85) sem mecânica definida.
+- **Aba Foca:** o que entra além das dicas (personalização da foca?). Lembrando que os pontos não são gastos.

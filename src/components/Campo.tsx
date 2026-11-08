@@ -1,5 +1,7 @@
 import { StyleSheet, Text, TextInput, type TextInputProps, View } from 'react-native';
 
+import { cores, espaco, raio, rotuloSecao, tipografia } from '../theme';
+
 interface CampoProps extends TextInputProps {
   rotulo: string;
   /** Texto fixo antes do campo, como "@". */
@@ -9,12 +11,12 @@ interface CampoProps extends TextInputProps {
 export function Campo({ rotulo, prefixo, style, ...props }: CampoProps) {
   return (
     <View style={styles.grupo}>
-      <Text style={styles.rotulo}>{rotulo}</Text>
+      <Text style={rotuloSecao}>{rotulo}</Text>
       <View style={styles.caixa}>
         {prefixo ? <Text style={styles.prefixo}>{prefixo}</Text> : null}
         <TextInput
           style={[styles.campo, style]}
-          placeholderTextColor="#9ca3af"
+          placeholderTextColor={cores.outline}
           accessibilityLabel={rotulo}
           {...props}
         />
@@ -25,30 +27,27 @@ export function Campo({ rotulo, prefixo, style, ...props }: CampoProps) {
 
 const styles = StyleSheet.create({
   grupo: {
-    gap: 6,
-  },
-  rotulo: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#374151',
+    gap: espaco.xs + 2,
   },
   caixa: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#d1d5db',
-    borderRadius: 12,
-    paddingHorizontal: 14,
+    backgroundColor: cores.surfaceContainerLowest,
+    borderWidth: 1.5,
+    borderColor: cores.iceBorder,
+    borderRadius: raio.lg,
+    paddingHorizontal: espaco.md,
+    minHeight: 52,
   },
   prefixo: {
-    fontSize: 16,
-    color: '#6b7280',
+    ...tipografia.headlineSm,
+    color: cores.primary,
     marginRight: 2,
   },
   campo: {
     flex: 1,
-    paddingVertical: 12,
-    fontSize: 16,
-    color: '#111827',
+    ...tipografia.bodyLg,
+    color: cores.onSurface,
+    paddingVertical: espaco.sm + 4,
   },
 });
