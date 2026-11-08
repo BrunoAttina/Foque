@@ -1,4 +1,5 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import type { ReactNode } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { cores, espaco, raio, tipografia } from '../theme';
@@ -14,12 +15,14 @@ interface LinhaPessoaProps {
   destaque?: string;
   /** Realça a linha (ex.: você no ranking). */
   realcada?: boolean;
+  /** Elemento à direita no lugar da seta (ex.: botão Seguir). */
+  acao?: ReactNode;
   onPress: () => void;
 }
 
 const MEDALHAS = ['🥇', '🥈', '🥉'];
 
-export function LinhaPessoa({ username, detalhe, posicao, destaque, realcada, onPress }: LinhaPessoaProps) {
+export function LinhaPessoa({ username, detalhe, posicao, destaque, realcada, acao, onPress }: LinhaPessoaProps) {
   return (
     <Pressable
       onPress={onPress}
@@ -38,7 +41,7 @@ export function LinhaPessoa({ username, detalhe, posicao, destaque, realcada, on
         {detalhe ? <Text style={styles.detalhe}>{detalhe}</Text> : null}
       </View>
       {destaque ? <Text style={styles.destaque}>{destaque}</Text> : null}
-      <MaterialIcons name="chevron-right" size={24} color={cores.outlineVariant} />
+      {acao ?? <MaterialIcons name="chevron-right" size={24} color={cores.outlineVariant} />}
     </Pressable>
   );
 }

@@ -18,7 +18,6 @@ export default function AppLayout() {
       <Stack.Screen name="(tabs)" />
       <Stack.Screen name="sessao" options={{ gestureEnabled: false }} />
       <Stack.Screen name="resultado" options={{ gestureEnabled: false }} />
-      <Stack.Screen name="buscar" options={{ headerShown: true, title: 'Buscar pessoas' }} />
       <Stack.Screen name="usuario/[username]" options={{ headerShown: true, title: 'Perfil' }} />
     </Stack>
   );

@@ -46,7 +46,7 @@ export default function TelaMeuPerfil() {
           <Estatistica valor={String(nivel)} rotulo="Nível de foco" />
         </View>
 
-        <Botao titulo="Buscar pessoas" icone="person-add" variante="secundario" onPress={() => router.push('/buscar')} />
+        <Botao titulo="Encontrar amigos" icone="person-add" variante="secundario" onPress={() => router.push('/amigos')} />
         <Botao titulo="Sair da conta" icone="logout" variante="perigo" onPress={sair} />
       </ScrollView>
     </View>

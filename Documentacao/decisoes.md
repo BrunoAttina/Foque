@@ -39,6 +39,7 @@ Formato: data, decisão, motivo. Decisões em aberto ficam na seção final.
 | 2026-11-08 | Títulos de nível (proposta): Filhote de Foca, Foca Curiosa, Foca Nadadora, Foca Ártica, Caçadora de Peixes, Guardiã do Gelo, Mergulhadora Profunda, Foca Polar, Mestre do Gelo e Lenda Glacial (10+). | O mockup usa "Nível 4: Foca Ártica". Podem ser trocados em `src/domain/niveis.ts`. |
 | 2026-11-08 | Personalidade do Foque: exigente e sarcástica, mas torcendo pela pessoa. Falas em `src/domain/mensagens.ts`. | Tom do mockup ("Ou vai abrir o TikTok de novo, humano? 👀"). |
 | 2026-11-08 | Não mostrar no app dados que ainda não existem (Onda/streak e "peixes" do mockup). | A Onda continua como ideia futura; os chips entram quando a mecânica existir. |
+| 2026-11-08 | A aba Ranking virou **Amigos**: busca pelo @ com botão Seguir na própria lista e a lista de quem você segue. A tela separada "Buscar pessoas" foi removida. | Concentrar a parte social em um lugar e seguir alguém em um toque. |
 
 ## Decisões em aberto
 - **Geração do roteiro por IA:** avaliar depois do MVP, considerando custo por uso, internet e privacidade.

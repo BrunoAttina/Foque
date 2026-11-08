@@ -10,11 +10,11 @@
 | Escolher @ (`src/app/escolher-nome.tsx`) | Para quem está logado sem @. Bloqueia o app até escolher. | Implementado |
 
 ### Abas (`src/app/(app)/(tabs)/`)
-Barra inferior com 5 abas, como no mockup. O botão central, elevado, é a aba Focar.
+Barra inferior com 5 abas, como no mockup (com "Amigos" no lugar de "Ranking"). O botão central, elevado, é a aba Focar.
 
 | Aba | Objetivo | Status |
 | --- | --- | --- |
-| Ranking (`ranking.tsx`) | Você e quem você segue, ordenados por pontos de foco, com medalhas. Atalho para buscar pessoas. | Implementado |
+| Amigos (`amigos.tsx`) | Encontrar amigos pelo @, com o botão Seguir em cada resultado (ou o selo "Seguindo"), e a lista de quem você já segue, com nível e pontos. | Implementado |
 | Tarefas (`tarefas.tsx`) | Cadastrar, remover e focar direto em uma missão. | Implementado |
 | **Focar** (`index.tsx`, aba inicial) | Tela principal: nível, fala do Foque, mascote, "tempo de mergulho" (15/25/45/60 min ou a duração da missão), missão atual, Regra do Gelo Fino e o botão "Congelar tempo & focar". | Implementado |
 | Foca (`foca.tsx`) | Espaço do mascote: dicas do roteiro na voz do Foque. Personalização da foca: em breve. | Implementado (parcial) |
@@ -25,7 +25,6 @@ Barra inferior com 5 abas, como no mockup. O botão central, elevado, é a aba F
 | --- | --- | --- |
 | Sessão de foco (`sessao.tsx`) | Timer em um "bloco de gelo", barra de progresso e fala do Foque. Sair do app cancela; o botão voltar e "Desistir" encerram como desistência. | Implementado |
 | Resultado (`resultado.tsx`) | "Gelo intacto!" com os pontos ganhos, ou "O gelo quebrou". Avisa quando sobe de nível. | Implementado |
-| Buscar pessoas (`buscar.tsx`) | Procurar usuários pelo começo do @. | Implementado |
 | Perfil de usuário (`usuario/[username].tsx`) | @ e título; nível e pontos só se você segue a pessoa. Botão seguir ou deixar de seguir. | Implementado |
 | Perguntas iniciais | O Foque coleta profissão e rotina do usuário. | Rascunho |
 
@@ -34,7 +33,8 @@ Barra inferior com 5 abas, como no mockup. O botão central, elevado, é a aba F
 2. Logado sem @: **Escolher @**.
 3. Logado com @: abas, começando em **Focar**.
 4. **Focar** (ou **Tarefas**) → **Sessão de foco** → **Resultado** → volta para a aba de origem.
-5. **Ranking** ou **Perfil** → **Buscar pessoas** → **Perfil de usuário**.
+5. **Amigos** → seguir direto na busca, ou tocar em alguém → **Perfil de usuário** (onde também dá para deixar de seguir).
+6. **Perfil** → "Encontrar amigos" → aba **Amigos**.
 
 O redirecionamento é feito no layout raiz (`src/app/_layout.tsx`) com `Stack.Protected`.
 

@@ -16,7 +16,7 @@
 | RF-11 | Quando os pontos acumulados atingem o necessário, o usuário sobe de nível de foco. | Alta | Rascunho |
 | RF-12 | O @ é único, com 3 a 20 caracteres: letras minúsculas, números, "_" e ".". O app avisa se já estiver em uso. | Alta | Implementado |
 | RF-13 | Quem entra sem @ (ex.: login social) escolhe um antes de usar o app. | Alta | Implementado |
-| RF-14 | O usuário busca outras pessoas pelo começo do @. | Alta | Implementado |
+| RF-14 | O usuário busca outras pessoas pelo começo do @ (aba Amigos) e pode segui-las direto no resultado. | Alta | Implementado |
 | RF-15 | O usuário segue outra pessoa, sem precisar de aprovação, e pode deixar de seguir. | Alta | Implementado |
 | RF-16 | Quem segue alguém vê o nível de foco e os pontos de foco dessa pessoa. Outras informações virão depois. | Alta | Implementado (pontos do banco; ver nota) |
 | RF-17 | O usuário vê a lista de pessoas que segue, com nível e pontos. | Média | Implementado |

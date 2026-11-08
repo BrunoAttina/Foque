@@ -61,7 +61,7 @@ export default function AbasLayout() {
         sceneStyle: { backgroundColor: cores.surface },
       }}
     >
-      <Tabs.Screen name="ranking" options={{ title: 'Ranking', tabBarIcon: icone('emoji-events') }} />
+      <Tabs.Screen name="amigos" options={{ title: 'Amigos', tabBarIcon: icone('group') }} />
       <Tabs.Screen name="tarefas" options={{ title: 'Tarefas', tabBarIcon: icone('checklist') }} />
       <Tabs.Screen
         name="index"
