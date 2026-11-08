@@ -78,6 +78,11 @@ Regras de acesso: a chave pública do Supabase fica no app, e cada tabela tem RL
 
 **Pendente:** como a fila é enviada e tratada em caso de erro (tentativas, duplicidade); as funções de pontos no Supabase, que serão criadas junto com o usuário.
 
+## Configuração do Supabase
+- Cliente em `src/services/supabase.ts`, conforme o guia do Expo. A sessão de login fica no aparelho, via `expo-sqlite/localStorage`.
+- Variáveis em `.env.local` (fora do git): `EXPO_PUBLIC_SUPABASE_URL` e `EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY`. O modelo fica em `.env.example`.
+- Só a **publishable key** vai para o app. A secret key e a `service_role` nunca entram no código.
+
 ## Comandos úteis
 - `npx expo start`: servidor de desenvolvimento
 - `npx expo run:android` / `npx expo run:ios`: build de desenvolvimento
