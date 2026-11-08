@@ -65,14 +65,21 @@ A migração para o Expo Router já foi feita: o entry point é `expo-router/ent
 ## Dados e estado
 **Banco:** Supabase, com as tabelas previstas:
 
-| Tabela | Campos principais |
-| --- | --- |
-| `profiles` | id do usuário, profissão, respostas do roteiro |
-| `tasks` | id, user_id, nome, duração |
-| `focus_sessions` | id, user_id, task_id, início, fim, status, pontos |
-| `progress` | user_id, pontos totais |
+| Tabela | Campos principais | Quem acessa (RLS) | Status |
+| --- | --- | --- | --- |
+| `profiles` | id do usuário, `username` (@) único | Qualquer usuário logado lê; cada um altera só o próprio @ | Criada (`0001`) |
+| `follows` | `follower_id`, `following_id` | Cada um vê as relações em que participa; segue e deixa de seguir em nome próprio | Criada (`0001`) |
+| `progress` | user_id, `pontos_totais` | O próprio usuário e quem o segue leem; só funções do servidor alteram | Criada (`0001`) |
+| `tasks` | id, user_id, nome, duração | Só o dono | Planejada |
+| `focus_sessions` | id, user_id, task_id, início, fim, status, pontos | Só o dono | Planejada |
 
-Regras de acesso: a chave pública do Supabase fica no app, e cada tabela tem RLS para que a pessoa só leia e escreva os próprios dados. A chave de serviço nunca vai para o app.
+As respostas do roteiro (profissão e rotina) entram em `profiles` ou numa tabela própria quando a tela de perguntas for feita.
+
+Ao criar um usuário no Auth, um trigger (`criar_perfil_novo_usuario`) cria o perfil com o @ informado no cadastro e o progresso zerado. A função `username_disponivel` verifica se um @ está livre e pode ser chamada antes do login.
+
+Regras de acesso: a chave pública do Supabase fica no app, e cada tabela tem RLS. A chave de serviço nunca vai para o app.
+
+**Migrations:** os arquivos em `supabase/migrations/` são aplicados em ordem, colando no SQL Editor do Supabase.
 
 **Limite conhecido:** o horário da sessão vem do relógio do celular. Para o MVP, isso é aceitável. Uma pessoa que altere a hora do aparelho poderia ganhar pontos extras.
 
@@ -82,6 +89,11 @@ Regras de acesso: a chave pública do Supabase fica no app, e cada tabela tem RL
 - Cliente em `src/services/supabase.ts`, conforme o guia do Expo. A sessão de login fica no aparelho, via `expo-sqlite/localStorage`.
 - Variáveis em `.env.local` (fora do git): `EXPO_PUBLIC_SUPABASE_URL` e `EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY`. O modelo fica em `.env.example`.
 - Só a **publishable key** vai para o app. A secret key e a `service_role` nunca entram no código.
+
+## Autenticação no app
+- `src/store/auth.ts` ouve as mudanças de login do Supabase e guarda a sessão e o perfil (@).
+- `src/app/_layout.tsx` usa `Stack.Protected` para mostrar entrar/cadastro (sem login), escolher-nome (logado sem @) ou o grupo `(app)` (logado com @).
+- `src/services/auth.ts` concentra as chamadas ao Supabase Auth e traduz os erros para mensagens em português.
 
 ## Comandos úteis
 - `npx expo start`: servidor de desenvolvimento

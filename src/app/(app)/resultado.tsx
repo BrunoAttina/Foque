@@ -2,10 +2,10 @@ import { useRouter } from 'expo-router';
 import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Botao } from '../components/Botao';
-import { mensagens, pontosDeFoco } from '../domain/mensagens';
-import { nivelPorPontos } from '../domain/pontos';
-import { useSessao } from '../store/sessao';
+import { Botao } from '../../components/Botao';
+import { mensagens, pontosDeFoco } from '../../domain/mensagens';
+import { nivelPorPontos } from '../../domain/pontos';
+import { useSessao } from '../../store/sessao';
 
 export default function TelaResultado() {
   const router = useRouter();

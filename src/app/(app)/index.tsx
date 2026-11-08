@@ -3,12 +3,14 @@ import { useState } from 'react';
 import { FlatList, StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Botao } from '../components/Botao';
-import { pontosDeFoco } from '../domain/mensagens';
-import { nivelPorPontos, pontosParaNivel } from '../domain/pontos';
-import { validarTarefa } from '../domain/tarefas';
-import { useSessao } from '../store/sessao';
-import { type Tarefa, useTarefas } from '../store/tarefas';
+import { Botao } from '../../components/Botao';
+import { pontosDeFoco } from '../../domain/mensagens';
+import { nivelPorPontos, pontosParaNivel } from '../../domain/pontos';
+import { validarTarefa } from '../../domain/tarefas';
+import { sair } from '../../services/auth';
+import { useAuth } from '../../store/auth';
+import { useSessao } from '../../store/sessao';
+import { type Tarefa, useTarefas } from '../../store/tarefas';
 
 export default function TelaTarefas() {
   const router = useRouter();
@@ -17,6 +19,7 @@ export default function TelaTarefas() {
   const remover = useTarefas((s) => s.remover);
   const pontosTotais = useSessao((s) => s.pontosTotais);
   const iniciar = useSessao((s) => s.iniciar);
+  const username = useAuth((s) => s.perfil?.username);
 
   const [nome, setNome] = useState('');
   const [duracao, setDuracao] = useState('');
@@ -51,7 +54,13 @@ export default function TelaTarefas() {
         keyboardShouldPersistTaps="handled"
         ListHeaderComponent={
           <View style={styles.cabecalho}>
-            <Text style={styles.titulo}>Foque</Text>
+            <View style={styles.topo}>
+              <View>
+                <Text style={styles.titulo}>Foque</Text>
+                {username ? <Text style={styles.textoSuave}>@{username}</Text> : null}
+              </View>
+              <Botao titulo="Sair" variante="secundario" onPress={sair} />
+            </View>
 
             <View style={styles.progresso}>
               <Text style={styles.nivel}>Nível de foco {nivel}</Text>
@@ -113,6 +122,11 @@ const styles = StyleSheet.create({
   conteudo: {
     padding: 16,
     gap: 12,
+  },
+  topo: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   cabecalho: {
     gap: 12,

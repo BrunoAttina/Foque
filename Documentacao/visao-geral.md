@@ -3,6 +3,9 @@
 ## Propósito
 O **Foque** é um aplicativo de celular que ajuda a pessoa a largar o celular e focar no que é realmente importante. A pessoa cria uma conta e o próprio **Foque** (assistente do app) faz perguntas sobre a profissão e a rotina dela e oferece ajuda para reduzir a distração. Depois, a pessoa escolhe uma tarefa do dia com duração definida, o app inicia um timer e ela fica sem usar o celular durante esse tempo. Se sair do app, o timer se encerra. Se conseguir completar o tempo, ganha pontos de foco e sobe de nível.
 
+## Parte social
+Cada pessoa tem um nome de usuário (@), como em uma rede social. Ela pode seguir outras pessoas e ver o nível de foco e os pontos de foco de quem segue. Mais informações serão compartilhadas no futuro.
+
 ## Público-alvo
 **A confirmar.** Hipótese inicial: pessoas que trabalham ou estudam e têm dificuldade em se concentrar por causa do celular.
 
@@ -13,6 +16,7 @@ O **Foque** é um aplicativo de celular que ajuda a pessoa a largar o celular e 
 - Iniciar uma sessão de foco com timer na tela do app.
 - Encerrar a sessão quando o usuário sair do app, sem pontos.
 - Conceder pontos de foco e atualizar o nível de foco quando o usuário completar o tempo.
+- Escolher um @ no cadastro, seguir outras pessoas e ver o nível e os pontos delas.
 
 ## Termos
 - **Foque**: nome do aplicativo e do assistente que conversa com a pessoa.

@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react';
 import { AppState, BackHandler, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Botao } from '../components/Botao';
-import { mensagens } from '../domain/mensagens';
-import { useSessao } from '../store/sessao';
+import { Botao } from '../../components/Botao';
+import { mensagens } from '../../domain/mensagens';
+import { useSessao } from '../../store/sessao';
 
 function formatarTempo(ms: number) {
   const totalSegundos = Math.ceil(ms / 1000);

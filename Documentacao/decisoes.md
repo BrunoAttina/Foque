@@ -23,9 +23,16 @@ Formato: data, decisão, motivo. Decisões em aberto ficam na seção final.
 | 2026-11-07 | Fila offline com `expo-sqlite`. | Armazenamento confiável para sessões que precisam ser enviadas depois. |
 | 2026-11-07 | Pontos e níveis calculados no servidor, por funções do Supabase. | Impede alteração de pontos pelo celular. As funções serão criadas junto com o desenvolvimento. |
 | 2026-11-07 | Aceitar o risco do relógio do celular no MVP. | Não há solução simples e a chance de abuso é baixa nesta fase. |
+| 2026-11-08 | Cada conta tem um nome de usuário (@) único, escolhido no cadastro. | Identidade pública para a parte social, como em uma rede social. |
+| 2026-11-08 | Usuários podem seguir uns aos outros, sem aprovação. Quem segue vê nível e pontos de foco da pessoa. | Mecânica social pedida para o produto. Seguir sem aprovação é mais simples para começar. |
+| 2026-11-08 | O @ é visível para qualquer usuário logado; nível e pontos, só para quem segue (e para o próprio usuário). | Permite buscar pessoas sem expor o progresso para quem não segue. Aplicado com RLS no Supabase. |
+| 2026-11-08 | Começar pelo login com e-mail e senha. Google e Apple depois. | O login social exige configurar credenciais nos consoles do Google e da Apple e deep links. |
+| 2026-11-08 | Esquema do banco versionado em `supabase/migrations/`, aplicado pelo SQL Editor. | Mantém o histórico do banco no repositório sem precisar da CLI do Supabase agora. |
 
 ## Decisões em aberto
 - **Geração do roteiro por IA:** avaliar depois do MVP, considerando custo por uso, internet e privacidade.
 - **Conta Apple Developer:** a publicação na App Store exige uma conta paga, com custo anual. Confirmar quando contratar.
 - **Biblioteca de estilização**, se necessária.
 - **Envio da fila offline:** como tratar erros, tentativas e duplicidade ao enviar sessões.
+- **Confirmação de e-mail:** o Supabase exige confirmação por padrão. O link de confirmação redireciona para a "Site URL" do projeto, que ainda não aponta para o app. Decidir se mantém a confirmação (e configura o deep link) ou desliga durante o desenvolvimento.
+- **Privacidade social:** perfil privado com aprovação, bloqueio e remoção de seguidores.
