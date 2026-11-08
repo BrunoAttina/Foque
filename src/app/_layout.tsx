@@ -54,6 +54,10 @@ export default function RootLayout() {
     if (pronto) SplashScreen.hide();
   }, [pronto]);
 
+  // Só desenha depois das fontes: texto renderizado antes fica com a fonte do sistema.
+  // A splash continua visível até aqui.
+  if (!fontesProntas && !erroFontes) return null;
+
   const logado = session !== null;
   // Logado, perfil já carregado e sem @: precisa escolher antes de usar o app.
   const precisaNome = logado && perfil !== undefined && !perfil?.username;

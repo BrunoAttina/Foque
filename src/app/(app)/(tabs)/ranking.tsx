@@ -5,6 +5,7 @@ import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-nativ
 import { Botao } from '../../../components/Botao';
 import { CabecalhoApp } from '../../../components/CabecalhoApp';
 import { LinhaPessoa } from '../../../components/LinhaPessoa';
+import { pts } from '../../../domain/mensagens';
 import { tituloDoNivel } from '../../../domain/niveis';
 import { nivelPorPontos } from '../../../domain/pontos';
 import { ErroSocial, listarSeguindo, type PessoaComProgresso } from '../../../services/social';
@@ -66,7 +67,7 @@ export default function TelaRanking() {
               username={item.username}
               posicao={index + 1}
               detalhe={`Nível ${nivel} · ${tituloDoNivel(nivel)}`}
-              destaque={`${item.pontosTotais} pts`}
+              destaque={pts(item.pontosTotais)}
               realcada={item.id === meuId}
               onPress={() => router.push(item.id === meuId ? '/perfil' : `/usuario/${item.username}`)}
             />

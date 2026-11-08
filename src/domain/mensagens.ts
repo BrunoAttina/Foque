@@ -6,6 +6,11 @@ export function pontosDeFoco(pontos: number) {
   return `${pontos} ${pontos === 1 ? 'ponto' : 'pontos'} de foco`;
 }
 
+/** Forma curta: "1 pt" ou "N pts". */
+export function pts(pontos: number) {
+  return `${pontos} ${pontos === 1 ? 'pt' : 'pts'}`;
+}
+
 function sortear<T>(lista: readonly T[]): T {
   return lista[Math.floor(Math.random() * lista.length)];
 }

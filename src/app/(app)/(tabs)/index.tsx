@@ -117,22 +117,25 @@ export default function TelaFocar() {
               <Text style={styles.semMissao}>Escolha uma missão para começar:</Text>
             )}
 
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chips}>
-              {tarefa
-                ? tarefas
-                    .filter((t) => t.id !== tarefa.id)
-                    .map((t) => (
-                      <Chip
-                        key={t.id}
-                        emoji={emojiDaTarefa(t.nome)}
-                        texto={t.nome}
-                        onPress={() => setSelecionadaId(t.id)}
-                      />
-                    ))
-                : MISSOES_SUGERIDAS.map((nome) => (
-                    <Chip key={nome} emoji={emojiDaTarefa(nome)} texto={nome} onPress={() => criarSugerida(nome)} />
-                  ))}
-            </ScrollView>
+            {/* Atalhos: outras missões, ou sugestões para quem ainda não tem nenhuma. */}
+            {!tarefa || tarefas.length > 1 ? (
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chips}>
+                {tarefa
+                  ? tarefas
+                      .filter((t) => t.id !== tarefa.id)
+                      .map((t) => (
+                        <Chip
+                          key={t.id}
+                          emoji={emojiDaTarefa(t.nome)}
+                          texto={t.nome}
+                          onPress={() => setSelecionadaId(t.id)}
+                        />
+                      ))
+                  : MISSOES_SUGERIDAS.map((nome) => (
+                      <Chip key={nome} emoji={emojiDaTarefa(nome)} texto={nome} onPress={() => criarSugerida(nome)} />
+                    ))}
+              </ScrollView>
+            ) : null}
             {erro ? <Text style={styles.erro}>{erro}</Text> : null}
           </View>
         </View>

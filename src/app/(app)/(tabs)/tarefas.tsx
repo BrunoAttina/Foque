@@ -6,6 +6,7 @@ import { ActivityIndicator, FlatList, Pressable, StyleSheet, Text, View } from '
 import { Botao } from '../../../components/Botao';
 import { CabecalhoApp } from '../../../components/CabecalhoApp';
 import { Campo } from '../../../components/Campo';
+import { pts } from '../../../domain/mensagens';
 import { emojiDaTarefa, validarTarefa } from '../../../domain/tarefas';
 import { ErroTarefas } from '../../../services/tarefas';
 import { useSessao } from '../../../store/sessao';
@@ -118,7 +119,7 @@ export default function TelaTarefas() {
                 {item.nome}
               </Text>
               <Text style={styles.itemDetalhe}>
-                {item.duracaoMinutos} min · +{item.duracaoMinutos} pts
+                {item.duracaoMinutos} min · +{pts(item.duracaoMinutos)}
               </Text>
             </View>
             <Pressable
@@ -130,9 +131,7 @@ export default function TelaTarefas() {
             >
               <MaterialIcons name="delete-outline" size={22} color={cores.outline} />
             </Pressable>
-            <View style={styles.focar}>
-              <Botao titulo="Focar" icone="ac-unit" onPress={() => focar(item)} />
-            </View>
+            <Botao titulo="Focar" onPress={() => focar(item)} />
           </View>
         )}
       />
@@ -206,8 +205,5 @@ const styles = StyleSheet.create({
   },
   remover: {
     padding: espaco.xs,
-  },
-  focar: {
-    minWidth: 108,
   },
 });
