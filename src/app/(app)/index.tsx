@@ -69,6 +69,15 @@ export default function TelaTarefas() {
               </Text>
             </View>
 
+            <View style={styles.acoesSociais}>
+              <View style={styles.acaoSocial}>
+                <Botao titulo="Buscar pessoas" variante="secundario" onPress={() => router.push('/buscar')} />
+              </View>
+              <View style={styles.acaoSocial}>
+                <Botao titulo="Seguindo" variante="secundario" onPress={() => router.push('/seguindo')} />
+              </View>
+            </View>
+
             <Text style={styles.subtitulo}>Tarefas do dia</Text>
 
             <TextInput
@@ -122,6 +131,13 @@ const styles = StyleSheet.create({
   conteudo: {
     padding: 16,
     gap: 12,
+  },
+  acoesSociais: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  acaoSocial: {
+    flex: 1,
   },
   topo: {
     flexDirection: 'row',
