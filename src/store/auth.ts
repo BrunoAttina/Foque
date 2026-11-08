@@ -7,9 +7,9 @@ import { supabase } from '../services/supabase';
 import { useSessao } from './sessao';
 import { useTarefas } from './tarefas';
 
-/** Tarefas e pontos ainda ficam só em memória: limpa ao trocar de usuário. */
+/** Limpa o que é de outra conta ao trocar de usuário. */
 function limparDadosLocais() {
-  useTarefas.setState({ tarefas: [] });
+  useTarefas.getState().limpar();
   useSessao.setState({
     status: 'idle',
     sessaoId: null,
@@ -69,8 +69,11 @@ export const useAuth = create<AuthState>((set, get) => {
         setTimeout(async () => {
           await carregarPerfil(session);
           set({ carregando: false });
-          // Envia sessões que ficaram na fila e traz os pontos do servidor.
-          if (session) sincronizar(session.user.id);
+          // Envia sessões que ficaram na fila, traz os pontos e as tarefas do servidor.
+          if (session) {
+            sincronizar(session.user.id);
+            useTarefas.getState().carregar(session.user.id);
+          }
         }, 0);
       });
 

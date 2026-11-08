@@ -31,6 +31,8 @@ Formato: data, decisão, motivo. Decisões em aberto ficam na seção final.
 | 2026-11-08 | Sessões registradas pela função `registrar_sessao`, com UUID gerado no aparelho. | Os pontos são calculados no servidor, e reenviar a mesma sessão pela fila offline não duplica pontos. |
 | 2026-11-08 | O servidor rejeita sessão concluída mais curta que a duração, sobreposta a outra, no futuro ou com mais de 48 h. | Reduz o abuso por manipulação do relógio ou chamadas forjadas, sem serviço de tempo externo. |
 | 2026-11-08 | Sessões canceladas também são registradas, com 0 pontos. | Guarda o histórico completo para estatísticas futuras. |
+| 2026-11-08 | Tarefas salvas no Supabase como uma lista que continua de um dia para o outro, até a pessoa remover. | Mais simples para o MVP. Tarefas por data ou recorrentes ficam para depois. |
+| 2026-11-08 | Tarefas com cópia local para leitura offline; criar e remover exigem conexão. | Focar funciona sem internet. Uma fila offline para tarefas daria mais trabalho, e as sessões, que valem pontos, já têm a delas. |
 
 ## Decisões em aberto
 - **Geração do roteiro por IA:** avaliar depois do MVP, considerando custo por uso, internet e privacidade.

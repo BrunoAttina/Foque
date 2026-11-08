@@ -21,7 +21,7 @@
 | RF-16 | Quem segue alguém vê o nível de foco e os pontos de foco dessa pessoa. Outras informações virão depois. | Alta | Implementado (pontos do banco; ver nota) |
 | RF-17 | O usuário vê a lista de pessoas que segue, com nível e pontos. | Média | Implementado |
 
-**Nota:** os pontos vêm do banco (`progress`) e são somados pela função `registrar_sessao` (migration `0002`). As tarefas do dia ainda ficam só no aparelho, em memória.
+**Nota:** os pontos vêm do banco (`progress`) e são somados pela função `registrar_sessao` (migration `0002`). As tarefas ficam no banco (`tasks`, migration `0003`), com cópia no aparelho.
 | RF-18 | O usuário sai da conta. | Alta | Implementado |
 
 ## Regras de pontos e níveis

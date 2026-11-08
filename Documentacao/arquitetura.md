@@ -70,7 +70,7 @@ A migração para o Expo Router já foi feita: o entry point é `expo-router/ent
 | `profiles` | id do usuário, `username` (@) único | Qualquer usuário logado lê; cada um altera só o próprio @ | Criada (`0001`) |
 | `follows` | `follower_id`, `following_id` | Cada um vê as relações em que participa; segue e deixa de seguir em nome próprio | Criada (`0001`) |
 | `progress` | user_id, `pontos_totais` | O próprio usuário e quem o segue leem; só funções do servidor alteram | Criada (`0001`) |
-| `tasks` | id, user_id, nome, duração | Só o dono | Planejada |
+| `tasks` | id, user_id (automático), nome, duração | Só o dono lê e altera | Criada (`0003`) |
 | `focus_sessions` | id (gerado no aparelho), user_id, tarefa, duração, início, fim, status, pontos | Só o dono lê; só a função `registrar_sessao` escreve | Criada (`0002`) |
 
 As respostas do roteiro (profissão e rotina) entram em `profiles` ou numa tabela própria quando a tela de perguntas for feita.
@@ -97,6 +97,10 @@ Regras de acesso: a chave pública do Supabase fica no app, e cada tabela tem RL
 4. Os pontos mostrados no app são os do servidor mais os das sessões concluídas ainda na fila (`src/services/sincronizacao.ts`).
 
 Validações no servidor: duração de 1 a 240 min; fim não pode estar no futuro (5 min de tolerância); início de no máximo 48 h atrás; sessão concluída precisa durar pelo menos a duração da tarefa (5 s de tolerância) e não pode se sobrepor a outra sessão concluída. Sessões rejeitadas por dado inválido são descartadas da fila.
+
+## Tarefas
+- `src/store/tarefas.ts` busca as tarefas no Supabase ao entrar no app e guarda uma cópia no aparelho (Zustand `persist` sobre o `localStorage` do `expo-sqlite`). A cópia guarda o id do dono, para não aparecer em outra conta.
+- Sem conexão, a lista salva continua disponível para focar. Criar e remover tarefas exige conexão, e o app avisa quando falha.
 
 ## Autenticação no app
 - `src/store/auth.ts` ouve as mudanças de login do Supabase e guarda a sessão e o perfil (@).

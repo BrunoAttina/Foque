@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
-import { FlatList, StyleSheet, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, FlatList, StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Botao } from '../../components/Botao';
@@ -8,6 +8,7 @@ import { pontosDeFoco } from '../../domain/mensagens';
 import { nivelPorPontos, pontosParaNivel } from '../../domain/pontos';
 import { validarTarefa } from '../../domain/tarefas';
 import { sair } from '../../services/auth';
+import { ErroTarefas } from '../../services/tarefas';
 import { useAuth } from '../../store/auth';
 import { useSessao } from '../../store/sessao';
 import { type Tarefa, useTarefas } from '../../store/tarefas';
@@ -24,20 +25,38 @@ export default function TelaTarefas() {
   const [nome, setNome] = useState('');
   const [duracao, setDuracao] = useState('');
   const [erro, setErro] = useState<string | null>(null);
+  const [salvando, setSalvando] = useState(false);
+  const carregandoTarefas = useTarefas((s) => s.carregando);
 
   const nivel = nivelPorPontos(pontosTotais);
   const faltam = pontosParaNivel(nivel + 1) - pontosTotais;
 
-  function adicionarTarefa() {
+  async function adicionarTarefa() {
     const resultado = validarTarefa(nome, duracao);
     if (!resultado.ok) {
       setErro(resultado.erro);
       return;
     }
-    adicionar(resultado.nome, resultado.duracaoMinutos);
-    setNome('');
-    setDuracao('');
-    setErro(null);
+    setSalvando(true);
+    try {
+      await adicionar(resultado.nome, resultado.duracaoMinutos);
+      setNome('');
+      setDuracao('');
+      setErro(null);
+    } catch (e) {
+      setErro(e instanceof ErroTarefas ? e.message : 'Algo deu errado. Tente de novo.');
+    } finally {
+      setSalvando(false);
+    }
+  }
+
+  async function removerTarefa(id: string) {
+    try {
+      await remover(id);
+      setErro(null);
+    } catch (e) {
+      setErro(e instanceof ErroTarefas ? e.message : 'Algo deu errado. Tente de novo.');
+    }
   }
 
   function focar(tarefa: Tarefa) {
@@ -98,13 +117,21 @@ export default function TelaTarefas() {
               onSubmitEditing={adicionarTarefa}
             />
             {erro ? <Text style={styles.erro}>{erro}</Text> : null}
-            <Botao titulo="Adicionar tarefa" onPress={adicionarTarefa} />
+            <Botao
+              titulo={salvando ? 'Salvando…' : 'Adicionar tarefa'}
+              onPress={adicionarTarefa}
+              desativado={salvando}
+            />
           </View>
         }
         ListEmptyComponent={
-          <Text style={[styles.textoSuave, styles.vazio]}>
-            Nenhuma tarefa ainda. Escolha uma coisa importante para hoje.
-          </Text>
+          carregandoTarefas ? (
+            <ActivityIndicator style={styles.vazio} />
+          ) : (
+            <Text style={[styles.textoSuave, styles.vazio]}>
+              Nenhuma tarefa ainda. Escolha uma coisa importante para hoje.
+            </Text>
+          )
         }
         renderItem={({ item }) => (
           <View style={styles.item}>
@@ -113,7 +140,7 @@ export default function TelaTarefas() {
               <Text style={styles.textoSuave}>{item.duracaoMinutos} min</Text>
             </View>
             <View style={styles.itemAcoes}>
-              <Botao titulo="Remover" variante="secundario" onPress={() => remover(item.id)} />
+              <Botao titulo="Remover" variante="secundario" onPress={() => removerTarefa(item.id)} />
               <Botao titulo="Focar" onPress={() => focar(item)} />
             </View>
           </View>
