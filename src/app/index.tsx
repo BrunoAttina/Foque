@@ -1,149 +1,178 @@
-import { useEffect, useState } from 'react';
-import { AppState, Pressable, StyleSheet, Text, View } from 'react-native';
+import { useRouter } from 'expo-router';
+import { useState } from 'react';
+import { FlatList, StyleSheet, Text, TextInput, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { nivelPorPontos } from '../domain/pontos';
+import { Botao } from '../components/Botao';
+import { pontosDeFoco } from '../domain/mensagens';
+import { nivelPorPontos, pontosParaNivel } from '../domain/pontos';
+import { validarTarefa } from '../domain/tarefas';
 import { useSessao } from '../store/sessao';
+import { type Tarefa, useTarefas } from '../store/tarefas';
 
-// Duração da sessão de teste, em minutos. Para testar com 20 min, use 20.
-const TEMPO_MINUTOS = 1;
-const TEMPO_MS = TEMPO_MINUTOS * 60 * 1000;
-
-function formatarTempo(ms: number) {
-  const totalSegundos = Math.ceil(ms / 1000);
-  const minutos = Math.floor(totalSegundos / 60);
-  const segundos = totalSegundos % 60;
-  return `${String(minutos).padStart(2, '0')}:${String(segundos).padStart(2, '0')}`;
-}
-
-export default function TelaSessao() {
-  const status = useSessao((s) => s.status);
-  const endAt = useSessao((s) => s.endAt);
+export default function TelaTarefas() {
+  const router = useRouter();
+  const tarefas = useTarefas((s) => s.tarefas);
+  const adicionar = useTarefas((s) => s.adicionar);
+  const remover = useTarefas((s) => s.remover);
   const pontosTotais = useSessao((s) => s.pontosTotais);
-  const pontosUltimaSessao = useSessao((s) => s.pontosUltimaSessao);
   const iniciar = useSessao((s) => s.iniciar);
-  const concluir = useSessao((s) => s.concluir);
-  const cancelar = useSessao((s) => s.cancelar);
 
-  const [agora, setAgora] = useState(() => Date.now());
+  const [nome, setNome] = useState('');
+  const [duracao, setDuracao] = useState('');
+  const [erro, setErro] = useState<string | null>(null);
 
-  // Sair do app durante a sessão cancela o timer e não dá pontos.
-  useEffect(() => {
-    const subscription = AppState.addEventListener('change', (estado) => {
-      if (useSessao.getState().status === 'running' && estado !== 'active') {
-        cancelar();
-      }
-    });
-    return () => subscription.remove();
-  }, [cancelar]);
+  const nivel = nivelPorPontos(pontosTotais);
+  const faltam = pontosParaNivel(nivel + 1) - pontosTotais;
 
-  // Atualiza o relógio e conclui a sessão quando o tempo acaba.
-  useEffect(() => {
-    if (status !== 'running' || endAt === null) return;
-
-    const intervalo = setInterval(() => {
-      const momento = Date.now();
-      setAgora(momento);
-      if (momento >= endAt) {
-        concluir(TEMPO_MINUTOS);
-      }
-    }, 250);
-
-    return () => clearInterval(intervalo);
-  }, [status, endAt, concluir]);
-
-  function comecarSessao() {
-    const inicio = Date.now();
-    setAgora(inicio);
-    iniciar(TEMPO_MS, inicio);
+  function adicionarTarefa() {
+    const resultado = validarTarefa(nome, duracao);
+    if (!resultado.ok) {
+      setErro(resultado.erro);
+      return;
+    }
+    adicionar(resultado.nome, resultado.duracaoMinutos);
+    setNome('');
+    setDuracao('');
+    setErro(null);
   }
 
-  const restante = endAt !== null ? Math.max(0, endAt - agora) : TEMPO_MS;
-
-  let mensagem = '';
-  if (status === 'done') mensagem = `Sessão concluída! Você ganhou ${pontosUltimaSessao} ponto(s) de foco.`;
-  if (status === 'cancelled') mensagem = 'Você saiu do Foque e a sessão foi encerrada. Desta vez, sem pontos.';
+  function focar(tarefa: Tarefa) {
+    iniciar(tarefa, Date.now());
+    router.push('/sessao');
+  }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.titulo}>Foque</Text>
-      <Text style={styles.tempo}>{formatarTempo(restante)}</Text>
+    <SafeAreaView style={styles.tela}>
+      <FlatList
+        data={tarefas}
+        keyExtractor={(t) => t.id}
+        contentContainerStyle={styles.conteudo}
+        keyboardShouldPersistTaps="handled"
+        ListHeaderComponent={
+          <View style={styles.cabecalho}>
+            <Text style={styles.titulo}>Foque</Text>
 
-      {status === 'running' ? (
-        <Text style={styles.instrucao}>Deixe o celular de lado. Sair do app cancela a sessão.</Text>
-      ) : null}
+            <View style={styles.progresso}>
+              <Text style={styles.nivel}>Nível de foco {nivel}</Text>
+              <Text style={styles.textoSuave}>
+                {pontosDeFoco(pontosTotais)} · faltam {faltam} para o nível {nivel + 1}
+              </Text>
+            </View>
 
-      {mensagem ? <Text style={styles.mensagem}>{mensagem}</Text> : null}
+            <Text style={styles.subtitulo}>Tarefas do dia</Text>
 
-      <Text style={styles.pontos}>Pontos de foco: {pontosTotais}</Text>
-      <Text style={styles.nivel}>Nível de foco: {nivelPorPontos(pontosTotais)}</Text>
-
-      <Pressable
-        onPress={comecarSessao}
-        disabled={status === 'running'}
-        style={({ pressed }) => [
-          styles.botao,
-          status === 'running' && styles.botaoDesativado,
-          pressed && styles.botaoPressionado,
-        ]}
-      >
-        <Text style={styles.textoBotao}>
-          {status === 'running' ? 'Sessão em andamento' : 'Iniciar sessão de teste'}
-        </Text>
-      </Pressable>
-    </View>
+            <TextInput
+              style={styles.campo}
+              placeholder="Ex.: Ler um livro"
+              value={nome}
+              onChangeText={setNome}
+              maxLength={60}
+              returnKeyType="next"
+            />
+            <TextInput
+              style={styles.campo}
+              placeholder="Duração em minutos"
+              value={duracao}
+              onChangeText={setDuracao}
+              keyboardType="number-pad"
+              maxLength={3}
+              onSubmitEditing={adicionarTarefa}
+            />
+            {erro ? <Text style={styles.erro}>{erro}</Text> : null}
+            <Botao titulo="Adicionar tarefa" onPress={adicionarTarefa} />
+          </View>
+        }
+        ListEmptyComponent={
+          <Text style={[styles.textoSuave, styles.vazio]}>
+            Nenhuma tarefa ainda. Escolha uma coisa importante para hoje.
+          </Text>
+        }
+        renderItem={({ item }) => (
+          <View style={styles.item}>
+            <View style={styles.itemTexto}>
+              <Text style={styles.itemNome}>{item.nome}</Text>
+              <Text style={styles.textoSuave}>{item.duracaoMinutos} min</Text>
+            </View>
+            <View style={styles.itemAcoes}>
+              <Botao titulo="Remover" variante="secundario" onPress={() => remover(item.id)} />
+              <Botao titulo="Focar" onPress={() => focar(item)} />
+            </View>
+          </View>
+        )}
+      />
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  tela: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 24,
-    gap: 16,
+  },
+  conteudo: {
+    padding: 16,
+    gap: 12,
+  },
+  cabecalho: {
+    gap: 12,
+    marginBottom: 8,
   },
   titulo: {
     fontSize: 28,
     fontWeight: '700',
   },
-  tempo: {
-    fontSize: 64,
-    fontWeight: '300',
-    fontVariant: ['tabular-nums'],
-  },
-  instrucao: {
-    fontSize: 16,
-    color: '#555',
-    textAlign: 'center',
-  },
-  mensagem: {
-    fontSize: 16,
-    textAlign: 'center',
-  },
-  pontos: {
-    fontSize: 18,
-    fontWeight: '600',
+  progresso: {
+    backgroundColor: '#eff6ff',
+    borderRadius: 12,
+    padding: 16,
+    gap: 4,
   },
   nivel: {
-    fontSize: 16,
-    color: '#555',
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#1d4ed8',
   },
-  botao: {
-    backgroundColor: '#2563eb',
-    paddingVertical: 14,
-    paddingHorizontal: 28,
-    borderRadius: 12,
-  },
-  botaoDesativado: {
-    backgroundColor: '#9ca3af',
-  },
-  botaoPressionado: {
-    opacity: 0.8,
-  },
-  textoBotao: {
-    color: '#fff',
-    fontSize: 16,
+  subtitulo: {
+    fontSize: 20,
     fontWeight: '600',
+    marginTop: 8,
+  },
+  campo: {
+    borderWidth: 1,
+    borderColor: '#d1d5db',
+    borderRadius: 12,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    fontSize: 16,
+  },
+  erro: {
+    color: '#b91c1c',
+  },
+  textoSuave: {
+    color: '#6b7280',
+  },
+  vazio: {
+    textAlign: 'center',
+    marginTop: 16,
+  },
+  item: {
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+    borderRadius: 12,
+    padding: 14,
+    gap: 12,
+  },
+  itemTexto: {
+    gap: 2,
+  },
+  itemNome: {
+    fontSize: 17,
+    fontWeight: '600',
+  },
+  itemAcoes: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    gap: 8,
   },
 });

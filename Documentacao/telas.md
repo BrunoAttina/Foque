@@ -6,11 +6,10 @@
 | Início | Apresentar o Foque e levar ao cadastro ou ao login. | Rascunho |
 | Cadastro e login | Criar conta ou entrar em uma existente. | Rascunho |
 | Perguntas iniciais | O Foque coleta profissão e rotina do usuário. | Rascunho |
-| Tarefas do dia | Listar, cadastrar e escolher a tarefa da sessão. | Rascunho |
-| Sessão de foco | Mostrar o timer em tela cheia e encerrar se o usuário sair do app. | Rascunho |
-| Resultado | Mostrar os pontos de foco ganhos ou o cancelamento da sessão. | Rascunho |
-| Progresso | Mostrar o nível de foco e os pontos acumulados. | Rascunho |
-| Placeholder atual (`App.tsx`) | Tela de teste do Dev Client. Será substituída. | Placeholder |
+| Tarefas do dia (`src/app/index.tsx`) | Listar, cadastrar, remover e escolher a tarefa da sessão. Mostra nível e pontos. | Protótipo (dados em memória) |
+| Sessão de foco (`src/app/sessao.tsx`) | Timer da tarefa. Sair do app cancela; o botão voltar e "Desistir" encerram como desistência. | Protótipo |
+| Resultado (`src/app/resultado.tsx`) | Mostrar os pontos ganhos, o cancelamento e a subida de nível. | Protótipo |
+| Progresso | Mostrar o nível de foco e os pontos acumulados. Por enquanto, isso fica no topo de Tarefas do dia. | Rascunho |
 
 ## Fluxo de navegação
 1. **Início** → **Cadastro e login**
