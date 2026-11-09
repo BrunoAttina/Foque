@@ -17,7 +17,7 @@ Barra inferior com 5 abas, como no mockup (com "Amigos" no lugar de "Ranking"). 
 | Amigos (`amigos.tsx`) | Encontrar amigos pelo @, com o botão Seguir em cada resultado (ou o selo "Seguindo"), e a lista de quem você já segue, com nível e pontos. | Implementado |
 | Tarefas (`tarefas.tsx`) | Cadastrar, remover e focar direto em uma missão. | Implementado |
 | **Focar** (`index.tsx`, aba inicial) | Tela principal: nível, fala do Foque, mascote, "tempo de mergulho" (15/25/45/60 min ou a duração da missão), missão atual, Regra do Gelo Fino e o botão "Congelar tempo & focar". | Implementado |
-| Foca (`foca.tsx`) | Espaço do mascote: dicas do roteiro na voz do Foque. Personalização da foca: em breve. | Implementado (parcial) |
+| Foque (`foca.tsx`) | Espaço do mascote: dicas do roteiro na voz do Foque. Personalização do Foque: em breve. | Implementado (parcial) |
 | Perfil (`perfil.tsx`) | Seu @, título e cartão de nível, pontos, sessões concluídas, buscar pessoas e sair. | Implementado |
 
 ### Telas que abrem por cima das abas (`src/app/(app)/`)

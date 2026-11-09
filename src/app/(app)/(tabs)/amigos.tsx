@@ -104,7 +104,7 @@ export default function TelaAmigos() {
       <ScrollView contentContainerStyle={styles.conteudo} keyboardShouldPersistTaps="handled">
         <View>
           <Text style={styles.titulo}>Amigos 🦭</Text>
-          <Text style={styles.subtitulo}>Siga seus amigos e acompanhe o foco deles.</Text>
+          <Text style={styles.subtitulo}>Siga seus amigos e acompanhe o foque deles.</Text>
         </View>
 
         {/* Encontrar amigos */}

@@ -33,7 +33,7 @@ export default function TelaFoca() {
           <MaterialIcons name="pets" size={28} color={cores.primaryContainer} />
           <View style={styles.textosEmBreve}>
             <Text style={styles.tituloEmBreve}>Em breve</Text>
-            <Text style={styles.textoEmBreve}>Personalize sua foca e conheça melhor o Foque.</Text>
+            <Text style={styles.textoEmBreve}>Personalize o Foque e conheça ele melhor.</Text>
           </View>
         </View>
       </ScrollView>

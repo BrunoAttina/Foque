@@ -73,7 +73,7 @@ export default function AbasLayout() {
           ),
         }}
       />
-      <Tabs.Screen name="foca" options={{ title: 'Foca', tabBarIcon: icone('pets') }} />
+      <Tabs.Screen name="foca" options={{ title: 'Foque', tabBarIcon: icone('pets') }} />
       <Tabs.Screen name="perfil" options={{ title: 'Perfil', tabBarIcon: icone('account-circle') }} />
     </Tabs>
   );

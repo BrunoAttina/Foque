@@ -34,7 +34,7 @@ Formato: data, decisão, motivo. Decisões em aberto ficam na seção final.
 | 2026-11-08 | Tarefas salvas no Supabase como uma lista que continua de um dia para o outro, até a pessoa remover. | Mais simples para o MVP. Tarefas por data ou recorrentes ficam para depois. |
 | 2026-11-08 | Tarefas com cópia local para leitura offline; criar e remover exigem conexão. | Focar funciona sem internet. Uma fila offline para tarefas daria mais trabalho, e as sessões, que valem pontos, já têm a delas. |
 | 2026-11-08 | Visual pelo design system "Glacial Focus Game" (`design.md`), com tokens em `src/theme/`. Fontes Outfit e Plus Jakarta Sans; ícones Material. | Dar personalidade ao app, a partir do mockup aprovado. |
-| 2026-11-08 | Navegação com 5 abas: Ranking, Tarefas, Focar (central e inicial), Foca e Perfil. A lista "Seguindo" virou o Ranking. | Segue o mockup. O ranking entre quem você segue dá sentido competitivo à parte social. |
+| 2026-11-08 | Navegação com 5 abas: Ranking, Tarefas, Focar (central e inicial), Foca (hoje "Foque") e Perfil. A lista "Seguindo" virou o Ranking. | Segue o mockup. O ranking entre quem você segue dá sentido competitivo à parte social. |
 | 2026-11-08 | Na tela Focar, a duração da sessão é escolhida no "tempo de mergulho" (15/25/45/60 min ou a duração da missão). | Segue o mockup. A duração da tarefa vira a sugestão inicial. |
 | 2026-11-08 | Títulos de nível (proposta): Filhote de Foca, Foca Curiosa, Foca Nadadora, Foca Ártica, Caçadora de Peixes, Guardiã do Gelo, Mergulhadora Profunda, Foca Polar, Mestre do Gelo e Lenda Glacial (10+). | O mockup usa "Nível 4: Foca Ártica". Podem ser trocados em `src/domain/niveis.ts`. |
 | 2026-11-08 | Personalidade do Foque: exigente e sarcástica, mas torcendo pela pessoa. Falas em `src/domain/mensagens.ts`. | Tom do mockup ("Ou vai abrir o TikTok de novo, humano? 👀"). |
@@ -54,4 +54,4 @@ Formato: data, decisão, motivo. Decisões em aberto ficam na seção final.
 - **Bloqueio de tela no iOS:** o módulo `foco-tela` ainda não detecta bloqueio no iOS; lá, ir para segundo plano continua cancelando. Resolver quando houver iPhone para testar.
 - **Sessão longa com a tela bloqueada:** o Android pode encerrar o app em segundo plano para liberar memória; hoje a sessão em andamento fica só na memória e seria perdida. Avaliar salvar a sessão ativa no aparelho.
 - **"Peixes" do mockup:** o cabeçalho do mockup tem um terceiro contador (🐟 85) sem mecânica definida.
-- **Aba Foca:** o que entra além das dicas (personalização da foca?). Lembrando que os pontos não são gastos.
+- **Aba Foque:** o que entra além das dicas (personalização da foca?). Lembrando que os pontos não são gastos.

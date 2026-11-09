@@ -90,6 +90,6 @@ O Foque virou uma foca **exigente e sarcástica, mas que torce pela pessoa**. El
 | Durante a sessão | "Tô de olho. Nem pense em sair do app. 👀" |
 | Concluída | "Gelo intacto. Peixe merecido. 🐟" |
 | Cancelada | "Tudo bem, até as focas escorregam. Bora de novo? 🧊" |
-| Dicas (aba Foca) | As sugestões desta página, reescritas na voz do Foque. |
+| Dicas (aba Foque) | As sugestões desta página, reescritas na voz do Foque. |
 
 A **Regra do Gelo Fino** resume a mecânica: "A cada 1 minuto de foco você ganha 1 ponto. Pode bloquear a tela e deixar o celular de lado, mas se sair do app, o gelo quebra e a sessão é perdida!"
