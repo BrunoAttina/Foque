@@ -9,10 +9,10 @@ export function pontosDaSessao(minutosConcluidos: number): number {
   return minutos * PONTOS_POR_MINUTO;
 }
 
-/** Total de pontos necessário para chegar ao nível informado: 30 × N × (N − 1). */
+/** Total de pontos necessário para chegar ao nível informado: 15 × N × (N − 1). */
 export function pontosParaNivel(nivel: number): number {
   if (nivel <= 1) return 0;
-  return 30 * nivel * (nivel - 1);
+  return 15 * nivel * (nivel - 1);
 }
 
 /** Nível de foco correspondente ao total de pontos acumulados. */

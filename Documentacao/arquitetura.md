@@ -63,7 +63,7 @@ A migração para o Expo Router já foi feita: o entry point é `expo-router/ent
 3. Se o tempo terminar sem interrupção, a sessão é concluída e gravada na fila local.
 4. Quando houver conexão, a fila é enviada ao Supabase.
 5. Uma função no servidor valida a sessão, calcula os pontos (1 por minuto completo) e atualiza o progresso.
-6. O nível é derivado do total de pontos pela fórmula `30 × N × (N − 1)`, ver [requisitos.md](requisitos.md).
+6. O nível é derivado do total de pontos pela fórmula `15 × N × (N − 1)`, ver [requisitos.md](requisitos.md).
 
 ## Dados e estado
 **Banco:** Supabase, com as tabelas previstas:

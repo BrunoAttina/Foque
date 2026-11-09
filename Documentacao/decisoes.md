@@ -11,7 +11,7 @@ Formato: data, decisão, motivo. Decisões em aberto ficam na seção final.
 | 2026-11-07 | O assistente se chama Foque, igual ao nome do app. | Simplifica a marca e a comunicação. |
 | 2026-11-07 | Recompensa por gamificação, com "Pontos de foco" e "Nível de foco". | Dá progressão visível sem depender de recompensas externas. |
 | 2026-11-07 | 1 ponto de foco por minuto completo de sessão concluída. Sessões canceladas dão 0. | Regra simples e previsível para o usuário. |
-| 2026-11-07 | Progressão de níveis: pontos totais para o nível N = `30 × N × (N − 1)`. | Início rápido e avanço mais longo com o tempo. Ver [requisitos.md](requisitos.md). |
+| 2026-11-07 | Progressão de níveis: pontos totais para o nível N = `15 × N × (N − 1)` (ajustado em 2026-11-09; antes era `30 × N × (N − 1)`, com 60 pontos para o nível 2). | Início rápido e avanço mais longo com o tempo. O nível 2 com 30 pontos dá retorno já na primeira sessão longa. Ver [requisitos.md](requisitos.md). |
 | 2026-11-07 | Autenticação com Supabase Auth, com e-mail e login social (Google e Apple). | Serviço integrado ao banco de dados. A Apple exige o "Sign in with Apple" quando o app oferece outro login social. |
 | 2026-11-07 | Banco de dados no Supabase. | Solução de backend e banco de dados na nuvem, escolhida pelo projeto. |
 | 2026-11-07 | Foque com roteiro fixo de perguntas e sugestões no MVP. | Gratuito, previsível e funciona offline. A geração por IA fica para depois. |

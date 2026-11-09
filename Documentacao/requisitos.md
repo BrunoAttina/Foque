@@ -26,22 +26,22 @@
 
 ## Regras de pontos e níveis
 - **Pontos:** 1 ponto de foco por minuto completo de sessão concluída. Sessões canceladas dão 0 pontos. Os pontos são acumulados, não são gastos.
-- **Níveis:** o total de pontos necessário para chegar ao nível N é `30 × N × (N − 1)`.
+- **Níveis:** o total de pontos necessário para chegar ao nível N é `15 × N × (N − 1)`.
 
 | Nível | Pontos totais | Tempo focado acumulado |
 | --- | --- | --- |
 | 1 | 0 | 0 h |
-| 2 | 60 | 1 h |
-| 3 | 180 | 3 h |
-| 4 | 360 | 6 h |
-| 5 | 600 | 10 h |
-| 6 | 900 | 15 h |
-| 7 | 1.260 | 21 h |
-| 8 | 1.680 | 28 h |
-| 9 | 2.160 | 36 h |
-| 10 | 2.700 | 45 h |
+| 2 | 30 | 30 min |
+| 3 | 90 | 1 h 30 min |
+| 4 | 180 | 3 h |
+| 5 | 300 | 5 h |
+| 6 | 450 | 7 h 30 min |
+| 7 | 630 | 10 h 30 min |
+| 8 | 840 | 14 h |
+| 9 | 1.080 | 18 h |
+| 10 | 1.350 | 22 h 30 min |
 
-A diferença entre um nível e o próximo cresce 60 pontos a cada nível. O início é rápido para dar retorno cedo, e o avanço fica mais longo com o tempo. *Proposta, a validar com uso real.*
+A diferença entre um nível e o próximo cresce 30 pontos a cada nível (30, 60, 90, 120…). O início é rápido para dar retorno cedo, e o avanço fica mais longo com o tempo. *Proposta, a validar com uso real.*
 
 ## Requisitos não funcionais
 | ID | Descrição | Status |
