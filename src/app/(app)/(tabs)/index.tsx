@@ -146,8 +146,8 @@ export default function TelaFocar() {
           <View style={styles.textosRegra}>
             <Text style={styles.tituloRegra}>Regra do Gelo Fino</Text>
             <Text style={styles.textoRegra}>
-              A cada 1 minuto de foco você ganha 1 ponto. Se sair do app ou bloquear a tela, o gelo quebra e a
-              sessão é perdida!
+              A cada 1 minuto de foco você ganha 1 ponto. Pode bloquear a tela e deixar o celular de lado, mas se
+              sair do app, o gelo quebra e a sessão é perdida!
             </Text>
           </View>
         </View>

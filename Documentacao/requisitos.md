@@ -9,7 +9,7 @@
 | RF-04 | Com base nas respostas, o Foque oferece sugestões para o usuário largar o celular e focar. | Média | Rascunho |
 | RF-05 | O usuário cadastra tarefas do dia com nome e duração. | Alta | Rascunho |
 | RF-06 | O usuário escolhe uma tarefa e inicia uma sessão de foco com timer na tela do app. | Alta | Rascunho |
-| RF-07 | Se o usuário sair do Foque durante a sessão, o timer é encerrado e a sessão fica como cancelada. | Alta | Rascunho |
+| RF-07 | Se o usuário sair do Foque durante a sessão (home, trocar de app, fechar), o timer é encerrado e a sessão fica como cancelada. **Bloquear a tela não cancela:** o timer continua. Se a pessoa desbloquear e for usar outro app antes de voltar ao Foque, a sessão é cancelada. | Alta | Android implementado; iOS pendente |
 | RF-08 | Ao cancelar, o app informa o usuário de que não houve pontos de foco. | Alta | Rascunho |
 | RF-09 | Ao concluir a sessão sem sair do app, o usuário ganha 1 ponto de foco por minuto completo. | Alta | Rascunho |
 | RF-10 | O app mostra o nível de foco e os pontos de foco acumulados. | Alta | Rascunho |

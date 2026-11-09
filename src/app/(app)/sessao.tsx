@@ -1,6 +1,6 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AppState, BackHandler, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -8,6 +8,8 @@ import { BalaoFala } from '../../components/BalaoFala';
 import { BarraProgresso } from '../../components/BarraProgresso';
 import { Botao } from '../../components/Botao';
 import { Mascote } from '../../components/Mascote';
+import { estadoTela } from '../../../modules/foco-tela';
+import { decidirRetorno, foiBloqueio } from '../../domain/bloqueio';
 import { falas } from '../../domain/mensagens';
 import { emojiDaTarefa } from '../../domain/tarefas';
 import { registrarSessaoFinalizada } from '../../services/sincronizacao';
@@ -33,13 +35,44 @@ export default function TelaSessao() {
   const [agora, setAgora] = useState(() => Date.now());
   const [fala] = useState(() => falas.duranteSessao());
 
-  // Sair do app durante a sessão cancela o timer e não dá pontos.
+  // Horário em que a tela foi bloqueada durante a sessão (null = não está bloqueada).
+  const bloqueadoEm = useRef<number | null>(null);
+
+  // Bloquear a tela pode: o timer continua (ele usa o horário final, não um contador).
+  // Sair do app (home, trocar de app) cancela a sessão e não dá pontos.
   useEffect(() => {
     const subscription = AppState.addEventListener('change', (estado) => {
-      if (estado !== 'active') cancelar('saiu');
+      if (useSessao.getState().status !== 'running') return;
+      const momento = Date.now();
+
+      if (estado === 'active') {
+        const inicioBloqueio = bloqueadoEm.current;
+        if (inicioBloqueio === null) return;
+        bloqueadoEm.current = null;
+        const decisao = decidirRetorno({
+          bloqueadoEm: inicioBloqueio,
+          endAt: useSessao.getState().endAt ?? momento,
+          desbloqueadoEm: estadoTela().desbloqueadoEm,
+          agora: momento,
+        });
+        if (decisao === 'concluir') concluir();
+        else if (decisao === 'cancelar') cancelar('saiu');
+        return;
+      }
+
+      // Saindo do primeiro plano.
+      if (bloqueadoEm.current !== null) return; // já registrado como bloqueio
+      const tela = estadoTela();
+      if (foiBloqueio(tela, momento)) {
+        bloqueadoEm.current = momento;
+        return;
+      }
+      // Onde a detecção existe (Android), "inactive" é passageiro: decide no "background".
+      if (tela.suportado && estado === 'inactive') return;
+      cancelar('saiu');
     });
     return () => subscription.remove();
-  }, [cancelar]);
+  }, [cancelar, concluir]);
 
   // O botão voltar do Android encerra a sessão como desistência e mostra o resultado.
   useEffect(() => {
@@ -56,7 +89,8 @@ export default function TelaSessao() {
     const intervalo = setInterval(() => {
       const momento = Date.now();
       setAgora(momento);
-      if (momento >= endAt) concluir();
+      // Depois de um bloqueio, quem decide é o retorno ao app (pode ter usado o celular).
+      if (momento >= endAt && bloqueadoEm.current === null) concluir();
     }, 250);
     return () => clearInterval(intervalo);
   }, [status, endAt, concluir]);
@@ -122,7 +156,7 @@ export default function TelaSessao() {
       <View style={styles.rodape}>
         <View style={styles.regra}>
           <MaterialIcons name="warning" size={18} color={cores.tertiary} />
-          <Text style={styles.textoRegra}>Sair do app ou bloquear a tela quebra o gelo.</Text>
+          <Text style={styles.textoRegra}>Pode bloquear a tela. Sair do app quebra o gelo.</Text>
         </View>
         <Botao titulo="Desistir" icone="heart-broken" variante="secundario" onPress={() => cancelar('desistiu')} />
       </View>

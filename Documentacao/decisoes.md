@@ -39,6 +39,8 @@ Formato: data, decisão, motivo. Decisões em aberto ficam na seção final.
 | 2026-11-08 | Títulos de nível (proposta): Filhote de Foca, Foca Curiosa, Foca Nadadora, Foca Ártica, Caçadora de Peixes, Guardiã do Gelo, Mergulhadora Profunda, Foca Polar, Mestre do Gelo e Lenda Glacial (10+). | O mockup usa "Nível 4: Foca Ártica". Podem ser trocados em `src/domain/niveis.ts`. |
 | 2026-11-08 | Personalidade do Foque: exigente e sarcástica, mas torcendo pela pessoa. Falas em `src/domain/mensagens.ts`. | Tom do mockup ("Ou vai abrir o TikTok de novo, humano? 👀"). |
 | 2026-11-08 | Não mostrar no app dados que ainda não existem (Onda/streak e "peixes" do mockup). | A Onda continua como ideia futura; os chips entram quando a mecânica existir. |
+| 2026-11-09 | **Bloquear a tela não quebra o gelo.** Só sair do app cancela a sessão. Se o tempo acabar com a tela bloqueada, a sessão é concluída; se a pessoa desbloquear e não voltar direto ao Foque (mais de 4 s), é cancelada. | Bloquear o celular é justamente largá-lo. O que indica falta de foco é usar o celular com a sessão rodando. |
+| 2026-11-09 | Detecção por módulo nativo local `modules/foco-tela`: no Android, ouve "tela apagou" e "celular desbloqueado" e informa se a tela está acesa. Regras em `src/domain/bloqueio.ts`. | O `AppState` do React Native fica "background" tanto ao bloquear quanto ao apertar home; só o nativo diferencia. |
 | 2026-11-08 | A aba Ranking virou **Amigos**: busca pelo @ com botão Seguir na própria lista e a lista de quem você segue. A tela separada "Buscar pessoas" foi removida. | Concentrar a parte social em um lugar e seguir alguém em um toque. |
 
 ## Decisões em aberto
@@ -49,5 +51,7 @@ Formato: data, decisão, motivo. Decisões em aberto ficam na seção final.
 - **Confirmação de e-mail:** o Supabase exige confirmação por padrão. O link de confirmação redireciona para a "Site URL" do projeto, que ainda não aponta para o app. Decidir se mantém a confirmação (e configura o deep link) ou desliga durante o desenvolvimento.
 - **Privacidade social:** perfil privado com aprovação, bloqueio e remoção de seguidores.
 - **Arte do mascote:** hoje é um emoji (🦭). Falta a ilustração da foca.
+- **Bloqueio de tela no iOS:** o módulo `foco-tela` ainda não detecta bloqueio no iOS; lá, ir para segundo plano continua cancelando. Resolver quando houver iPhone para testar.
+- **Sessão longa com a tela bloqueada:** o Android pode encerrar o app em segundo plano para liberar memória; hoje a sessão em andamento fica só na memória e seria perdida. Avaliar salvar a sessão ativa no aparelho.
 - **"Peixes" do mockup:** o cabeçalho do mockup tem um terceiro contador (🐟 85) sem mecânica definida.
 - **Aba Foca:** o que entra além das dicas (personalização da foca?). Lembrando que os pontos não são gastos.

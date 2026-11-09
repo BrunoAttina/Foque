@@ -48,6 +48,8 @@ foque/
 │   ├── services/     # Supabase, fila offline (expo-sqlite)
 │   ├── store/        # estado da sessão (Zustand)
 │   └── theme/        # tokens do design system (design.md)
+├── modules/
+│   └── foco-tela/    # módulo nativo local: bloqueio de tela vs. sair do app
 ├── assets/           # ícones e splash
 ├── Documentacao/     # esta documentação
 └── app.json          # configuração Expo
