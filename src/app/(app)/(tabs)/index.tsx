@@ -1,6 +1,6 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useRouter } from 'expo-router';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { BalaoFala } from '../../../components/BalaoFala';
@@ -29,10 +29,12 @@ export default function TelaFocar() {
 
   const tarefa = tarefas.find((t) => t.id === selecionadaId) ?? tarefas[0] ?? null;
 
-  // Ao trocar de missão, o tempo vai para a duração dela.
-  useEffect(() => {
-    if (tarefa) setTempo(tarefa.duracaoMinutos);
-  }, [tarefa?.id]); // eslint-disable-line react-hooks/exhaustive-deps
+  // Ao trocar de missão, o tempo vai para a duração dela (ajuste durante o render, sem efeito).
+  const [missaoDoTempo, setMissaoDoTempo] = useState<string | undefined>(undefined);
+  if (tarefa && tarefa.id !== missaoDoTempo) {
+    setMissaoDoTempo(tarefa.id);
+    setTempo(tarefa.duracaoMinutos);
+  }
 
   // Tempos sugeridos + a duração da missão, se for diferente.
   const opcoes = useMemo(() => {

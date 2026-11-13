@@ -1,5 +1,5 @@
 import { Image } from 'expo-image';
-import { useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
 
 import type { AparenciaId, EstadoFoque } from '../domain/aparencias';
@@ -20,7 +20,7 @@ interface MascoteProps {
 export function Mascote({ tamanho = 160, estado = 'parada', aparencia }: MascoteProps) {
   const daConta = useAparenciaAtual();
   const fonte = IMAGENS_FOQUE[aparencia ?? daConta][estado];
-  const pulso = useRef(new Animated.Value(0)).current;
+  const [pulso] = useState(() => new Animated.Value(0));
 
   useEffect(() => {
     const animacao = Animated.loop(

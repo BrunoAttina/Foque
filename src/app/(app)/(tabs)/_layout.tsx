@@ -9,10 +9,10 @@ import { cores, fontes } from '../../../theme';
 type NomeIcone = ComponentProps<typeof MaterialIcons>['name'];
 
 function icone(nome: NomeIcone) {
-  return ({ color }: { color: ColorValue }) => (
+  return function IconeAba({ color }: { color: ColorValue }) {
     // A barra de abas sempre passa as cores de tabBarActive/InactiveTintColor (strings).
-    <MaterialIcons name={nome} size={24} color={color as string} />
-  );
+    return <MaterialIcons name={nome} size={24} color={color as string} />;
+  };
 }
 
 /** Botão central elevado da aba Focar, com a base em relevo do design.md. */

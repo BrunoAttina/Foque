@@ -27,6 +27,21 @@ type Estado =
   | { tipo: 'erro'; mensagem: string }
   | { tipo: 'pronto'; pessoa: Pessoa; seguindo: boolean; pontos: number | null };
 
+/** Busca a pessoa, se você a segue e os pontos (visíveis só para quem segue). */
+async function buscarEstado(meuId: string, username: string): Promise<Estado> {
+  try {
+    const pessoa = await buscarPessoaPorUsername(username);
+    if (!pessoa) return { tipo: 'nao-encontrado' };
+    const [seguindo, pontos] = await Promise.all([
+      pessoa.id === meuId ? Promise.resolve(false) : estouSeguindo(meuId, pessoa.id),
+      buscarPontos(pessoa.id),
+    ]);
+    return { tipo: 'pronto', pessoa, seguindo, pontos };
+  } catch (e) {
+    return { tipo: 'erro', mensagem: e instanceof ErroSocial ? e.message : 'Algo deu errado.' };
+  }
+}
+
 export default function TelaUsuario() {
   const router = useRouter();
   const { username } = useLocalSearchParams<{ username: string }>();
@@ -36,25 +51,19 @@ export default function TelaUsuario() {
 
   const carregar = useCallback(async () => {
     if (!meuId || !username) return;
-    try {
-      const pessoa = await buscarPessoaPorUsername(username);
-      if (!pessoa) {
-        setEstado({ tipo: 'nao-encontrado' });
-        return;
-      }
-      const [seguindo, pontos] = await Promise.all([
-        pessoa.id === meuId ? Promise.resolve(false) : estouSeguindo(meuId, pessoa.id),
-        buscarPontos(pessoa.id),
-      ]);
-      setEstado({ tipo: 'pronto', pessoa, seguindo, pontos });
-    } catch (e) {
-      setEstado({ tipo: 'erro', mensagem: e instanceof ErroSocial ? e.message : 'Algo deu errado.' });
-    }
+    setEstado(await buscarEstado(meuId, username));
   }, [meuId, username]);
 
   useEffect(() => {
-    carregar();
-  }, [carregar]);
+    if (!meuId || !username) return;
+    let ativo = true;
+    buscarEstado(meuId, username).then((novo) => {
+      if (ativo) setEstado(novo);
+    });
+    return () => {
+      ativo = false;
+    };
+  }, [meuId, username]);
 
   async function alternarSeguir() {
     if (estado.tipo !== 'pronto' || !meuId) return;

@@ -54,13 +54,19 @@ export default function TelaAmigos() {
     }, [carregarSeguindo]),
   );
 
-  // Busca 300 ms depois que a pessoa para de digitar.
-  useEffect(() => {
-    if (!meuId || termo.length === 0) {
+  function mudarTermo(texto: string) {
+    const novo = normalizarUsername(texto);
+    setTermo(novo);
+    if (novo.length === 0) {
       setResultados([]);
       setErroBusca(null);
-      return;
     }
+  }
+
+  // Busca 300 ms depois que a pessoa para de digitar.
+  useEffect(() => {
+    // Campo vazio: mudarTermo já limpou os resultados.
+    if (!meuId || termo.length === 0) return;
     let cancelado = false;
     const espera = setTimeout(async () => {
       setBuscando(true);
@@ -113,7 +119,7 @@ export default function TelaAmigos() {
             rotulo="Encontrar amigos"
             prefixo="@"
             value={termo}
-            onChangeText={(texto) => setTermo(normalizarUsername(texto))}
+            onChangeText={mudarTermo}
             placeholder="nome.de.usuario"
             autoCapitalize="none"
             autoCorrect={false}
