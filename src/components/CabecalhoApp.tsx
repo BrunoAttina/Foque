@@ -1,31 +1,51 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { useRouter } from 'expo-router';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { nivelPorPontos } from '../domain/pontos';
+import { pts } from '../domain/mensagens';
+import { progressoNoNivel } from '../domain/niveis';
 import { useAuth } from '../store/auth';
 import { useSessao } from '../store/sessao';
-import { cores, espaco, tipografia } from '../theme';
+import { cores, espaco, fontes, tipografia } from '../theme';
 import { Avatar } from './Avatar';
-import { Chip } from './Chip';
+import { BarraProgresso } from './BarraProgresso';
 
-/** Cabeçalho das abas: pontos e nível em chips, @ e avatar à direita. */
+/** Cabeçalho das abas: nível com a barra até o próximo; @ e avatar levam ao Perfil. */
 export function CabecalhoApp() {
+  const router = useRouter();
   const insets = useSafeAreaInsets();
   const username = useAuth((s) => s.perfil?.username) ?? '';
   const pontos = useSessao((s) => s.pontosTotais);
+  const p = progressoNoNivel(pontos);
 
   return (
     <View style={[styles.cabecalho, { paddingTop: insets.top + espaco.sm }]}>
-      <View style={styles.chips}>
-        <Chip icone="diamond" corIcone={cores.primaryContainer} texto={String(pontos)} />
-        <Chip icone="military-tech" corIcone={cores.amber} texto={`Nv ${nivelPorPontos(pontos)}`} />
+      <View
+        style={styles.nivel}
+        accessible
+        accessibilityLabel={`Nível de foco ${p.nivel}: ${pontos} de ${p.proximo} pontos para o próximo nível`}
+      >
+        <Text style={styles.textoNivel}>Nv.{p.nivel}</Text>
+        <View style={styles.progresso}>
+          <BarraProgresso fracao={p.fracao} altura={12} />
+          <Text style={styles.textoPontos} numberOfLines={1}>
+            {pts(pontos)} / {pts(p.proximo)}
+          </Text>
+        </View>
       </View>
-      <View style={styles.usuario}>
+
+      <Pressable
+        style={({ pressed }) => [styles.usuario, pressed && { opacity: 0.6 }]}
+        onPress={() => router.navigate('/perfil')}
+        accessibilityRole="button"
+        accessibilityLabel={`@${username}, abrir perfil`}
+        hitSlop={8}
+      >
         <Text style={styles.username} numberOfLines={1}>
           @{username}
         </Text>
         <Avatar username={username} />
-      </View>
+      </Pressable>
     </View>
   );
 }
@@ -35,7 +55,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    gap: espaco.sm,
+    gap: espaco.md,
     paddingHorizontal: espaco.margemMobile,
     paddingBottom: espaco.sm,
     backgroundColor: cores.surface,
@@ -46,9 +66,25 @@ const styles = StyleSheet.create({
     elevation: 2,
     zIndex: 10,
   },
-  chips: {
+  nivel: {
+    flex: 1,
     flexDirection: 'row',
-    gap: espaco.xs,
+    alignItems: 'center',
+    gap: espaco.sm,
+    maxWidth: 200,
+  },
+  textoNivel: {
+    fontFamily: fontes.outfitExtraBold,
+    fontSize: 18,
+    color: cores.primary,
+  },
+  progresso: {
+    flex: 1,
+    gap: 2,
+  },
+  textoPontos: {
+    ...tipografia.labelSm,
+    color: cores.onSurfaceVariant,
   },
   usuario: {
     flexDirection: 'row',

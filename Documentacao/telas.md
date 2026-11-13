@@ -47,8 +47,8 @@ O visual segue o design system "Glacial Focus Game" ([design.md](design.md)). Os
 | --- | --- |
 | `Botao` | Botão "3D chunky": face colorida sobre base em relevo, que afunda ao tocar. Variantes primário, acento, secundário e perigo. |
 | `Campo` | Campo de texto em "placa de gelo", com rótulo em caixa alta. |
-| `Chip` | Pílula com ícone ou emoji (cabeçalho, atalhos de missão). |
-| `CabecalhoApp` | Cabeçalho das abas: pontos, nível, @ e avatar. |
+| `Chip` | Pílula com ícone ou emoji (atalhos de missão). |
+| `CabecalhoApp` | Cabeçalho das abas: "Nv.N" com a barra de progresso até o próximo nível ("1 pt / 30 pts"); o @ e o avatar são clicáveis e levam ao Perfil. |
 | `CartaoNivel` | "Nível 4: Foca Ártica", com a barra até o próximo nível. |
 | `BalaoFala` + `Mascote` | Fala do Foque com a ponta apontando para a foca. |
 | `BarraProgresso` | Cápsula espessa, preenchimento menta. |
