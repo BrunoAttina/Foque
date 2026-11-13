@@ -58,4 +58,4 @@ Formato: data, decisão, motivo. Decisões em aberto ficam na seção final.
 - **"Peixes" do mockup:** o cabeçalho do mockup tem um terceiro contador (🐟 85) sem mecânica definida.
 - **Personalização do Foque:** acessórios, cores e novas aparências; se itens serão desbloqueados por nível (os pontos não são gastos). Ver [aparencia-foque.md](aparencia-foque.md).
 - **Aparência na nuvem:** salvar a escolha no Supabase para valer em outros aparelhos e aparecer para os amigos.
-- **Tamanho das artes:** os GIFs somam ~33 MB no app. Avaliar WebP animado (menor) ou baixar as aparências sob demanda.
+- **Tamanho das artes:** os GIFs somam ~33 MB no app. Avaliar comprimir as artes ou baixar as aparências sob demanda. Os WebP animados da pasta de artes têm bordas mais suaves, mas são maiores (~43 MB).
