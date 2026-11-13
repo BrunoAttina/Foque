@@ -1,20 +1,25 @@
+import { Image } from 'expo-image';
 import { useEffect, useRef } from 'react';
-import { Animated, StyleSheet, Text, View } from 'react-native';
+import { Animated, StyleSheet, View } from 'react-native';
 
+import type { AparenciaId, EstadoFoque } from '../domain/aparencias';
+import { useAparenciaAtual } from '../store/aparencia';
 import { cores } from '../theme';
+import { IMAGENS_FOQUE } from './imagensFoque';
 
 interface MascoteProps {
-  /** Diâmetro em pixels. */
+  /** Largura e altura da arte, em pixels. */
   tamanho?: number;
-  /** Emoji provisório até termos a arte da foca. */
-  emoji?: string;
+  /** Momento: escolhe a animação. */
+  estado?: EstadoFoque;
+  /** Força uma aparência (ex.: prévia na escolha). Sem isso, usa a da conta. */
+  aparencia?: AparenciaId;
 }
 
-/**
- * Foque, a foca. Placeholder com emoji e um brilho pulsando por trás.
- * Trocar o emoji pela imagem do mascote quando a arte existir.
- */
-export function Mascote({ tamanho = 160, emoji = '🦭' }: MascoteProps) {
+/** Foque, a foca: GIF animado da aparência escolhida, com um brilho pulsando por trás. */
+export function Mascote({ tamanho = 160, estado = 'parada', aparencia }: MascoteProps) {
+  const daConta = useAparenciaAtual();
+  const fonte = IMAGENS_FOQUE[aparencia ?? daConta][estado];
   const pulso = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -29,23 +34,29 @@ export function Mascote({ tamanho = 160, emoji = '🦭' }: MascoteProps) {
   }, [pulso]);
 
   const escalaBrilho = pulso.interpolate({ inputRange: [0, 1], outputRange: [0.92, 1.05] });
-  const opacidadeBrilho = pulso.interpolate({ inputRange: [0, 1], outputRange: [0.35, 0.6] });
+  const opacidadeBrilho = pulso.interpolate({ inputRange: [0, 1], outputRange: [0.25, 0.45] });
+  const brilho = tamanho * 0.8;
 
   return (
-    <View style={[styles.area, { width: tamanho * 1.1, height: tamanho * 1.1 }]} accessibilityLabel="Foque, a foca">
+    <View
+      style={[styles.area, { width: tamanho, height: tamanho }]}
+      accessible
+      accessibilityRole="image"
+      accessibilityLabel="Foque, a foca"
+    >
       <Animated.View
         style={[
           styles.brilho,
           {
-            width: tamanho,
-            height: tamanho,
-            borderRadius: tamanho / 2,
+            width: brilho,
+            height: brilho,
+            borderRadius: brilho / 2,
             opacity: opacidadeBrilho,
             transform: [{ scale: escalaBrilho }],
           },
         ]}
       />
-      <Text style={{ fontSize: tamanho * 0.55 }}>{emoji}</Text>
+      <Image source={fonte} style={{ width: tamanho, height: tamanho }} contentFit="contain" autoplay />
     </View>
   );
 }

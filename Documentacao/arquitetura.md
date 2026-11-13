@@ -9,6 +9,7 @@
 | Linguagem | TypeScript `~6.0.3` |
 | Navegação | Expo Router (a adotar, ver [decisoes.md](decisoes.md)) |
 | Estado | Zustand (a instalar) |
+| Imagens | `expo-image`, para os GIFs animados do Foque (`assets/foque/`) |
 | Armazenamento local | `expo-sqlite` (a instalar), para a fila de sessões offline |
 | Backend | Supabase: Auth, banco Postgres e funções no servidor |
 | Build nativo | Development build com `expo-dev-client` (não funciona no Expo Go) |
@@ -109,6 +110,11 @@ Validações no servidor: duração de 1 a 240 min; fim não pode estar no futur
 - `src/store/auth.ts` ouve as mudanças de login do Supabase e guarda a sessão e o perfil (@).
 - `src/app/_layout.tsx` usa `Stack.Protected` para mostrar entrar/cadastro (sem login), escolher-nome (logado sem @) ou o grupo `(app)` (logado com @).
 - `src/services/auth.ts` concentra as chamadas ao Supabase Auth e traduz os erros para mensagens em português.
+
+## Aparência do Foque
+- Catálogo e estados em `src/domain/aparencias.ts`; mapa de GIFs em `src/components/imagensFoque.ts`; arquivos em `assets/foque/<aparência>/<estado>.gif`.
+- A escolha fica em `src/store/aparencia.ts` (Zustand `persist` sobre o `localStorage` do `expo-sqlite`), por id de usuário. `useAparenciaAtual()` devolve a aparência da conta logada, ou a padrão.
+- Detalhes em [aparencia-foque.md](aparencia-foque.md).
 
 ## Comandos úteis
 - `npx expo start`: servidor de desenvolvimento

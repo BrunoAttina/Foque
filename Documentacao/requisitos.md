@@ -23,6 +23,8 @@
 
 **Nota:** os pontos vêm do banco (`progress`) e são somados pela função `registrar_sessao` (migration `0002`). As tarefas ficam no banco (`tasks`, migration `0003`), com cópia no aparelho.
 | RF-18 | O usuário sai da conta. | Alta | Implementado |
+| RF-19 | O usuário escolhe a aparência do Foque na aba Foque. A escolha vale em todas as telas e fica salva. A padrão é a Clássica. | Média | Implementado (salva no aparelho) |
+| RF-20 | O usuário personaliza o Foque com acessórios, cores e outros itens, além da aparência. | Baixa | Futuro |
 
 ## Regras de pontos e níveis
 - **Pontos:** 1 ponto de foco por minuto completo de sessão concluída. Sessões canceladas dão 0 pontos. Os pontos são acumulados, não são gastos.

@@ -138,7 +138,7 @@ export default function TelaSessao() {
 
       <View style={styles.centro}>
         <BalaoFala texto={fala} />
-        <Mascote tamanho={120} />
+        <Mascote tamanho={120} estado="focando" />
 
         <View style={styles.relogio}>
           <MaterialIcons name="ac-unit" size={22} color={cores.primaryContainer} />

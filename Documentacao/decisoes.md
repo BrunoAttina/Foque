@@ -41,6 +41,9 @@ Formato: data, decisão, motivo. Decisões em aberto ficam na seção final.
 | 2026-11-08 | Não mostrar no app dados que ainda não existem (Onda/streak e "peixes" do mockup). | A Onda continua como ideia futura; os chips entram quando a mecânica existir. |
 | 2026-11-09 | **Bloquear a tela não quebra o gelo.** Só sair do app cancela a sessão. Se o tempo acabar com a tela bloqueada, a sessão é concluída; se a pessoa desbloquear e não voltar direto ao Foque (mais de 4 s), é cancelada. | Bloquear o celular é justamente largá-lo. O que indica falta de foco é usar o celular com a sessão rodando. |
 | 2026-11-09 | Detecção por módulo nativo local `modules/foco-tela`: no Android, ouve "tela apagou" e "celular desbloqueado" e informa se a tela está acesa. Regras em `src/domain/bloqueio.ts`. | O `AppState` do React Native fica "background" tanto ao bloquear quanto ao apertar home; só o nativo diferencia. |
+| 2026-11-12 | **Aparência do Foque:** a pessoa escolhe a aparência na aba Foque (Clássico, Bebê, Careca, Ninja, Princesa). A padrão é a Clássica. Todas liberadas por enquanto. | Pedido do produto, aproveitando as artes animadas já feitas. Liberar tudo é mais simples; desbloqueio por nível pode vir depois. |
+| 2026-11-12 | Mascote em GIF animado com `expo-image`, um GIF por aparência e momento (parada, acenando, focando, comemorando, triste), em `assets/foque/`. | O `Image` do React Native não anima GIF no Android sem configuração extra; o `expo-image` anima nas duas plataformas. Exige nova build nativa. |
+| 2026-11-12 | A aparência escolhida fica salva só no aparelho, por conta. | Sem migration nova agora. Levar para o Supabase quando os amigos puderem ver a foca de cada um. |
 | 2026-11-08 | A aba Ranking virou **Amigos**: busca pelo @ com botão Seguir na própria lista e a lista de quem você segue. A tela separada "Buscar pessoas" foi removida. | Concentrar a parte social em um lugar e seguir alguém em um toque. |
 
 ## Decisões em aberto
@@ -50,8 +53,9 @@ Formato: data, decisão, motivo. Decisões em aberto ficam na seção final.
 - **Envio da fila offline:** como tratar erros, tentativas e duplicidade ao enviar sessões.
 - **Confirmação de e-mail:** o Supabase exige confirmação por padrão. O link de confirmação redireciona para a "Site URL" do projeto, que ainda não aponta para o app. Decidir se mantém a confirmação (e configura o deep link) ou desliga durante o desenvolvimento.
 - **Privacidade social:** perfil privado com aprovação, bloqueio e remoção de seguidores.
-- **Arte do mascote:** hoje é um emoji (🦭). Falta a ilustração da foca.
 - **Bloqueio de tela no iOS:** o módulo `foco-tela` ainda não detecta bloqueio no iOS; lá, ir para segundo plano continua cancelando. Resolver quando houver iPhone para testar.
 - **Sessão longa com a tela bloqueada:** o Android pode encerrar o app em segundo plano para liberar memória; hoje a sessão em andamento fica só na memória e seria perdida. Avaliar salvar a sessão ativa no aparelho.
 - **"Peixes" do mockup:** o cabeçalho do mockup tem um terceiro contador (🐟 85) sem mecânica definida.
-- **Aba Foque:** o que entra além das dicas (personalização da foca?). Lembrando que os pontos não são gastos.
+- **Personalização do Foque:** acessórios, cores e novas aparências; se itens serão desbloqueados por nível (os pontos não são gastos). Ver [aparencia-foque.md](aparencia-foque.md).
+- **Aparência na nuvem:** salvar a escolha no Supabase para valer em outros aparelhos e aparecer para os amigos.
+- **Tamanho das artes:** os GIFs somam ~25 MB no app. Avaliar WebP animado (menor) ou baixar as aparências sob demanda.

@@ -47,7 +47,7 @@ export default function TelaEntrar() {
 
           <View style={styles.mascote}>
             <BalaoFala texto="De volta? Então larga o TikTok e entra logo. 👀" />
-            <Mascote tamanho={120} />
+            <Mascote tamanho={120} estado="acenando" />
           </View>
 
           <Campo

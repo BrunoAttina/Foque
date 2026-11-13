@@ -17,7 +17,7 @@ Barra inferior com 5 abas, como no mockup (com "Amigos" no lugar de "Ranking"). 
 | Amigos (`amigos.tsx`) | Encontrar amigos pelo @, com o botão Seguir em cada resultado (ou o selo "Seguindo"), e a lista de quem você já segue, com nível e pontos. | Implementado |
 | Tarefas (`tarefas.tsx`) | Cadastrar, remover e focar direto em uma missão. | Implementado |
 | **Focar** (`index.tsx`, aba inicial) | Tela principal: nível, fala do Foque, mascote, "tempo de mergulho" (15/25/45/60 min ou a duração da missão), missão atual, Regra do Gelo Fino e o botão "Congelar tempo & focar". | Implementado |
-| Foque (`foca.tsx`) | Espaço do mascote: dicas do roteiro na voz do Foque. Personalização do Foque: em breve. | Implementado (parcial) |
+| Foque (`foca.tsx`) | Espaço do mascote: o Foque animado na aparência escolhida, balão com dicas do roteiro (botão "Outra dica") e, abaixo, a **escolha da aparência** (Clássico, Bebê, Careca, Ninja, Princesa) em cartões com prévia. Ao trocar, o Foque comenta o visual novo. Cartão "Em breve" para a personalização (acessórios, cores). | Implementado (escolha de aparência); personalização pendente |
 | Perfil (`perfil.tsx`) | Seu @, título e cartão de nível, pontos, sessões concluídas, buscar pessoas e sair. | Implementado |
 
 ### Telas que abrem por cima das abas (`src/app/(app)/`)
@@ -54,4 +54,4 @@ O visual segue o design system "Glacial Focus Game" ([design.md](design.md)). Os
 | `BarraProgresso` | Cápsula espessa, preenchimento menta. |
 | `LinhaPessoa`, `Avatar` | Listas de pessoas e ranking. |
 
-**Mascote:** por enquanto é um emoji (🦭) com um brilho pulsando. Quando a arte da foca existir, basta trocar dentro de `src/components/Mascote.tsx`.
+**Mascote:** GIF animado do Foque (`expo-image`) com um brilho pulsando por trás. `Mascote` recebe o `estado` (momento) e usa a aparência da conta. Ver [aparencia-foque.md](aparencia-foque.md).

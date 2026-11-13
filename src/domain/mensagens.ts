@@ -55,6 +55,13 @@ export const falas = {
       'Sem pontos dessa vez. Eu sabia que o celular ia ganhar. 👀',
       'Tudo bem, até as focas escorregam. Bora de novo? 🧊',
     ]),
+  /** Ao trocar de aparência na aba Foque. */
+  novaAparencia: (nome: string) =>
+    sortear([
+      `${nome}? Ficou bom. A exigência continua a mesma. 👀`,
+      `Visual novo, mesma foca. Agora vai focar ou não? 🧊`,
+      'Gostei do visual. Mas não pense que isso te livra da missão. 🐟',
+    ]),
   boasVindas: (username: string) => `Ah, você de novo, @${username}. Vamos focar ou não? 🦭`,
   /** Dicas do roteiro (Documentacao/roteiro-foque.md), no tom do Foque. */
   dica: () =>

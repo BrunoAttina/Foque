@@ -43,7 +43,7 @@ export default function TelaResultado() {
 
         <View style={styles.mascote}>
           <BalaoFala texto={fala} />
-          <Mascote tamanho={150} emoji={concluida ? '🦭' : '🥶'} />
+          <Mascote tamanho={150} estado={concluida ? 'comemorando' : 'triste'} />
         </View>
 
         {concluida ? (

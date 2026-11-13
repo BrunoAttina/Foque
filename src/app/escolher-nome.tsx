@@ -49,7 +49,7 @@ export default function TelaEscolherNome() {
       <ScrollView contentContainerStyle={styles.conteudo} keyboardShouldPersistTaps="handled">
         <View style={styles.mascote}>
           <BalaoFala texto="Sem @ eu nem sei como te chamar. Escolhe um aí. 🦭" />
-          <Mascote tamanho={120} />
+          <Mascote tamanho={120} estado="acenando" />
         </View>
 
         <View>

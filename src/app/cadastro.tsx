@@ -50,7 +50,7 @@ export default function TelaCadastro() {
         <ScrollView contentContainerStyle={styles.conteudo}>
           <View style={styles.mascote}>
             <BalaoFala texto="Quase lá! Confirma o e-mail e volta aqui. Eu espero. 🐟" />
-            <Mascote tamanho={120} />
+            <Mascote tamanho={120} estado="acenando" />
           </View>
           <Text style={styles.titulo}>Confirme seu e-mail</Text>
           <Text style={styles.texto}>
@@ -68,7 +68,7 @@ export default function TelaCadastro() {
         <ScrollView contentContainerStyle={styles.conteudo} keyboardShouldPersistTaps="handled">
           <View style={styles.mascote}>
             <BalaoFala texto="Uma foca nova no pedaço? Escolhe um @ à altura. 🦭" />
-            <Mascote tamanho={110} />
+            <Mascote tamanho={110} estado="acenando" />
           </View>
 
           <View>
