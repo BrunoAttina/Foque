@@ -55,4 +55,4 @@ Além de escolher a aparência, a ideia é poder personalizar o Foque:
 
 **Ponto técnico:** os acessórios por cima de um GIF precisam acompanhar a animação. Ou cada combinação vira uma arte própria, ou a foca passa a ser desenhada em camadas (Lottie/Rive ou Canvas, como no `FoqueMascote.kt` da pasta de artes). A decisão fica para quando a personalização começar.
 
-**Tamanho do app:** os GIFs somam ~25 MB. Para crescer o catálogo, avaliar WebP animado (bem menor, também suportado pelo `expo-image`) ou baixar as aparências sob demanda.
+**Tamanho do app:** os GIFs somam ~33 MB. Para crescer o catálogo, avaliar WebP animado (bem menor, também suportado pelo `expo-image`) ou baixar as aparências sob demanda.
