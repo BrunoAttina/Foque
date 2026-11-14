@@ -36,7 +36,7 @@
 | RF-31 | A aparência do Foque em uso é a foto de perfil do usuário: aparece no cabeçalho, no Perfil, nas listas da aba Amigos, no "Focando agora" e no perfil de outros usuários. | Alta | Implementado |
 | RF-32 | O Perfil mostra quantas pessoas o usuário segue e quantas o seguem. Tocar em um dos números abre a aba Amigos com a lista correspondente aberta. | Alta | Implementado |
 | RF-33 | A aba Amigos tem as listas "Seguindo" e "Seguidores", recolhidas por padrão, com a quantidade e a indicação de que abrem. Em Seguidores, quem o usuário ainda não segue tem o botão "Seguir". | Alta | Implementado |
-| RF-34 | O nível de foco de cada pessoa aparece em toda a aba Amigos (Focando agora, busca, Seguindo e Seguidores) e no perfil dela, mesmo sem segui-la. Os pontos continuam visíveis só para quem segue. | Alta | Implementado (falta aplicar a migration `0007`) |
+| RF-34 | O nível de foco de cada pessoa aparece em toda a aba Amigos (Focando agora, busca, Seguindo e Seguidores) e no perfil dela, mesmo sem segui-la. Os pontos continuam visíveis só para quem segue. | Alta | Implementado |
 
 **Nota:** os pontos vêm do banco (`progress`) e são somados pela função `registrar_sessao` (migration `0002`). As tarefas ficam no banco (`tasks`, migration `0003`), com cópia no aparelho.
 
