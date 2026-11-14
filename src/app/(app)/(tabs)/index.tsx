@@ -9,7 +9,7 @@ import { CabecalhoApp } from '../../../components/CabecalhoApp';
 import { Chip } from '../../../components/Chip';
 import { Mascote } from '../../../components/Mascote';
 import { falas, pts } from '../../../domain/mensagens';
-import { emojiDaTarefa, MISSOES_SUGERIDAS, TEMPOS_SUGERIDOS } from '../../../domain/tarefas';
+import { emojiDaTarefa, MISSOES_SUGERIDAS, TEMPOS_SUGERIDOS, tempoSugeridoMaisProximo } from '../../../domain/tarefas';
 import { ErroTarefas } from '../../../services/tarefas';
 import { useSessao } from '../../../store/sessao';
 import { useTarefas } from '../../../store/tarefas';
@@ -27,19 +27,15 @@ export default function TelaFocar() {
 
   const tarefa = tarefas.find((t) => t.id === selecionadaId) ?? tarefas[0] ?? null;
 
-  // Ao trocar de missão, o tempo vai para a duração dela (ajuste durante o render, sem efeito).
+  // Ao trocar de foco, o tempo vai para a opção mais próxima da duração dele (ajuste durante o render, sem efeito).
   const [missaoDoTempo, setMissaoDoTempo] = useState<string | undefined>(undefined);
   if (tarefa && tarefa.id !== missaoDoTempo) {
     setMissaoDoTempo(tarefa.id);
-    setTempo(tarefa.duracaoMinutos);
+    setTempo(tempoSugeridoMaisProximo(tarefa.duracaoMinutos));
   }
 
-  // Tempos sugeridos + a duração da missão, se for diferente.
-  const opcoes = useMemo(() => {
-    const lista: number[] = [...TEMPOS_SUGERIDOS];
-    if (tarefa && !lista.includes(tarefa.duracaoMinutos)) lista.push(tarefa.duracaoMinutos);
-    return lista.sort((a, b) => a - b);
-  }, [tarefa]);
+  // Só os tempos fixos: a duração cadastrada no foco não vira opção extra.
+  const opcoes = TEMPOS_SUGERIDOS;
 
   const fala = useMemo(
     () => (tarefa ? falas.provocacao(tarefa.nome, tempo) : falas.semMissao()),

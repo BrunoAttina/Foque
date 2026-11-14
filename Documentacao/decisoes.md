@@ -60,6 +60,7 @@ Formato: data, decisão, motivo. Decisões em aberto ficam na seção final.
 | 2026-11-14 | **Seguidores:** o Perfil mostra os números de seguindo e de seguidores; tocar abre a aba Amigos com a lista aberta. Na aba Amigos, "Seguindo" e "Seguidores" ficam recolhidas, em cartões com quantidade, "Ver lista" e seta. | Pedido do dono: ver quem segue e quantos, deixando claro que as listas abrem. |
 | 2026-11-14 | **O nível de foco é público; os pontos, não.** A função `niveis_de` (migration `0007`) devolve só o nível de qualquer usuário. Os pontos (`progress`) seguem visíveis só para quem segue a pessoa. Substitui a decisão anterior, em que o nível de um seguidor só aparecia se o usuário também o seguisse. | Pedido do dono: ver o nível de todos na aba Amigos. A conta do nível fica repetida no SQL e em `src/domain/pontos.ts`: mudar nos dois. |
 | 2026-11-14 | O Foque Careca passa de 60 para 30 moedas, igual ao Bebê (migration `0008`). | Pedido do dono. |
+| 2026-11-14 | O "Tempo de Foco" da tela Focar tem só as opções fixas (15/30/45/60 min). A duração cadastrada no foco não vira mais opção extra (era de onde vinha o "25 min"): a tela marca a opção mais próxima. | Pedido do dono: remover a opção de 25 min. |
 
 ## Decisões em aberto
 - **Geração do roteiro por IA:** avaliar depois do MVP, considerando custo por uso, internet e privacidade.

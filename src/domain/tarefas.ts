@@ -51,3 +51,12 @@ export function validarTarefa(nomeTexto: string, duracaoTexto: string): Resultad
 
   return { ok: true, nome, duracaoMinutos };
 }
+
+/** Opção de tempo da tela Focar mais próxima da duração informada (no empate, a maior). */
+export function tempoSugeridoMaisProximo(minutos: number): number {
+  let melhor: number = TEMPOS_SUGERIDOS[0];
+  for (const opcao of TEMPOS_SUGERIDOS) {
+    if (Math.abs(opcao - minutos) <= Math.abs(melhor - minutos)) melhor = opcao;
+  }
+  return melhor;
+}
