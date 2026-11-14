@@ -17,6 +17,7 @@ import { nivelPorPontos } from '../../../domain/pontos';
 import { normalizarUsername } from '../../../domain/usuario';
 import { type FocoAtivo, listarFocandoAgora } from '../../../services/focoAtivo';
 import {
+  buscarNiveis,
   buscarPessoas,
   ErroSocial,
   listarSeguidores,
@@ -39,6 +40,8 @@ export default function TelaAmigos() {
   const [seguindo, setSeguindo] = useState<PessoaComProgresso[] | null>(null);
   const [seguidores, setSeguidores] = useState<Seguidor[] | null>(null);
   const [erroLista, setErroLista] = useState<string | null>(null);
+  // Nível de quem eu não sigo (seguidores e resultados da busca), por id. O nível é público.
+  const [niveis, setNiveis] = useState<Record<string, number>>({});
 
   // As duas listas começam recolhidas. O Perfil pede para abrir uma delas pelo parâmetro "abrir".
   const { abrir, t } = useLocalSearchParams<{ abrir?: string; t?: string }>();
@@ -71,6 +74,10 @@ export default function TelaAmigos() {
       setSeguindo(pessoas.sort((a, b) => b.pontosTotais - a.pontosTotais));
       setSeguidores(quemMeSegue);
       setErroLista(null);
+      // De quem eu não sigo, os pontos não vêm: busca só o nível.
+      const semPontos = quemMeSegue.filter((p) => p.pontosTotais === null).map((p) => p.id);
+      const novos = await buscarNiveis(semPontos);
+      setNiveis((atual) => ({ ...atual, ...novos }));
     } catch (e) {
       setErroLista(e instanceof ErroSocial ? e.message : 'Algo deu errado.');
     }
@@ -130,8 +137,10 @@ export default function TelaAmigos() {
       setBuscando(true);
       try {
         const pessoas = await buscarPessoas(termo, meuId);
+        const novos = await buscarNiveis(pessoas.map((p) => p.id));
         if (!cancelado) {
           setResultados(pessoas);
+          setNiveis((atual) => ({ ...atual, ...novos }));
           setErroBusca(null);
         }
       } catch (e) {
@@ -147,6 +156,17 @@ export default function TelaAmigos() {
   }, [termo, meuId]);
 
   const idsSeguindo = useMemo(() => new Set((seguindo ?? []).map((p) => p.id)), [seguindo]);
+
+  // Nível de qualquer pessoa da tela: pelos pontos de quem eu sigo, ou pelo nível público.
+  const nivelDe = useMemo(() => {
+    const porId = new Map<string, number>(Object.entries(niveis));
+    for (const p of seguindo ?? []) porId.set(p.id, nivelPorPontos(p.pontosTotais));
+    return (id: string) => porId.get(id);
+  }, [niveis, seguindo]);
+  const textoNivel = (id: string) => {
+    const nivel = nivelDe(id);
+    return nivel === undefined ? undefined : `Nível ${nivel} · ${tituloDoNivel(nivel)}`;
+  };
 
   async function seguirPessoa(pessoa: Pessoa) {
     if (!meuId) return;
@@ -190,6 +210,7 @@ export default function TelaAmigos() {
               key={foco.userId}
               foco={foco}
               agora={agora}
+              nivel={nivelDe(foco.userId)}
               onPress={() => router.push(`/usuario/${foco.username}`)}
             />
           ))}
@@ -219,6 +240,7 @@ export default function TelaAmigos() {
               key={pessoa.id}
               username={pessoa.username}
               aparencia={pessoa.aparencia}
+              detalhe={textoNivel(pessoa.id)}
               onPress={() => router.push(`/usuario/${pessoa.username}`)}
               acao={
                 idsSeguindo.has(pessoa.id) ? (
@@ -295,13 +317,12 @@ export default function TelaAmigos() {
               ) : null}
               {seguidores?.map((pessoa) => {
                 const jaSigo = idsSeguindo.has(pessoa.id);
-                const nivel = pessoa.pontosTotais === null ? null : nivelPorPontos(pessoa.pontosTotais);
                 return (
                   <LinhaPessoa
                     key={pessoa.id}
                     username={pessoa.username}
                     aparencia={pessoa.aparencia}
-                    detalhe={nivel === null ? 'Segue você' : `Nível ${nivel} · ${tituloDoNivel(nivel)}`}
+                    detalhe={textoNivel(pessoa.id) ?? 'Segue você'}
                     focando={idsFocando.has(pessoa.id)}
                     onPress={() => router.push(`/usuario/${pessoa.username}`)}
                     acao={

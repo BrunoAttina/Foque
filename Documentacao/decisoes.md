@@ -58,7 +58,7 @@ Formato: data, decisão, motivo. Decisões em aberto ficam na seção final.
 | 2026-11-13 | Saldo, preços e compras ficam no servidor (`carteiras`, `loja_itens`, `compras`; função `comprar_item`). O saldo fica fora de `progress`. | Impede alterar moedas pelo celular. Os seguidores leem `progress`, e o saldo é particular. |
 | 2026-11-14 | **Foto de perfil = a foca em uso.** A aparência passa a ficar também no servidor (`profiles.aparencia`, migration `0006`), visível para qualquer usuário logado, como o @. Só muda pela função `definir_aparencia`, que exige a Clássica ou uma aparência comprada. | Os amigos veem a foca de cada um. A validação no servidor impede usar uma aparência não comprada. |
 | 2026-11-14 | **Seguidores:** o Perfil mostra os números de seguindo e de seguidores; tocar abre a aba Amigos com a lista aberta. Na aba Amigos, "Seguindo" e "Seguidores" ficam recolhidas, em cartões com quantidade, "Ver lista" e seta. | Pedido do dono: ver quem segue e quantos, deixando claro que as listas abrem. |
-| 2026-11-14 | Na lista de Seguidores, o nível só aparece para quem o usuário também segue. | Os pontos (`progress`) só são visíveis para quem segue a pessoa. |
+| 2026-11-14 | **O nível de foco é público; os pontos, não.** A função `niveis_de` (migration `0007`) devolve só o nível de qualquer usuário. Os pontos (`progress`) seguem visíveis só para quem segue a pessoa. Substitui a decisão anterior, em que o nível de um seguidor só aparecia se o usuário também o seguisse. | Pedido do dono: ver o nível de todos na aba Amigos. A conta do nível fica repetida no SQL e em `src/domain/pontos.ts`: mudar nos dois. |
 
 ## Decisões em aberto
 - **Geração do roteiro por IA:** avaliar depois do MVP, considerando custo por uso, internet e privacidade.

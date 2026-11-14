@@ -11,11 +11,13 @@ interface LinhaFocandoProps {
   foco: FocoAtivo;
   /** Horário atual em ms, vindo do relógio da tela (useAgora). */
   agora: number;
+  /** Nível de foco da pessoa, quando conhecido. */
+  nivel?: number;
   onPress: () => void;
 }
 
 /** Pessoa focando agora, na aba Amigos: avatar, @, tarefa, "faltam mm:ss" e barra de progresso. */
-export function LinhaFocando({ foco, agora, onPress }: LinhaFocandoProps) {
+export function LinhaFocando({ foco, agora, nivel, onPress }: LinhaFocandoProps) {
   const tempo = tempoDoFoco(foco, agora);
   return (
     <Pressable
@@ -30,6 +32,7 @@ export function LinhaFocando({ foco, agora, onPress }: LinhaFocandoProps) {
           <Text style={styles.username} numberOfLines={1}>
             @{foco.username}
           </Text>
+          {nivel !== undefined ? <Text style={styles.nivel}>Nv.{nivel}</Text> : null}
           <Text style={styles.faltam} numberOfLines={1}>
             {textoFaltam(tempo.restanteMs)}
           </Text>
@@ -71,7 +74,17 @@ const styles = StyleSheet.create({
   username: {
     ...tipografia.headlineSm,
     color: cores.onSurface,
-    flex: 1,
+    flexShrink: 1,
+  },
+  nivel: {
+    ...tipografia.labelMd,
+    color: cores.primary,
+    backgroundColor: cores.primaryFixed,
+    borderRadius: raio.full,
+    paddingHorizontal: espaco.sm,
+    paddingVertical: 1,
+    overflow: 'hidden',
+    marginRight: 'auto',
   },
   faltam: {
     ...tipografia.labelMd,

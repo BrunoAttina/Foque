@@ -89,6 +89,25 @@ export async function buscarPontos(userId: string): Promise<number | null> {
   return data ? (data.pontos_totais as number) : null;
 }
 
+/**
+ * Nível de foco de cada pessoa pedida, por id. O nível é público; os pontos, não.
+ * Nunca lança: se falhar, devolve o que conseguiu (a tela só fica sem o nível).
+ */
+export async function buscarNiveis(ids: string[]): Promise<Record<string, number>> {
+  const niveis: Record<string, number> = {};
+  if (ids.length === 0) return niveis;
+  try {
+    const { data, error } = await supabase.rpc('niveis_de', { p_ids: ids.slice(0, 100) });
+    if (error) return niveis;
+    for (const linha of (data ?? []) as { user_id: string; nivel: number }[]) {
+      niveis[linha.user_id] = linha.nivel;
+    }
+  } catch {
+    // Sem conexão: fica sem o nível.
+  }
+  return niveis;
+}
+
 /** Quem você segue, com os pontos de cada um. */
 export async function listarSeguindo(meuId: string): Promise<PessoaComProgresso[]> {
   const { data, error } = await supabase

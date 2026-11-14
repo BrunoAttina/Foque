@@ -16,7 +16,7 @@ Cada pessoa tem um nome de usuário (@), como em uma rede social. Ela pode segui
 - Iniciar uma sessão de foco com timer na tela do app.
 - Encerrar a sessão quando o usuário sair do app, sem pontos.
 - Conceder pontos de foco e atualizar o nível de foco quando o usuário completar o tempo.
-- Escolher um @ no cadastro, seguir outras pessoas e ver o nível e os pontos delas.
+- Escolher um @ no cadastro, ver o nível de qualquer pessoa e, seguindo, os pontos dela.
 
 ## Termos
 - **Foque**: nome do aplicativo e do assistente que conversa com a pessoa.

@@ -129,6 +129,7 @@ Validações no servidor: duração de 1 a 240 min; fim não pode estar no futur
 
 ## Aparência do Foque
 - Catálogo e estados em `src/domain/aparencias.ts`; mapa de GIFs em `src/components/imagensFoque.ts`; arquivos em `assets/foque/<aparência>/<estado>.gif`.
+- O nível de foco é público: a função `niveis_de(p_ids)` (migration `0007`) devolve só o nível, sem os pontos. A conta repete a de `src/domain/pontos.ts`; se a fórmula mudar, mudar nos dois.
 - A aparência em uso também fica no servidor (`profiles.aparencia`, migration `0006`), para aparecer como foto de perfil para os outros. `useSincronizarAparencia()` mantém aparelho e servidor iguais.
 - A escolha fica em `src/store/aparencia.ts` (Zustand `persist` sobre o `localStorage` do `expo-sqlite`), por id de usuário. `useAparenciaAtual()` devolve a aparência da conta logada, ou a padrão.
 - Detalhes em [aparencia-foque.md](aparencia-foque.md).

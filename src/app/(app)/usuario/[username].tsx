@@ -14,6 +14,7 @@ import { tituloDoNivel } from '../../../domain/niveis';
 import { nivelPorPontos } from '../../../domain/pontos';
 import { buscarFocoAtivo, type FocoAtivo } from '../../../services/focoAtivo';
 import {
+  buscarNiveis,
   buscarPessoaPorUsername,
   buscarPontos,
   deixarDeSeguir,
@@ -29,12 +30,12 @@ type Estado =
   | { tipo: 'carregando' }
   | { tipo: 'nao-encontrado' }
   | { tipo: 'erro'; mensagem: string }
-  | { tipo: 'pronto'; pessoa: Pessoa; seguindo: boolean; pontos: number | null };
+  | { tipo: 'pronto'; pessoa: Pessoa; seguindo: boolean; pontos: number | null; nivel: number | null };
 
 /** De quanto em quanto tempo o cartão "Focando agora" recarrega com a tela aberta. */
 const RECARGA_FOCO_MS = 30_000;
 
-/** Busca a pessoa, se você a segue e os pontos (visíveis só para quem segue). */
+/** Busca a pessoa, se você a segue, os pontos (visíveis só para quem segue) e o nível (público). */
 async function buscarEstado(meuId: string, username: string): Promise<Estado> {
   try {
     const pessoa = await buscarPessoaPorUsername(username);
@@ -43,7 +44,9 @@ async function buscarEstado(meuId: string, username: string): Promise<Estado> {
       pessoa.id === meuId ? Promise.resolve(false) : estouSeguindo(meuId, pessoa.id),
       buscarPontos(pessoa.id),
     ]);
-    return { tipo: 'pronto', pessoa, seguindo, pontos };
+    // Sem os pontos (você não segue a pessoa), busca só o nível.
+    const nivel = pontos !== null ? nivelPorPontos(pontos) : ((await buscarNiveis([pessoa.id]))[pessoa.id] ?? null);
+    return { tipo: 'pronto', pessoa, seguindo, pontos, nivel };
   } catch (e) {
     return { tipo: 'erro', mensagem: e instanceof ErroSocial ? e.message : 'Algo deu errado.' };
   }
@@ -144,8 +147,10 @@ export default function TelaUsuario() {
             <View style={styles.identidade}>
               <Avatar username={estado.pessoa.username} aparencia={estado.pessoa.aparencia} tamanho={96} />
               <Text style={styles.username}>@{estado.pessoa.username}</Text>
-              {estado.pontos !== null ? (
-                <Text style={styles.titulo}>{tituloDoNivel(nivelPorPontos(estado.pontos))}</Text>
+              {estado.nivel !== null ? (
+                <Text style={styles.titulo}>
+                  Nível {estado.nivel} · {tituloDoNivel(estado.nivel)}
+                </Text>
               ) : null}
             </View>
 
@@ -157,7 +162,7 @@ export default function TelaUsuario() {
               <View style={[cartao, styles.bloqueado]}>
                 <MaterialIcons name="lock" size={28} color={cores.primaryContainer} />
                 <Text style={styles.textoBloqueado}>
-                  Siga @{estado.pessoa.username} para ver o nível e os pontos de foco.
+                  Siga @{estado.pessoa.username} para ver os pontos de foco.
                 </Text>
               </View>
             )}
