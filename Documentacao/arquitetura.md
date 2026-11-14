@@ -76,7 +76,7 @@ A migração para o Expo Router já foi feita: o entry point é `expo-router/ent
 | `progress` | user_id, `pontos_totais` | O próprio usuário e quem o segue leem; só funções do servidor alteram | Criada (`0001`) |
 | `tasks` | id, user_id (automático), nome, duração | Só o dono lê e altera | Criada (`0003`) |
 | `focus_sessions` | id (gerado no aparelho), user_id, tarefa, duração, início, fim, status, pontos | Só o dono lê; só a função `registrar_sessao` escreve | Criada (`0002`) |
-| `focos_ativos` | `user_id` (chave), `tarefa`, `duracao_minutos`, `inicio`, `fim_previsto`, `atualizado_em` | O próprio usuário e quem o segue leem; só as funções `iniciar_foco`, `encerrar_foco` e `registrar_sessao` escrevem | Nova (`0004`), a aplicar |
+| `focos_ativos` | `user_id` (chave), `tarefa`, `duracao_minutos`, `inicio`, `fim_previsto`, `atualizado_em` | O próprio usuário e quem o segue leem; só as funções `iniciar_foco`, `encerrar_foco` e `registrar_sessao` escrevem | Criada (`0004`) |
 
 As respostas do roteiro (profissão e rotina) entram em `profiles` ou numa tabela própria quando a tela de perguntas for feita.
 
