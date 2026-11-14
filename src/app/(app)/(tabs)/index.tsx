@@ -22,7 +22,7 @@ export default function TelaFocar() {
   const adicionar = useTarefas((s) => s.adicionar);
 
   const [selecionadaId, setSelecionadaId] = useState<string | null>(null);
-  const [tempo, setTempo] = useState(25);
+  const [tempo, setTempo] = useState(30);
   const [erro, setErro] = useState<string | null>(null);
 
   const tarefa = tarefas.find((t) => t.id === selecionadaId) ?? tarefas[0] ?? null;
@@ -71,10 +71,10 @@ export default function TelaFocar() {
           <Mascote tamanho={150} />
         </View>
 
-        {/* Tempo de mergulho */}
+        {/* Tempo de foco */}
         <View style={styles.secao}>
           <View style={styles.linhaSecao}>
-            <Text style={rotuloSecao}>Tempo de mergulho</Text>
+            <Text style={rotuloSecao}>Tempo de Foco</Text>
             <View style={styles.recompensa}>
               <MaterialIcons name="bolt" size={14} color={cores.secondary} />
               <Text style={styles.textoRecompensa}>
@@ -94,48 +94,58 @@ export default function TelaFocar() {
           </View>
         </View>
 
-        {/* Missão atual */}
+        {/* Tarefas que precisam do seu foco: a lista dos focos cadastrados. */}
         <View style={styles.secao}>
-          <Text style={rotuloSecao}>Missão atual</Text>
-          <View style={[cartao, styles.missao]}>
-            {tarefa ? (
-              <Pressable
-                style={styles.missaoAtual}
-                onPress={() => router.push('/tarefas')}
-                accessibilityRole="button"
-                accessibilityHint="Abre a lista de tarefas"
-              >
-                <Text style={styles.emojiMissao}>{emojiDaTarefa(tarefa.nome)}</Text>
-                <Text style={styles.nomeMissao} numberOfLines={1}>
-                  {tarefa.nome}
-                </Text>
-                <MaterialIcons name="tune" size={22} color={cores.primaryContainer} />
-              </Pressable>
-            ) : (
-              <Text style={styles.semMissao}>Escolha uma missão para começar:</Text>
-            )}
-
-            {/* Atalhos: outras missões, ou sugestões para quem ainda não tem nenhuma. */}
-            {!tarefa || tarefas.length > 1 ? (
-              <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chips}>
-                {tarefa
-                  ? tarefas
-                      .filter((t) => t.id !== tarefa.id)
-                      .map((t) => (
-                        <Chip
-                          key={t.id}
-                          emoji={emojiDaTarefa(t.nome)}
-                          texto={t.nome}
-                          onPress={() => setSelecionadaId(t.id)}
-                        />
-                      ))
-                  : MISSOES_SUGERIDAS.map((nome) => (
-                      <Chip key={nome} emoji={emojiDaTarefa(nome)} texto={nome} onPress={() => criarSugerida(nome)} />
-                    ))}
-              </ScrollView>
-            ) : null}
-            {erro ? <Text style={styles.erro}>{erro}</Text> : null}
+          <View style={styles.linhaSecao}>
+            <Text style={[rotuloSecao, styles.rotuloTarefas]}>Tarefas que precisam do seu foco</Text>
+            <Pressable
+              onPress={() => router.push('/tarefas')}
+              accessibilityRole="button"
+              accessibilityLabel="Gerenciar focos"
+              hitSlop={10}
+            >
+              <MaterialIcons name="tune" size={20} color={cores.primary} />
+            </Pressable>
           </View>
+
+          {tarefas.length > 0 ? (
+            <View style={styles.lista} accessibilityRole="radiogroup">
+              {tarefas.map((t) => {
+                const ativa = t.id === tarefa?.id;
+                return (
+                  <Pressable
+                    key={t.id}
+                    onPress={() => setSelecionadaId(t.id)}
+                    accessibilityRole="radio"
+                    accessibilityState={{ checked: ativa }}
+                    accessibilityLabel={`${t.nome}, ${t.duracaoMinutos} minutos`}
+                    style={({ pressed }) => [styles.itemTarefa, ativa && styles.itemTarefaAtiva, pressed && { opacity: 0.7 }]}
+                  >
+                    <Text style={styles.emojiMissao}>{emojiDaTarefa(t.nome)}</Text>
+                    <Text style={[styles.nomeTarefa, ativa && { color: cores.primary }]} numberOfLines={1}>
+                      {t.nome}
+                    </Text>
+                    <Text style={styles.duracaoTarefa}>{t.duracaoMinutos} min</Text>
+                    <MaterialIcons
+                      name={ativa ? 'radio-button-checked' : 'radio-button-unchecked'}
+                      size={20}
+                      color={ativa ? cores.primaryContainer : cores.outlineVariant}
+                    />
+                  </Pressable>
+                );
+              })}
+            </View>
+          ) : (
+            <View style={[cartao, styles.missao]}>
+              <Text style={styles.semMissao}>Nenhum foco cadastrado. Escolha um para começar:</Text>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chips}>
+                {MISSOES_SUGERIDAS.map((nome) => (
+                  <Chip key={nome} emoji={emojiDaTarefa(nome)} texto={nome} onPress={() => criarSugerida(nome)} />
+                ))}
+              </ScrollView>
+            </View>
+          )}
+          {erro ? <Text style={styles.erro}>{erro}</Text> : null}
         </View>
 
         {/* Regra do gelo fino */}
@@ -152,7 +162,7 @@ export default function TelaFocar() {
 
         <View style={styles.cta}>
           <Botao
-            titulo={`Congelar tempo & focar (${tempo} min)`}
+            titulo="Focar"
             icone="ac-unit"
             grande
             onPress={focar}
@@ -265,6 +275,36 @@ const styles = StyleSheet.create({
   missao: {
     gap: espaco.sm,
     padding: espaco.sm + 2,
+  },
+  rotuloTarefas: {
+    flex: 1,
+  },
+  lista: {
+    gap: espaco.sm,
+  },
+  itemTarefa: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: espaco.sm,
+    backgroundColor: cores.surfaceContainerLowest,
+    borderRadius: raio.md,
+    borderWidth: 2,
+    borderColor: cores.iceBorder,
+    paddingHorizontal: espaco.sm + 4,
+    paddingVertical: espaco.sm + 2,
+  },
+  itemTarefaAtiva: {
+    borderColor: cores.primaryContainer,
+    backgroundColor: cores.surfaceContainerLow,
+  },
+  nomeTarefa: {
+    ...tipografia.headlineSm,
+    color: cores.onSurface,
+    flex: 1,
+  },
+  duracaoTarefa: {
+    ...tipografia.labelMd,
+    color: cores.onSurfaceVariant,
   },
   missaoAtual: {
     flexDirection: 'row',

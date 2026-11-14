@@ -5,7 +5,7 @@ export const DURACAO_MINIMA = 1;
 export const DURACAO_MAXIMA = 240;
 
 /** Durações sugeridas na tela Focar ("tempo de mergulho"). */
-export const TEMPOS_SUGERIDOS = [15, 25, 45, 60] as const;
+export const TEMPOS_SUGERIDOS = [15, 30, 45, 60] as const;
 
 /** Missões sugeridas para quem ainda não tem tarefas. */
 export const MISSOES_SUGERIDAS = ['Ler um livro', 'Codar', 'Estudar', 'Foco profundo'] as const;

@@ -85,7 +85,7 @@ export default function TelaTarefas() {
               />
               <Campo
                 rotulo="Duração (minutos)"
-                placeholder="25"
+                placeholder="30"
                 value={duracao}
                 onChangeText={setDuracao}
                 keyboardType="number-pad"
