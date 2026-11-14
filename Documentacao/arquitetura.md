@@ -77,6 +77,9 @@ A migração para o Expo Router já foi feita: o entry point é `expo-router/ent
 | `tasks` | id, user_id (automático), nome, duração | Só o dono lê e altera | Criada (`0003`) |
 | `focus_sessions` | id (gerado no aparelho), user_id, tarefa, duração, início, fim, status, pontos | Só o dono lê; só a função `registrar_sessao` escreve | Criada (`0002`) |
 | `focos_ativos` | `user_id` (chave), `tarefa`, `duracao_minutos`, `inicio`, `fim_previsto`, `atualizado_em` | O próprio usuário e quem o segue leem; só as funções `iniciar_foco`, `encerrar_foco` e `registrar_sessao` escrevem | Criada (`0004`) |
+| `carteiras` | user_id, `moedas` | Só o dono lê; só as funções alteram | Criada (`0005`) |
+| `loja_itens` | id, tipo, preço, ordem, ativo | Qualquer usuário logado lê | Criada (`0005`) |
+| `compras` | user_id, item_id, preço pago | Só o dono lê; só `comprar_item` escreve | Criada (`0005`) |
 
 As respostas do roteiro (profissão e rotina) entram em `profiles` ou numa tabela própria quando a tela de perguntas for feita.
 
@@ -118,6 +121,11 @@ Validações no servidor: duração de 1 a 240 min; fim não pode estar no futur
 - `src/store/auth.ts` ouve as mudanças de login do Supabase e guarda a sessão e o perfil (@).
 - `src/app/_layout.tsx` usa `Stack.Protected` para mostrar entrar/cadastro (sem login), escolher-nome (logado sem @) ou o grupo `(app)` (logado com @).
 - `src/services/auth.ts` concentra as chamadas ao Supabase Auth e traduz os erros para mensagens em português.
+
+## Loja e moedas
+- Cada ponto ganho em `registrar_sessao` soma 1 moeda em `carteiras`. A compra é feita pela função `comprar_item`, em uma transação.
+- `src/services/loja.ts` e `src/store/loja.ts` guardam saldo, itens e compras, com cópia no aparelho. São recarregados junto com os pontos.
+- Detalhes em [loja.md](loja.md).
 
 ## Aparência do Foque
 - Catálogo e estados em `src/domain/aparencias.ts`; mapa de GIFs em `src/components/imagensFoque.ts`; arquivos em `assets/foque/<aparência>/<estado>.gif`.

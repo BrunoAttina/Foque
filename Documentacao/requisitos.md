@@ -28,6 +28,11 @@
 | RF-23 | A aba Amigos mostra no topo a seção "Focando agora", com quem você segue que está focando: avatar, @, tarefa, tempo restante ao vivo e barra de progresso. Tocar abre o perfil. Sem ninguém focando, o Foque mostra uma mensagem curta. | Alta | Implementado |
 | RF-24 | Na lista "Seguindo", quem está focando ganha o selo "focando". | Média | Implementado |
 | RF-25 | No perfil de quem você segue, se a pessoa está focando, aparece o cartão "Focando agora" com a tarefa, o tempo focado, o tempo restante e a barra de progresso. | Alta | Implementado |
+| RF-26 | Cada ponto de foco ganho dá 1 moeda. Os pontos só acumulam e definem o nível; as moedas são gastas na loja. Ver [loja.md](loja.md). | Alta | Implementado |
+| RF-27 | A aba Loja, no menu inferior, mostra o saldo de moedas e as aparências à venda. O usuário compra com moedas, com confirmação. O Clássico é grátis. | Alta | Implementado (primeira versão) |
+| RF-28 | Só as aparências compradas podem ser usadas. Na aba Foque, as outras aparecem com cadeado e levam à Loja. | Alta | Implementado |
+| RF-29 | O Perfil abre pelo @ e pela foto do cabeçalho, não mais pelo menu inferior. | Média | Implementado |
+| RF-30 | A loja vende acessórios para o Foque. | Baixa | Futuro |
 
 **Nota:** os pontos vêm do banco (`progress`) e são somados pela função `registrar_sessao` (migration `0002`). As tarefas ficam no banco (`tasks`, migration `0003`), com cópia no aparelho.
 

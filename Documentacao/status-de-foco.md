@@ -2,7 +2,7 @@
 
 Quem me segue vê se eu estou focando agora, como um status do meu usuário: em que tarefa, há quanto tempo e quanto falta. A aba **Amigos** deixa de servir só para buscar e seguir e passa a mostrar quem está focando no momento. O objetivo é gerar interação de rede social.
 
-**Status:** em desenvolvimento. Migration `0004_foco_ativo.sql` ainda a aplicar.
+**Status:** implementado e testado no emulador. Migration `0004_foco_ativo.sql` aplicada.
 
 ## Como funciona para quem usa
 - Ao iniciar uma sessão de foco, o app publica o status "focando" da pessoa.

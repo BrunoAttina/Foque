@@ -15,9 +15,15 @@ function sortear<T>(lista: readonly T[]): T {
   return lista[Math.floor(Math.random() * lista.length)];
 }
 
+/** "1 moeda" ou "N moedas". */
+export function moedas(quantidade: number) {
+  return `${quantidade} ${quantidade === 1 ? 'moeda' : 'moedas'}`;
+}
+
 export const mensagens = {
   inicioSessao: (tarefa: string) => `Sessão iniciada. Deixe o celular de lado e foque em: ${tarefa}.`,
-  sessaoConcluida: (pontos: number) => `Sessão concluída! Você ganhou ${pontosDeFoco(pontos)}.`,
+  sessaoConcluida: (pontos: number) =>
+    `Sessão concluída! Você ganhou ${pontosDeFoco(pontos)} e ${moedas(pontos)}.`,
   saiuDoApp: 'Você saiu do Foque e a sessão foi encerrada. Desta vez, sem pontos.',
   desistiu: 'Você encerrou a sessão antes do tempo. Desta vez, sem pontos.',
   subiuDeNivel: (nivel: number) => `Você subiu para o nível ${nivel} de foco!`,
@@ -65,6 +71,18 @@ export const falas = {
       `${nome}? Ficou bom. A exigência continua a mesma. 👀`,
       `Visual novo, mesma foca. Agora vai focar ou não? 🧊`,
       'Gostei do visual. Mas não pense que isso te livra da missão. 🐟',
+    ]),
+  /** Balão do Foque no topo da loja. */
+  loja: () =>
+    sortear([
+      'Moedas no bolso? Gasta comigo. Eu mereço um visual novo. 👀',
+      'Cada minuto focado vira uma moeda. E cada moeda, um capricho meu. 🐟',
+      'Olha à vontade. Mas só leva quem focou. 🧊',
+    ]),
+  comprou: (nome: string) =>
+    sortear([
+      `${nome} é meu agora. Bom gosto, humano. 🎉`,
+      `Visual ${nome.toLowerCase()} liberado. Valeu cada minuto de foco. 🐟`,
     ]),
   boasVindas: (username: string) => `Ah, você de novo, @${username}. Vamos focar ou não? 🦭`,
   /** Dicas do roteiro (Documentacao/roteiro-foque.md), no tom do Foque. */

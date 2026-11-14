@@ -74,7 +74,9 @@ export default function AbasLayout() {
         }}
       />
       <Tabs.Screen name="foca" options={{ title: 'Foque', tabBarIcon: icone('pets') }} />
-      <Tabs.Screen name="perfil" options={{ title: 'Perfil', tabBarIcon: icone('account-circle') }} />
+      <Tabs.Screen name="loja" options={{ title: 'Loja', tabBarIcon: icone('storefront') }} />
+      {/* Perfil continua dentro das abas (a barra fica visível), mas sem botão: abre pelo @ do cabeçalho. */}
+      <Tabs.Screen name="perfil" options={{ title: 'Perfil', tabBarItemStyle: { display: 'none' } }} />
     </Tabs>
   );
 }

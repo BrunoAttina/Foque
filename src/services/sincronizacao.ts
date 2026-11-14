@@ -1,4 +1,5 @@
 // Liga a fila offline, o servidor e os pontos mostrados no app.
+import { useLoja } from '../store/loja';
 import { useSessao } from '../store/sessao';
 import { enfileirar, enviarPendentes, pontosPendentes, type SessaoFinalizada } from './filaSessoes';
 import { buscarPontos } from './social';
@@ -20,7 +21,8 @@ export async function sincronizar(userId: string): Promise<void> {
   } catch {
     // Sem conexão: fica para a próxima.
   }
-  await atualizarPontos(userId);
+  // Pontos e moedas mudam juntos: cada ponto ganho vale uma moeda.
+  await Promise.all([atualizarPontos(userId), useLoja.getState().carregar(userId)]);
 }
 
 /** Pontos = confirmados no servidor + concluídos ainda na fila. */

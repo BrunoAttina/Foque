@@ -10,21 +10,22 @@
 | Escolher @ (`src/app/escolher-nome.tsx`) | Para quem está logado sem @. Bloqueia o app até escolher. | Implementado |
 
 ### Abas (`src/app/(app)/(tabs)/`)
-Barra inferior com 5 abas, como no mockup (com "Amigos" no lugar de "Ranking" e "Focos" no lugar de "Tarefas"). O botão central, elevado, é a aba Focar.
+Barra inferior com 5 abas: Amigos, Focos, Focar, Foque e Loja. O botão central, elevado, é a aba Focar. O Perfil não tem botão na barra: abre pelo @ e pela foto do cabeçalho.
 
 | Aba | Objetivo | Status |
 | --- | --- | --- |
 | Amigos (`amigos.tsx`) | Encontrar amigos pelo @, com o botão Seguir em cada resultado (ou o selo "Seguindo"), e a lista de quem você já segue, com nível e pontos. **Novo:** seção "Focando agora" no topo, com quem você segue que está focando (avatar, @, tarefa, "faltam 12:34" ao vivo e barra de progresso); tocar abre o perfil. Sem ninguém focando, uma fala curta do Foque. Na lista "Seguindo", selo "focando". Recarrega ao abrir a aba e a cada 30 s. Ver [status-de-foco.md](status-de-foco.md). | Implementado; "Focando agora" em desenvolvimento |
 | Focos (`tarefas.tsx`, antes "Tarefas") | Título "Seus Focos". Cadastrar ("Novo foco", "Adicionar foco"), remover e focar direto em um foco. Os textos da tela usam "foco", não "missão". | Implementado |
 | **Focar** (`index.tsx`, aba inicial) | Tela principal: fala do Foque, mascote, "tempo de mergulho" (15/25/45/60 min ou a duração da missão), missão atual, Regra do Gelo Fino e o botão "Congelar tempo & focar". Sem cartão de nível: o nível já aparece no cabeçalho. | Implementado |
-| Foque (`foca.tsx`) | Espaço do mascote: o Foque animado na aparência escolhida, balão com dicas do roteiro (botão "Outra dica") e, abaixo, a **escolha da aparência** (Clássico, Bebê, Careca, Ninja, Princesa) em cartões com prévia. Ao trocar, o Foque comenta o visual novo. Cartão "Em breve" para a personalização (acessórios, cores). | Implementado (escolha de aparência); personalização pendente |
-| Perfil (`perfil.tsx`) | Seu @, título e cartão de nível, pontos, sessões concluídas, buscar pessoas e sair. | Implementado |
+| Foque (`foca.tsx`) | Espaço do mascote: o Foque animado na aparência escolhida, balão com dicas do roteiro (botão "Outra dica") e, abaixo, a **escolha da aparência** (Clássico, Bebê, Careca, Ninja, Princesa) em cartões com prévia. Ao trocar, o Foque comenta o visual novo. Só as aparências compradas podem ser escolhidas; as outras têm cadeado e levam à Loja. Cartão "Em breve" para a personalização (acessórios, cores). | Implementado (escolha de aparência); personalização pendente |
+| Loja (`loja.tsx`) | Saldo de moedas, fala do Foque e as aparências à venda, com preço, "Faltam N moedas", "Usar" ou "Em uso". Compra com confirmação. Cartão "Em breve" para os acessórios. Ver [loja.md](loja.md). | Implementado (primeira versão) |
+| Perfil (`perfil.tsx`, sem botão na barra) | Seu @, título e cartão de nível, pontos, sessões concluídas, buscar pessoas e sair. Abre pelo cabeçalho. | Implementado |
 
 ### Telas que abrem por cima das abas (`src/app/(app)/`)
 | Tela | Objetivo | Status |
 | --- | --- | --- |
 | Sessão de foco (`sessao.tsx`) | Timer em um "bloco de gelo", barra de progresso e fala do Foque. Sair do app cancela; o botão voltar e "Desistir" encerram como desistência. | Implementado |
-| Resultado (`resultado.tsx`) | "Gelo intacto!" com os pontos ganhos, ou "O gelo quebrou". Avisa quando sobe de nível. | Implementado |
+| Resultado (`resultado.tsx`) | "Gelo intacto!" com os pontos e as moedas ganhos, ou "O gelo quebrou". Avisa quando sobe de nível. | Implementado |
 | Perfil de usuário (`usuario/[username].tsx`) | @ e título; nível e pontos só se você segue a pessoa. Botão seguir ou deixar de seguir. **Novo:** se você segue a pessoa e ela está focando, cartão "Focando agora" com a tarefa, o tempo focado, o tempo restante e a barra de progresso. | Implementado; cartão "Focando agora" em desenvolvimento |
 | Perguntas iniciais | O Foque coleta profissão e rotina do usuário. | Rascunho |
 

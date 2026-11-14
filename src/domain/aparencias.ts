@@ -21,6 +21,11 @@ export type AparenciaId = (typeof APARENCIAS)[number]['id'];
 
 export const APARENCIA_PADRAO: AparenciaId = 'padrao';
 
+/** A Clássica é de graça; as outras precisam ter sido compradas na loja. */
+export function aparenciaLiberada(id: AparenciaId, comprados: readonly string[]): boolean {
+  return id === APARENCIA_PADRAO || comprados.includes(id);
+}
+
 export function ehAparencia(valor: unknown): valor is AparenciaId {
   return APARENCIAS.some((a) => a.id === valor);
 }

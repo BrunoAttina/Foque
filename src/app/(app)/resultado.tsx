@@ -50,6 +50,9 @@ export default function TelaResultado() {
           <View style={styles.pontos}>
             <MaterialIcons name="diamond" size={28} color={cores.primaryContainer} />
             <Text style={styles.textoPontos}>+{pts(pontosUltimaSessao)}</Text>
+            <View style={styles.divisor} />
+            <MaterialIcons name="paid" size={26} color={cores.amber} />
+            <Text style={styles.textoPontos}>+{pontosUltimaSessao}</Text>
           </View>
         ) : null}
 
@@ -103,6 +106,13 @@ const styles = StyleSheet.create({
     borderColor: cores.iceBorder,
     paddingHorizontal: espaco.lg,
     paddingVertical: espaco.sm,
+  },
+  divisor: {
+    width: 2,
+    height: 24,
+    borderRadius: 1,
+    backgroundColor: cores.iceBorder,
+    marginHorizontal: espaco.xs,
   },
   textoPontos: {
     ...tipografia.headlineLg,

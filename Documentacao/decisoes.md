@@ -52,6 +52,10 @@ Formato: data, decisão, motivo. Decisões em aberto ficam na seção final.
 | 2026-11-13 | Publicar e encerrar o status rodam em segundo plano e nunca quebram a sessão. | Focar continua funcionando sem internet; só o status deixa de aparecer. |
 | 2026-11-13 | Tempo decorrido e restante calculados no aparelho de quem vê; lista recarregada ao abrir a aba Amigos e a cada 30 s. | Simples e sem custo extra. Supabase Realtime fica como melhoria futura. |
 | 2026-11-13 | O nome da tarefa fica visível para os seguidores. | Mostra no que o amigo está focando, que é o que gera conversa. A opção de esconder fica em aberto. |
+| 2026-11-13 | **Moedas:** cada ponto de foco ganho dá 1 moeda. Pontos só acumulam (nível); moedas são gastas. Quem já tinha pontos começou com o mesmo número de moedas. | Dá um uso para o foco além do nível, sem tirar o progresso de quem gasta. |
+| 2026-11-13 | **Loja** no menu inferior, no lugar do Perfil. O Perfil abre pelo @ e pela foto do cabeçalho. | O Perfil tinha dois caminhos; a loja precisava de um lugar de destaque. |
+| 2026-11-13 | A loja vende as aparências do Foque: Bebê 30, Careca 60, Ninja 100, Princesa 100 moedas. Clássico grátis. A escolha entre as compradas continua na aba Foque. | Primeira versão, para o dono avaliar. Preços no banco (`loja_itens`), fáceis de mudar. |
+| 2026-11-13 | Saldo, preços e compras ficam no servidor (`carteiras`, `loja_itens`, `compras`; função `comprar_item`). O saldo fica fora de `progress`. | Impede alterar moedas pelo celular. Os seguidores leem `progress`, e o saldo é particular. |
 
 ## Decisões em aberto
 - **Geração do roteiro por IA:** avaliar depois do MVP, considerando custo por uso, internet e privacidade.
@@ -63,7 +67,8 @@ Formato: data, decisão, motivo. Decisões em aberto ficam na seção final.
 - **Bloqueio de tela no iOS:** o módulo `foco-tela` ainda não detecta bloqueio no iOS; lá, ir para segundo plano continua cancelando. Resolver quando houver iPhone para testar.
 - **Sessão longa com a tela bloqueada:** o Android pode encerrar o app em segundo plano para liberar memória; hoje a sessão em andamento fica só na memória e seria perdida. Avaliar salvar a sessão ativa no aparelho.
 - **"Peixes" do mockup:** o cabeçalho do mockup tem um terceiro contador (🐟 85) sem mecânica definida.
-- **Personalização do Foque:** acessórios, cores e novas aparências; se itens serão desbloqueados por nível (os pontos não são gastos). Ver [aparencia-foque.md](aparencia-foque.md).
+- **Personalização do Foque:** acessórios e cores. Os acessórios serão vendidos na loja. Ver [aparencia-foque.md](aparencia-foque.md) e [loja.md](loja.md).
+- **Loja:** preços definitivos, melhorias de layout e novos tipos de item, depois de avaliar a primeira versão.
 - **Aparência na nuvem:** salvar a escolha no Supabase para valer em outros aparelhos e aparecer para os amigos.
 - **Privacidade do status de foco:** opção de esconder o status "Focando agora" ou só o nome da tarefa. Ver [status-de-foco.md](status-de-foco.md).
 - **Interação com quem está focando:** reagir ou mandar um incentivo ("🐟"), e notificação quando um amigo começa a focar.

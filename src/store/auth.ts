@@ -4,12 +4,14 @@ import { create } from 'zustand';
 import { buscarPerfil, type Perfil } from '../services/auth';
 import { sincronizar } from '../services/sincronizacao';
 import { supabase } from '../services/supabase';
+import { useLoja } from './loja';
 import { useSessao } from './sessao';
 import { useTarefas } from './tarefas';
 
 /** Limpa o que é de outra conta ao trocar de usuário. */
 function limparDadosLocais() {
   useTarefas.getState().limpar();
+  useLoja.getState().limpar();
   useSessao.setState({
     status: 'idle',
     sessaoId: null,
