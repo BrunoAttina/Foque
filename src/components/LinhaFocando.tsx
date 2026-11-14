@@ -24,7 +24,7 @@ export function LinhaFocando({ foco, agora, onPress }: LinhaFocandoProps) {
       accessibilityLabel={`@${foco.username} está focando em ${foco.tarefa}. Faltam ${formatarRelogio(tempo.restanteMs, 'cima')}. Abrir perfil`}
       style={({ pressed }) => [styles.linha, pressed && styles.pressionada]}
     >
-      <Avatar username={foco.username} tamanho={44} />
+      <Avatar username={foco.username} aparencia={foco.aparencia} tamanho={44} />
       <View style={styles.conteudo}>
         <View style={styles.topo}>
           <Text style={styles.username} numberOfLines={1}>

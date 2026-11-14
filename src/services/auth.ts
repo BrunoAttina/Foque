@@ -4,6 +4,8 @@ import { supabase } from './supabase';
 export interface Perfil {
   id: string;
   username: string | null;
+  /** Aparência do Foque em uso, como está no servidor. */
+  aparencia: string;
 }
 
 /** Converte erros do Supabase em mensagens para a pessoa. */
@@ -61,7 +63,7 @@ export async function sair(): Promise<void> {
 export async function buscarPerfil(userId: string): Promise<Perfil | null> {
   const { data, error } = await supabase
     .from('profiles')
-    .select('id, username')
+    .select('id, username, aparencia')
     .eq('id', userId)
     .maybeSingle();
   if (error) throw new ErroAuth(mensagemDeErro(error));

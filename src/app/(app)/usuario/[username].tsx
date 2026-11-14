@@ -142,7 +142,7 @@ export default function TelaUsuario() {
         {estado.tipo === 'pronto' ? (
           <View style={styles.bloco}>
             <View style={styles.identidade}>
-              <Avatar username={estado.pessoa.username} tamanho={96} />
+              <Avatar username={estado.pessoa.username} aparencia={estado.pessoa.aparencia} tamanho={96} />
               <Text style={styles.username}>@{estado.pessoa.username}</Text>
               {estado.pontos !== null ? (
                 <Text style={styles.titulo}>{tituloDoNivel(nivelPorPontos(estado.pontos))}</Text>

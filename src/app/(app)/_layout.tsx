@@ -1,9 +1,12 @@
 import { Stack } from 'expo-router';
 
+import { useSincronizarAparencia } from '../../store/aparencia';
 import { cores, fontes } from '../../theme';
 
 // Pilha do app logado: as abas embaixo e as telas que abrem por cima delas.
 export default function AppLayout() {
+  useSincronizarAparencia();
+
   return (
     <Stack
       screenOptions={{

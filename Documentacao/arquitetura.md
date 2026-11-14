@@ -71,7 +71,7 @@ A migração para o Expo Router já foi feita: o entry point é `expo-router/ent
 
 | Tabela | Campos principais | Quem acessa (RLS) | Status |
 | --- | --- | --- | --- |
-| `profiles` | id do usuário, `username` (@) único | Qualquer usuário logado lê; cada um altera só o próprio @ | Criada (`0001`) |
+| `profiles` | id do usuário, `username` (@) único, `aparencia` (a foca em uso) | Qualquer usuário logado lê; cada um altera só o próprio @. A aparência só muda pela função `definir_aparencia` | Criada (`0001`); `aparencia` na `0006` |
 | `follows` | `follower_id`, `following_id` | Cada um vê as relações em que participa; segue e deixa de seguir em nome próprio | Criada (`0001`) |
 | `progress` | user_id, `pontos_totais` | O próprio usuário e quem o segue leem; só funções do servidor alteram | Criada (`0001`) |
 | `tasks` | id, user_id (automático), nome, duração | Só o dono lê e altera | Criada (`0003`) |
@@ -129,6 +129,7 @@ Validações no servidor: duração de 1 a 240 min; fim não pode estar no futur
 
 ## Aparência do Foque
 - Catálogo e estados em `src/domain/aparencias.ts`; mapa de GIFs em `src/components/imagensFoque.ts`; arquivos em `assets/foque/<aparência>/<estado>.gif`.
+- A aparência em uso também fica no servidor (`profiles.aparencia`, migration `0006`), para aparecer como foto de perfil para os outros. `useSincronizarAparencia()` mantém aparelho e servidor iguais.
 - A escolha fica em `src/store/aparencia.ts` (Zustand `persist` sobre o `localStorage` do `expo-sqlite`), por id de usuário. `useAparenciaAtual()` devolve a aparência da conta logada, ou a padrão.
 - Detalhes em [aparencia-foque.md](aparencia-foque.md).
 

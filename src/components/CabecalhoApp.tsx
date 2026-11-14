@@ -4,6 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { pts } from '../domain/mensagens';
 import { progressoNoNivel } from '../domain/niveis';
+import { useAparenciaAtual } from '../store/aparencia';
 import { useAuth } from '../store/auth';
 import { useSessao } from '../store/sessao';
 import { cores, espaco, fontes, tipografia } from '../theme';
@@ -17,6 +18,7 @@ export function CabecalhoApp() {
   const username = useAuth((s) => s.perfil?.username) ?? '';
   const pontos = useSessao((s) => s.pontosTotais);
   const p = progressoNoNivel(pontos);
+  const aparencia = useAparenciaAtual();
 
   return (
     <View style={[styles.cabecalho, { paddingTop: insets.top + espaco.sm }]}>
@@ -44,7 +46,7 @@ export function CabecalhoApp() {
         <Text style={styles.username} numberOfLines={1}>
           @{username}
         </Text>
-        <Avatar username={username} />
+        <Avatar username={username} aparencia={aparencia} />
       </Pressable>
     </View>
   );

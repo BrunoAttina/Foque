@@ -7,6 +7,8 @@ import { Avatar } from './Avatar';
 
 interface LinhaPessoaProps {
   username: string;
+  /** Aparência do Foque que a pessoa usa (a foto do perfil). */
+  aparencia?: string;
   /** Texto abaixo do @, como "Nível 3 · Foca Nadadora". */
   detalhe?: string;
   /** Posição no ranking (1, 2, 3...). */
@@ -24,7 +26,7 @@ interface LinhaPessoaProps {
 
 const MEDALHAS = ['🥇', '🥈', '🥉'];
 
-export function LinhaPessoa({ username, detalhe, posicao, destaque, realcada, acao, focando, onPress }: LinhaPessoaProps) {
+export function LinhaPessoa({ username, aparencia, detalhe, posicao, destaque, realcada, acao, focando, onPress }: LinhaPessoaProps) {
   return (
     <Pressable
       onPress={onPress}
@@ -35,7 +37,7 @@ export function LinhaPessoa({ username, detalhe, posicao, destaque, realcada, ac
       {posicao !== undefined ? (
         <Text style={styles.posicao}>{MEDALHAS[posicao - 1] ?? `${posicao}º`}</Text>
       ) : null}
-      <Avatar username={username} tamanho={44} />
+      <Avatar username={username} aparencia={aparencia} tamanho={44} />
       <View style={styles.textos}>
         <Text style={styles.username} numberOfLines={1}>
           @{username}

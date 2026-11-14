@@ -66,7 +66,6 @@ O saldo e os preços são do servidor: o app não consegue se dar moedas nem mud
 - **Acessórios** na loja (chapéus, óculos etc.), com o tipo `acessorio` já previsto em `loja_itens`.
 - **Melhorias da loja**, a definir depois de ver esta primeira versão: categorias, destaques, promoções, itens por tempo limitado.
 - **Saldo no cabeçalho**, para ver as moedas em qualquer tela.
-- **Aparência na nuvem**: salvar a aparência em uso no Supabase, para valer em outros aparelhos e os amigos verem.
 - **Itens exclusivos por nível** ou por conquistas.
 
 ## Em aberto

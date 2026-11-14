@@ -33,6 +33,9 @@
 | RF-28 | Só as aparências compradas podem ser usadas. Na aba Foque, as outras aparecem com cadeado e levam à Loja. | Alta | Implementado |
 | RF-29 | O Perfil abre pelo @ e pela foto do cabeçalho, não mais pelo menu inferior. | Média | Implementado |
 | RF-30 | A loja vende acessórios para o Foque. | Baixa | Futuro |
+| RF-31 | A aparência do Foque em uso é a foto de perfil do usuário: aparece no cabeçalho, no Perfil, nas listas da aba Amigos, no "Focando agora" e no perfil de outros usuários. | Alta | Implementado |
+| RF-32 | O Perfil mostra quantas pessoas o usuário segue e quantas o seguem. Tocar em um dos números abre a aba Amigos com a lista correspondente aberta. | Alta | Implementado |
+| RF-33 | A aba Amigos tem as listas "Seguindo" e "Seguidores", recolhidas por padrão, com a quantidade e a indicação de que abrem. Em Seguidores, quem o usuário ainda não segue tem o botão "Seguir". | Alta | Implementado |
 
 **Nota:** os pontos vêm do banco (`progress`) e são somados pela função `registrar_sessao` (migration `0002`). As tarefas ficam no banco (`tasks`, migration `0003`), com cópia no aparelho.
 

@@ -7,6 +7,8 @@ import { supabase } from './supabase';
 export interface FocoAtivo {
   userId: string;
   username: string;
+  /** Aparência do Foque que a pessoa usa (a "foto" do perfil). */
+  aparencia: string;
   /** Nome da tarefa (missão) em que a pessoa está focando. */
   tarefa: string;
   duracaoMinutos: number;
@@ -22,7 +24,7 @@ export class ErroFocoAtivo extends Error {}
 const TEMPO_LIMITE_MS = 10_000;
 
 const COLUNAS =
-  'user_id, tarefa, duracao_minutos, inicio, fim_previsto, perfil:profiles!focos_ativos_user_id_fkey(username)';
+  'user_id, tarefa, duracao_minutos, inicio, fim_previsto, perfil:profiles!focos_ativos_user_id_fkey(username, aparencia)';
 
 interface Linha {
   user_id: string;
@@ -30,7 +32,10 @@ interface Linha {
   duracao_minutos: number;
   inicio: string;
   fim_previsto: string;
-  perfil: { username: string | null } | { username: string | null }[] | null;
+  perfil:
+    | { username: string | null; aparencia: string }
+    | { username: string | null; aparencia: string }[]
+    | null;
 }
 
 /**
@@ -81,6 +86,7 @@ function paraFocoAtivo(linha: Linha): FocoAtivo | null {
   return {
     userId: linha.user_id,
     username: perfil.username,
+    aparencia: perfil.aparencia,
     tarefa: linha.tarefa,
     duracaoMinutos: linha.duracao_minutos,
     inicio: Date.parse(linha.inicio),

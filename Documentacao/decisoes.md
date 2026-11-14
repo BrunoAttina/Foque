@@ -56,6 +56,9 @@ Formato: data, decisão, motivo. Decisões em aberto ficam na seção final.
 | 2026-11-13 | **Loja** no menu inferior, no lugar do Perfil. O Perfil abre pelo @ e pela foto do cabeçalho. | O Perfil tinha dois caminhos; a loja precisava de um lugar de destaque. |
 | 2026-11-13 | A loja vende as aparências do Foque: Bebê 30, Careca 60, Ninja 100, Princesa 100 moedas. Clássico grátis. A escolha entre as compradas continua na aba Foque. | Primeira versão, para o dono avaliar. Preços no banco (`loja_itens`), fáceis de mudar. |
 | 2026-11-13 | Saldo, preços e compras ficam no servidor (`carteiras`, `loja_itens`, `compras`; função `comprar_item`). O saldo fica fora de `progress`. | Impede alterar moedas pelo celular. Os seguidores leem `progress`, e o saldo é particular. |
+| 2026-11-14 | **Foto de perfil = a foca em uso.** A aparência passa a ficar também no servidor (`profiles.aparencia`, migration `0006`), visível para qualquer usuário logado, como o @. Só muda pela função `definir_aparencia`, que exige a Clássica ou uma aparência comprada. | Os amigos veem a foca de cada um. A validação no servidor impede usar uma aparência não comprada. |
+| 2026-11-14 | **Seguidores:** o Perfil mostra os números de seguindo e de seguidores; tocar abre a aba Amigos com a lista aberta. Na aba Amigos, "Seguindo" e "Seguidores" ficam recolhidas, em cartões com quantidade, "Ver lista" e seta. | Pedido do dono: ver quem segue e quantos, deixando claro que as listas abrem. |
+| 2026-11-14 | Na lista de Seguidores, o nível só aparece para quem o usuário também segue. | Os pontos (`progress`) só são visíveis para quem segue a pessoa. |
 
 ## Decisões em aberto
 - **Geração do roteiro por IA:** avaliar depois do MVP, considerando custo por uso, internet e privacidade.
@@ -69,7 +72,6 @@ Formato: data, decisão, motivo. Decisões em aberto ficam na seção final.
 - **"Peixes" do mockup:** o cabeçalho do mockup tem um terceiro contador (🐟 85) sem mecânica definida.
 - **Personalização do Foque:** acessórios e cores. Os acessórios serão vendidos na loja. Ver [aparencia-foque.md](aparencia-foque.md) e [loja.md](loja.md).
 - **Loja:** preços definitivos, melhorias de layout e novos tipos de item, depois de avaliar a primeira versão.
-- **Aparência na nuvem:** salvar a escolha no Supabase para valer em outros aparelhos e aparecer para os amigos.
 - **Privacidade do status de foco:** opção de esconder o status "Focando agora" ou só o nome da tarefa. Ver [status-de-foco.md](status-de-foco.md).
 - **Interação com quem está focando:** reagir ou mandar um incentivo ("🐟"), e notificação quando um amigo começa a focar.
 - **Realtime no status de foco:** trocar a recarga a cada 30 s pelo Supabase Realtime.

@@ -7,7 +7,9 @@ A pessoa escolhe como o Foque aparece no app. A escolha fica na aba **Foque** (�
 - Tocar num cartão troca a aparência na hora. O Foque comenta o visual novo no balão.
 - A aparência escolhida vale em todas as telas: Focar, sessão, resultado e aba Foque. Nas telas de entrar e de cadastro, antes do login, aparece sempre a Clássica.
 - **Padrão:** Clássico, que é de graça. As outras aparências são compradas com moedas na Loja (ver [loja.md](loja.md)). Na aba Foque, as não compradas aparecem com cadeado e levam à Loja.
-- A escolha fica salva **no aparelho**, separada por conta. Em outro celular, a pessoa começa com a Clássica.
+- **Foto de perfil:** a aparência em uso é a foto da pessoa. Aparece no cabeçalho, no Perfil, nas listas da aba Amigos, no "Focando agora" e no perfil que os outros veem.
+- A escolha fica salva no aparelho e **no servidor** (`profiles.aparencia`). Em outro celular, o app traz a aparência do servidor. Uma troca feita sem internet é enviada na próxima abertura do app.
+- O servidor só aceita a Clássica ou uma aparência comprada (função `definir_aparencia`).
 
 ## Aparências
 | Id | Nome | Descrição no app |
@@ -52,7 +54,6 @@ Além de escolher a aparência, a ideia é poder personalizar o Foque:
 - **Novas aparências**, inclusive temáticas ou sazonais.
 - **Loja:** as aparências já são vendidas por moedas; os acessórios entram na loja depois (ver [loja.md](loja.md)).
 - **Itens exclusivos por nível de foco** (ideia): liberados ao subir de nível, sem gastar moedas.
-- **Aparência na nuvem:** salvar a escolha no Supabase, por exemplo numa coluna em `profiles`, para valer em outros aparelhos e aparecer para os amigos na aba Amigos.
 
 **Ponto técnico:** os acessórios por cima de um GIF precisam acompanhar a animação. Ou cada combinação vira uma arte própria, ou a foca passa a ser desenhada em camadas (Lottie/Rive ou Canvas, como no `FoqueMascote.kt` da pasta de artes). A decisão fica para quando a personalização começar.
 
