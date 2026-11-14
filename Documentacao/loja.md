@@ -2,7 +2,7 @@
 
 A pessoa ganha **moedas** focando e troca por aparências do Foque na **Loja**. A Loja fica no menu inferior, no lugar onde ficava o Perfil. O Perfil continua acessível pelo @ e pela foto no cabeçalho.
 
-**Status:** primeira versão implementada. Migration `0005_loja_e_moedas.sql` aplicada.
+**Status:** primeira versão implementada. Migration `0005_loja_e_moedas.sql` aplicada. O preço do Careca mudou na `0008_preco_careca.sql`.
 
 ## Como funciona
 - **Ganhar:** cada ponto de foco ganho vale 1 moeda. Como 1 minuto de sessão concluída dá 1 ponto, 1 minuto focado dá 1 moeda.
@@ -18,7 +18,7 @@ A pessoa ganha **moedas** focando e troca por aparências do Foque na **Loja**. 
 | --- | --- | --- |
 | Clássico | grátis | – |
 | Bebê | 30 moedas | 30 min |
-| Careca | 60 moedas | 1 h |
+| Careca | 30 moedas | 30 min |
 | Ninja | 100 moedas | 1 h 40 min |
 | Princesa | 100 moedas | 1 h 40 min |
 
