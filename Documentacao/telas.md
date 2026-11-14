@@ -10,12 +10,12 @@
 | Escolher @ (`src/app/escolher-nome.tsx`) | Para quem está logado sem @. Bloqueia o app até escolher. | Implementado |
 
 ### Abas (`src/app/(app)/(tabs)/`)
-Barra inferior com 5 abas, como no mockup (com "Amigos" no lugar de "Ranking"). O botão central, elevado, é a aba Focar.
+Barra inferior com 5 abas, como no mockup (com "Amigos" no lugar de "Ranking" e "Focos" no lugar de "Tarefas"). O botão central, elevado, é a aba Focar.
 
 | Aba | Objetivo | Status |
 | --- | --- | --- |
 | Amigos (`amigos.tsx`) | Encontrar amigos pelo @, com o botão Seguir em cada resultado (ou o selo "Seguindo"), e a lista de quem você já segue, com nível e pontos. | Implementado |
-| Tarefas (`tarefas.tsx`) | Cadastrar, remover e focar direto em uma missão. | Implementado |
+| Focos (`tarefas.tsx`, antes "Tarefas") | Título "Seus Focos". Cadastrar, remover e focar direto em uma missão. | Implementado |
 | **Focar** (`index.tsx`, aba inicial) | Tela principal: nível, fala do Foque, mascote, "tempo de mergulho" (15/25/45/60 min ou a duração da missão), missão atual, Regra do Gelo Fino e o botão "Congelar tempo & focar". | Implementado |
 | Foque (`foca.tsx`) | Espaço do mascote: o Foque animado na aparência escolhida, balão com dicas do roteiro (botão "Outra dica") e, abaixo, a **escolha da aparência** (Clássico, Bebê, Careca, Ninja, Princesa) em cartões com prévia. Ao trocar, o Foque comenta o visual novo. Cartão "Em breve" para a personalização (acessórios, cores). | Implementado (escolha de aparência); personalização pendente |
 | Perfil (`perfil.tsx`) | Seu @, título e cartão de nível, pontos, sessões concluídas, buscar pessoas e sair. | Implementado |
@@ -32,7 +32,7 @@ Barra inferior com 5 abas, como no mockup (com "Amigos" no lugar de "Ranking"). 
 1. Sem login: **Entrar** ↔ **Cadastro**.
 2. Logado sem @: **Escolher @**.
 3. Logado com @: abas, começando em **Focar**.
-4. **Focar** (ou **Tarefas**) → **Sessão de foco** → **Resultado** → volta para a aba de origem.
+4. **Focar** (ou **Focos**) → **Sessão de foco** → **Resultado** → volta para a aba de origem.
 5. **Amigos** → seguir direto na busca, ou tocar em alguém → **Perfil de usuário** (onde também dá para deixar de seguir).
 6. **Perfil** → "Encontrar amigos" → aba **Amigos**.
 

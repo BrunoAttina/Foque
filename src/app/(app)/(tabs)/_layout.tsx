@@ -62,7 +62,7 @@ export default function AbasLayout() {
       }}
     >
       <Tabs.Screen name="amigos" options={{ title: 'Amigos', tabBarIcon: icone('group') }} />
-      <Tabs.Screen name="tarefas" options={{ title: 'Tarefas', tabBarIcon: icone('checklist') }} />
+      <Tabs.Screen name="tarefas" options={{ title: 'Focos', tabBarIcon: icone('checklist') }} />
       <Tabs.Screen
         name="index"
         options={{

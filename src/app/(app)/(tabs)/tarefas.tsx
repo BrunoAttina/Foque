@@ -70,7 +70,7 @@ export default function TelaTarefas() {
         ListHeaderComponent={
           <View style={styles.cabecalho}>
             <View>
-              <Text style={styles.titulo}>Suas missões</Text>
+              <Text style={styles.titulo}>Seus Focos</Text>
               <Text style={styles.subtitulo}>O que merece seu foco hoje?</Text>
             </View>
 
