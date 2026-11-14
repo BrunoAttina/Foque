@@ -25,7 +25,7 @@ Barra inferior com 5 abas: Amigos, Focos, Focar, Foque e Loja. O botão central,
 | Tela | Objetivo | Status |
 | --- | --- | --- |
 | Sessão de foco (`sessao.tsx`) | Timer em um "bloco de gelo", barra de progresso e fala do Foque. Sair do app cancela; o botão voltar e "Desistir" encerram como desistência. | Implementado |
-| Resultado (`resultado.tsx`) | "Gelo intacto!" com os pontos e as moedas ganhos, ou "O gelo quebrou". Avisa quando sobe de nível. | Implementado |
+| Resultado (`resultado.tsx`) | "Parabéns pelo foco!" com os pontos e as moedas ganhos e o botão "Foque mais!", ou "O gelo quebrou". Avisa quando sobe de nível. | Implementado |
 | Perfil de usuário (`usuario/[username].tsx`) | @ e título; nível e pontos só se você segue a pessoa. Botão seguir ou deixar de seguir. **Novo:** se você segue a pessoa e ela está focando, cartão "Focando agora" com a tarefa, o tempo focado, o tempo restante e a barra de progresso. | Implementado; cartão "Focando agora" em desenvolvimento |
 | Perguntas iniciais | O Foque coleta profissão e rotina do usuário. | Rascunho |
 

@@ -38,7 +38,7 @@ export default function TelaResultado() {
     <SafeAreaView style={styles.tela}>
       <ScrollView contentContainerStyle={styles.conteudo}>
         <Text style={[styles.titulo, { color: concluida ? cores.secondary : cores.tertiary }]}>
-          {concluida ? 'Gelo intacto!' : 'O gelo quebrou'}
+          {concluida ? 'Parabéns pelo foco!' : 'O gelo quebrou'}
         </Text>
 
         <View style={styles.mascote}>
@@ -70,7 +70,7 @@ export default function TelaResultado() {
         <CartaoNivel pontos={pontosTotais} />
       </ScrollView>
 
-      <Botao titulo={concluida ? 'Bora de novo' : 'Tentar de novo'} icone="ac-unit" grande onPress={voltar} />
+      <Botao titulo={concluida ? 'Foque mais!' : 'Tentar de novo'} icone="ac-unit" grande onPress={voltar} />
     </SafeAreaView>
   );
 }
