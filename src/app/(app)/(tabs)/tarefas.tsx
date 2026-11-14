@@ -76,7 +76,7 @@ export default function TelaTarefas() {
 
             <View style={[cartao, styles.formulario]}>
               <Campo
-                rotulo="Nova missão"
+                rotulo="Novo foco"
                 placeholder="Ex.: Ler um livro"
                 value={nome}
                 onChangeText={setNome}
@@ -94,7 +94,7 @@ export default function TelaTarefas() {
               />
               {erro ? <Text style={styles.erro}>{erro}</Text> : null}
               <Botao
-                titulo={salvando ? 'Salvando…' : 'Adicionar missão'}
+                titulo={salvando ? 'Salvando…' : 'Adicionar foco'}
                 icone="add"
                 onPress={adicionarTarefa}
                 desativado={salvando}
@@ -108,7 +108,7 @@ export default function TelaTarefas() {
           carregando ? (
             <ActivityIndicator color={cores.primary} style={styles.vazio} />
           ) : (
-            <Text style={styles.vazio}>Nenhuma missão ainda. Escolha uma coisa importante para hoje. 🧊</Text>
+            <Text style={styles.vazio}>Nenhum foco na fila. Escolha uma coisa importante para hoje. 🧊</Text>
           )
         }
         renderItem={({ item }) => (

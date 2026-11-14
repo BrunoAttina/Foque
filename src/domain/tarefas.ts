@@ -33,7 +33,7 @@ export type ResultadoValidacao =
 
 export function validarTarefa(nomeTexto: string, duracaoTexto: string): ResultadoValidacao {
   const nome = nomeTexto.trim();
-  if (!nome) return { ok: false, erro: 'Dê um nome para a tarefa.' };
+  if (!nome) return { ok: false, erro: 'Dê um nome para o foco.' };
   if (nome.length > NOME_MAXIMO) {
     return { ok: false, erro: `O nome pode ter até ${NOME_MAXIMO} caracteres.` };
   }

@@ -1,8 +1,8 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useRouter } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
-import { AppState, BackHandler, StyleSheet, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { AppState, BackHandler, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { BalaoFala } from '../../components/BalaoFala';
 import { BarraProgresso } from '../../components/BarraProgresso';
@@ -10,12 +10,33 @@ import { Botao } from '../../components/Botao';
 import { Mascote } from '../../components/Mascote';
 import { estadoTela } from '../../../modules/foco-tela';
 import { decidirRetorno, foiBloqueio } from '../../domain/bloqueio';
-import { falas } from '../../domain/mensagens';
+import { falas, pts } from '../../domain/mensagens';
 import { emojiDaTarefa } from '../../domain/tarefas';
 import { registrarSessaoFinalizada } from '../../services/sincronizacao';
 import { useAuth } from '../../store/auth';
 import { useSessao } from '../../store/sessao';
 import { cores, espaco, fontes, raio, tipografia } from '../../theme';
+
+// Tamanhos ideais do mascote e do círculo do relógio (telas com altura sobrando).
+const MASCOTE_MAX = 120;
+const RELOGIO_MAX = 190;
+const RELOGIO_MIN = 120;
+const MASCOTE_MIN = 56; // abaixo disso o mascote some para o relógio caber
+const VAO_PALCO = espaco.sm;
+/** Altura que o palco (mascote + relógio) ocupa quando há espaço para os tamanhos ideais. */
+const PALCO_MAX = MASCOTE_MAX + VAO_PALCO + RELOGIO_MAX;
+/** Janelas mais baixas que isso usam margens e vãos menores. */
+const ALTURA_COMPACTA = 700;
+
+/** Divide a altura do palco entre o mascote e o círculo do relógio, sem passar dos tamanhos ideais. */
+function dividirPalco(altura: number) {
+  if (altura >= PALCO_MAX) return { mascote: MASCOTE_MAX, relogio: RELOGIO_MAX, vao: VAO_PALCO };
+  const vao = espaco.xs;
+  const util = Math.max(0, altura - vao);
+  const relogio = Math.min(RELOGIO_MAX, Math.max(RELOGIO_MIN, Math.round(util * 0.62)));
+  const sobra = Math.min(MASCOTE_MAX, Math.floor(util - relogio));
+  return { mascote: sobra >= MASCOTE_MIN ? sobra : 0, relogio: Math.min(relogio, Math.max(0, Math.floor(altura))), vao };
+}
 
 function formatarTempo(ms: number) {
   const totalSegundos = Math.ceil(ms / 1000);
@@ -34,6 +55,11 @@ export default function TelaSessao() {
 
   const [agora, setAgora] = useState(() => Date.now());
   const [fala] = useState(() => falas.duranteSessao());
+
+  // Altura real do palco (mascote + relógio), medida no layout. Antes da primeira medida, uma estimativa.
+  const { height: alturaJanela } = useWindowDimensions();
+  const insets = useSafeAreaInsets();
+  const [alturaPalco, setAlturaPalco] = useState<number | null>(null);
 
   // Horário em que a tela foi bloqueada durante a sessão (null = não está bloqueada).
   const bloqueadoEm = useRef<number | null>(null);
@@ -127,8 +153,18 @@ export default function TelaSessao() {
   const totalMs = tarefa.duracaoMinutos * 60 * 1000;
   const restante = endAt !== null ? Math.max(0, endAt - agora) : 0;
 
+  const compacta = alturaJanela < ALTURA_COMPACTA;
+  // Estimativa para o primeiro quadro: janela menos margens, pílula (43), rodapé (~82),
+  // balão de 3 linhas (111), barra (16) e vãos. O onLayout do palco corrige em seguida.
+  const estimativa =
+    alturaJanela - insets.top - insets.bottom - (compacta ? 2 * espaco.md : 2 * espaco.lg) - 43 - 82 -
+    2 * (compacta ? espaco.sm : espaco.md) - 111 - 16 - 2 * espaco.sm;
+  const palco = dividirPalco(Math.min(PALCO_MAX, alturaPalco ?? estimativa));
+  const escala = palco.relogio / RELOGIO_MAX;
+  const tamanhoTempo = Math.round(46 * escala);
+
   return (
-    <SafeAreaView style={styles.tela}>
+    <SafeAreaView style={[styles.tela, compacta && styles.telaCompacta]}>
       <View style={styles.missao}>
         <Text style={styles.emoji}>{emojiDaTarefa(tarefa.nome)}</Text>
         <Text style={styles.nomeMissao} numberOfLines={1}>
@@ -138,14 +174,34 @@ export default function TelaSessao() {
 
       <View style={styles.centro}>
         <BalaoFala texto={fala} />
-        <Mascote tamanho={120} estado="focando" />
 
-        <View style={styles.relogio}>
-          <MaterialIcons name="ac-unit" size={22} color={cores.primaryContainer} />
-          <Text style={styles.tempo} accessibilityLabel={`Faltam ${formatarTempo(restante)}`}>
-            {formatarTempo(restante)}
-          </Text>
-          <Text style={styles.recompensa}>+{tarefa.duracaoMinutos} pts ao final</Text>
+        {/* Palco: ocupa o que sobra entre o balão e a barra (até o tamanho ideal) e dita os tamanhos. */}
+        <View
+          style={[styles.palco, { gap: palco.vao }]}
+          onLayout={(e) => setAlturaPalco(Math.round(e.nativeEvent.layout.height))}
+        >
+          {palco.mascote > 0 ? <Mascote tamanho={palco.mascote} estado="focando" /> : null}
+
+          <View
+            style={[
+              styles.relogio,
+              {
+                width: palco.relogio,
+                height: palco.relogio,
+                borderRadius: palco.relogio / 2,
+                borderWidth: escala < 0.9 ? 6 : 8,
+              },
+            ]}
+          >
+            <MaterialIcons name="ac-unit" size={escala < 0.9 ? 18 : 22} color={cores.primaryContainer} />
+            <Text
+              style={[styles.tempo, { fontSize: tamanhoTempo, lineHeight: Math.round(tamanhoTempo * 1.17) }]}
+              accessibilityLabel={`Faltam ${formatarTempo(restante)}`}
+            >
+              {formatarTempo(restante)}
+            </Text>
+            <Text style={styles.recompensa}>+{pts(tarefa.duracaoMinutos)} ao final</Text>
+          </View>
         </View>
 
         <View style={styles.barra}>
@@ -153,7 +209,7 @@ export default function TelaSessao() {
         </View>
       </View>
 
-      <View style={styles.rodape}>
+      <View style={[styles.rodape, compacta && styles.rodapeCompacto]}>
         <View style={styles.regra}>
           <MaterialIcons name="warning" size={18} color={cores.tertiary} />
           <Text style={styles.textoRegra}>Pode bloquear a tela. Sair do app quebra o gelo.</Text>
@@ -170,6 +226,10 @@ const styles = StyleSheet.create({
     backgroundColor: cores.surface,
     padding: espaco.lg,
     gap: espaco.md,
+  },
+  telaCompacta: {
+    paddingVertical: espaco.md,
+    gap: espaco.sm,
   },
   aviso: {
     ...tipografia.bodyLg,
@@ -203,10 +263,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: espaco.sm,
   },
+  // flex 1 com teto: em tela alta fica no tamanho ideal e o conjunto continua centralizado;
+  // em tela baixa encolhe para o espaço que sobra, e o conteúdo se ajusta a essa altura.
+  palco: {
+    flex: 1,
+    maxHeight: PALCO_MAX,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   relogio: {
-    width: 190,
-    height: 190,
-    borderRadius: 95,
+    width: RELOGIO_MAX,
+    height: RELOGIO_MAX,
+    borderRadius: RELOGIO_MAX / 2,
     backgroundColor: cores.surfaceContainerLowest,
     borderWidth: 8,
     borderColor: cores.primaryFixed,
@@ -232,10 +301,12 @@ const styles = StyleSheet.create({
   },
   barra: {
     width: '100%',
-    marginTop: espaco.sm,
   },
   rodape: {
     gap: espaco.sm + 4,
+  },
+  rodapeCompacto: {
+    gap: espaco.sm,
   },
   regra: {
     flexDirection: 'row',

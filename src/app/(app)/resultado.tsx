@@ -8,7 +8,7 @@ import { BalaoFala } from '../../components/BalaoFala';
 import { Botao } from '../../components/Botao';
 import { CartaoNivel } from '../../components/CartaoNivel';
 import { Mascote } from '../../components/Mascote';
-import { falas, mensagens } from '../../domain/mensagens';
+import { falas, mensagens, pts } from '../../domain/mensagens';
 import { tituloDoNivel } from '../../domain/niveis';
 import { nivelPorPontos } from '../../domain/pontos';
 import { useSessao } from '../../store/sessao';
@@ -49,7 +49,7 @@ export default function TelaResultado() {
         {concluida ? (
           <View style={styles.pontos}>
             <MaterialIcons name="diamond" size={28} color={cores.primaryContainer} />
-            <Text style={styles.textoPontos}>+{pontosUltimaSessao} pts</Text>
+            <Text style={styles.textoPontos}>+{pts(pontosUltimaSessao)}</Text>
           </View>
         ) : null}
 

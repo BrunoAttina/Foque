@@ -6,10 +6,9 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { BalaoFala } from '../../../components/BalaoFala';
 import { Botao } from '../../../components/Botao';
 import { CabecalhoApp } from '../../../components/CabecalhoApp';
-import { CartaoNivel } from '../../../components/CartaoNivel';
 import { Chip } from '../../../components/Chip';
 import { Mascote } from '../../../components/Mascote';
-import { falas } from '../../../domain/mensagens';
+import { falas, pts } from '../../../domain/mensagens';
 import { emojiDaTarefa, MISSOES_SUGERIDAS, TEMPOS_SUGERIDOS } from '../../../domain/tarefas';
 import { ErroTarefas } from '../../../services/tarefas';
 import { useSessao } from '../../../store/sessao';
@@ -18,7 +17,6 @@ import { cartao, cores, espaco, raio, rotuloSecao, tipografia } from '../../../t
 
 export default function TelaFocar() {
   const router = useRouter();
-  const pontos = useSessao((s) => s.pontosTotais);
   const iniciar = useSessao((s) => s.iniciar);
   const tarefas = useTarefas((s) => s.tarefas);
   const adicionar = useTarefas((s) => s.adicionar);
@@ -68,8 +66,6 @@ export default function TelaFocar() {
     <View style={styles.tela}>
       <CabecalhoApp />
       <ScrollView contentContainerStyle={styles.conteudo}>
-        <CartaoNivel pontos={pontos} />
-
         <View style={styles.mascote}>
           <BalaoFala texto={fala} />
           <Mascote tamanho={150} />
@@ -191,7 +187,7 @@ function OpcaoTempo({ minutos, ativa, onPress }: { minutos: number; ativa: boole
         >
           <Text style={[styles.minutos, ativa && { color: cores.onPrimaryContainer }]}>{minutos}</Text>
           <Text style={[styles.min, ativa && { color: cores.onPrimaryContainer }]}>min</Text>
-          <Text style={[styles.pts, ativa && styles.ptsAtivo]}>+{minutos} pts</Text>
+          <Text style={[styles.pts, ativa && styles.ptsAtivo]}>+{pts(minutos)}</Text>
         </View>
       )}
     </Pressable>

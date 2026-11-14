@@ -15,8 +15,8 @@ Barra inferior com 5 abas, como no mockup (com "Amigos" no lugar de "Ranking" e 
 | Aba | Objetivo | Status |
 | --- | --- | --- |
 | Amigos (`amigos.tsx`) | Encontrar amigos pelo @, com o botão Seguir em cada resultado (ou o selo "Seguindo"), e a lista de quem você já segue, com nível e pontos. **Novo:** seção "Focando agora" no topo, com quem você segue que está focando (avatar, @, tarefa, "faltam 12:34" ao vivo e barra de progresso); tocar abre o perfil. Sem ninguém focando, uma fala curta do Foque. Na lista "Seguindo", selo "focando". Recarrega ao abrir a aba e a cada 30 s. Ver [status-de-foco.md](status-de-foco.md). | Implementado; "Focando agora" em desenvolvimento |
-| Focos (`tarefas.tsx`, antes "Tarefas") | Título "Seus Focos". Cadastrar, remover e focar direto em uma missão. | Implementado |
-| **Focar** (`index.tsx`, aba inicial) | Tela principal: nível, fala do Foque, mascote, "tempo de mergulho" (15/25/45/60 min ou a duração da missão), missão atual, Regra do Gelo Fino e o botão "Congelar tempo & focar". | Implementado |
+| Focos (`tarefas.tsx`, antes "Tarefas") | Título "Seus Focos". Cadastrar ("Novo foco", "Adicionar foco"), remover e focar direto em um foco. Os textos da tela usam "foco", não "missão". | Implementado |
+| **Focar** (`index.tsx`, aba inicial) | Tela principal: fala do Foque, mascote, "tempo de mergulho" (15/25/45/60 min ou a duração da missão), missão atual, Regra do Gelo Fino e o botão "Congelar tempo & focar". Sem cartão de nível: o nível já aparece no cabeçalho. | Implementado |
 | Foque (`foca.tsx`) | Espaço do mascote: o Foque animado na aparência escolhida, balão com dicas do roteiro (botão "Outra dica") e, abaixo, a **escolha da aparência** (Clássico, Bebê, Careca, Ninja, Princesa) em cartões com prévia. Ao trocar, o Foque comenta o visual novo. Cartão "Em breve" para a personalização (acessórios, cores). | Implementado (escolha de aparência); personalização pendente |
 | Perfil (`perfil.tsx`) | Seu @, título e cartão de nível, pontos, sessões concluídas, buscar pessoas e sair. | Implementado |
 
@@ -49,7 +49,7 @@ O visual segue o design system "Glacial Focus Game" ([design.md](design.md)). Os
 | `Campo` | Campo de texto em "placa de gelo", com rótulo em caixa alta. |
 | `Chip` | Pílula com ícone ou emoji (atalhos de missão). |
 | `CabecalhoApp` | Cabeçalho das abas: "Nv.N" com a barra de progresso até o próximo nível ("1 pt / 30 pts"); o @ e o avatar são clicáveis e levam ao Perfil. |
-| `CartaoNivel` | "Nível 4: Foca Ártica", com a barra até o próximo nível. |
+| `CartaoNivel` | "Nível 4: Foca Ártica", com a barra até o próximo nível. Usado no Perfil, no Resultado e no Perfil de usuário. |
 | `BalaoFala` + `Mascote` | Fala do Foque com a ponta apontando para a foca. |
 | `BarraProgresso` | Cápsula espessa, preenchimento menta. |
 | `LinhaPessoa`, `Avatar` | Listas de pessoas e ranking. |

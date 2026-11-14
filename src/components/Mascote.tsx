@@ -19,7 +19,8 @@ interface MascoteProps {
 /** Foque, a foca: GIF animado da aparência escolhida, com um brilho pulsando por trás. */
 export function Mascote({ tamanho = 160, estado = 'parada', aparencia }: MascoteProps) {
   const daConta = useAparenciaAtual();
-  const fonte = IMAGENS_FOQUE[aparencia ?? daConta][estado];
+  const aparenciaAtual = aparencia ?? daConta;
+  const fonte = IMAGENS_FOQUE[aparenciaAtual][estado];
   const [pulso] = useState(() => new Animated.Value(0));
 
   useEffect(() => {
@@ -56,7 +57,21 @@ export function Mascote({ tamanho = 160, estado = 'parada', aparencia }: Mascote
           },
         ]}
       />
-      <Image source={fonte} style={{ width: tamanho, height: tamanho }} contentFit="contain" autoplay />
+      {/*
+        A key remonta o Image quando o GIF muda (ex.: no login, da aparência padrão para a da conta).
+        Trocar o source de um Image animado já montado deixava um quadrado cinza atrás do GIF:
+        a view nativa segura a imagem anterior enquanto a nova carrega. Com a key, cada GIF
+        nasce em uma view nova, sem imagem anterior, sem transição e sem placeholder.
+      */}
+      <Image
+        key={`${aparenciaAtual}-${estado}`}
+        source={fonte}
+        style={[styles.imagem, { width: tamanho, height: tamanho }]}
+        contentFit="contain"
+        placeholder={null}
+        transition={null}
+        autoplay
+      />
     </View>
   );
 }
@@ -65,6 +80,9 @@ const styles = StyleSheet.create({
   area: {
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  imagem: {
+    backgroundColor: 'transparent',
   },
   brilho: {
     position: 'absolute',
