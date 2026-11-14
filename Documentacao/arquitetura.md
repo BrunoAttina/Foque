@@ -76,6 +76,7 @@ A migração para o Expo Router já foi feita: o entry point é `expo-router/ent
 | `progress` | user_id, `pontos_totais` | O próprio usuário e quem o segue leem; só funções do servidor alteram | Criada (`0001`) |
 | `tasks` | id, user_id (automático), nome, duração | Só o dono lê e altera | Criada (`0003`) |
 | `focus_sessions` | id (gerado no aparelho), user_id, tarefa, duração, início, fim, status, pontos | Só o dono lê; só a função `registrar_sessao` escreve | Criada (`0002`) |
+| `focos_ativos` | `user_id` (chave), `tarefa`, `duracao_minutos`, `inicio`, `fim_previsto`, `atualizado_em` | O próprio usuário e quem o segue leem; só as funções `iniciar_foco`, `encerrar_foco` e `registrar_sessao` escrevem | Nova (`0004`), a aplicar |
 
 As respostas do roteiro (profissão e rotina) entram em `profiles` ou numa tabela própria quando a tela de perguntas for feita.
 
@@ -105,6 +106,13 @@ Validações no servidor: duração de 1 a 240 min; fim não pode estar no futur
 ## Tarefas
 - `src/store/tarefas.ts` busca as tarefas no Supabase ao entrar no app e guarda uma cópia no aparelho (Zustand `persist` sobre o `localStorage` do `expo-sqlite`). A cópia guarda o id do dono, para não aparecer em outra conta.
 - Sem conexão, a lista salva continua disponível para focar. Criar e remover tarefas exige conexão, e o app avisa quando falha.
+
+## Status "Focando agora"
+- Tabela `focos_ativos`, uma linha por usuário (migration `0004`). `iniciar_foco` faz upsert com `inicio = now()` do servidor; `encerrar_foco` apaga; `registrar_sessao` também apaga, por garantia.
+- Linha com `fim_previsto` no passado conta como encerrada. As consultas filtram `fim_previsto > now()`.
+- Contrato em `src/services/focoAtivo.ts`. `src/store/sessao.ts` publica ao iniciar e encerra ao concluir ou cancelar; sair da conta também encerra. Tudo em segundo plano.
+- A aba Amigos recarrega a lista ao abrir e a cada 30 s. O tempo decorrido e o restante são calculados no aparelho de quem vê.
+- Detalhes em [status-de-foco.md](status-de-foco.md).
 
 ## Autenticação no app
 - `src/store/auth.ts` ouve as mudanças de login do Supabase e guarda a sessão e o perfil (@).

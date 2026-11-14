@@ -2,6 +2,7 @@ import { create } from 'zustand';
 
 import { novoUuid } from '../domain/id';
 import { pontosDaSessao } from '../domain/pontos';
+import { encerrarFocoAtivo, publicarFocoAtivo } from '../services/focoAtivo';
 import type { Tarefa } from './tarefas';
 
 export type StatusSessao = 'idle' | 'running' | 'done' | 'cancelled';
@@ -51,6 +52,8 @@ export const useSessao = create<SessaoState>((set, get) => ({
       motivoCancelamento: null,
       pontosUltimaSessao: 0,
     });
+    // Avisa os seguidores, em segundo plano. Nunca lança e não segura a tela.
+    void publicarFocoAtivo(tarefa.nome, tarefa.duracaoMinutos);
   },
 
   cancelar: (motivo) => {
@@ -62,6 +65,7 @@ export const useSessao = create<SessaoState>((set, get) => ({
       motivoCancelamento: motivo,
       pontosUltimaSessao: 0,
     });
+    void encerrarFocoAtivo();
   },
 
   concluir: () => {
@@ -76,5 +80,6 @@ export const useSessao = create<SessaoState>((set, get) => ({
       pontosUltimaSessao: ganhos,
       pontosTotais: estado.pontosTotais + ganhos,
     }));
+    void encerrarFocoAtivo();
   },
 }));

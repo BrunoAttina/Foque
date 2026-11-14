@@ -45,6 +45,13 @@ Formato: data, decisão, motivo. Decisões em aberto ficam na seção final.
 | 2026-11-12 | Mascote em GIF animado com `expo-image`, um GIF por aparência e momento (parada, acenando, focando, comemorando, triste), em `assets/foque/`. | O `Image` do React Native não anima GIF no Android sem configuração extra; o `expo-image` anima nas duas plataformas. Exige nova build nativa. |
 | 2026-11-12 | A aparência escolhida fica salva só no aparelho, por conta. | Sem migration nova agora. Levar para o Supabase quando os amigos puderem ver a foca de cada um. |
 | 2026-11-08 | A aba Ranking virou **Amigos**: busca pelo @ com botão Seguir na própria lista e a lista de quem você segue. A tela separada "Buscar pessoas" foi removida. | Concentrar a parte social em um lugar e seguir alguém em um toque. |
+| 2026-11-13 | **Status "Focando agora":** quem segue a pessoa vê se ela está focando, em que tarefa, há quanto tempo e quanto falta. Aparece no topo da aba Amigos e no perfil. Ver [status-de-foco.md](status-de-foco.md). | Pedido do produto, para gerar interação de rede social. A aba Amigos deixa de servir só para buscar e seguir. |
+| 2026-11-13 | Tabela `focos_ativos` (migration `0004`), uma linha por usuário, lida por quem segue (RLS igual ao `progress`). Escrita só pelas funções `iniciar_foco` e `encerrar_foco`, `security definer`. | Mesmo padrão de `progress` e `focus_sessions`: o app não grava direto nas tabelas. |
+| 2026-11-13 | `inicio` e `fim_previsto` vêm do relógio do servidor. | Evita depender do relógio do celular de quem foca. |
+| 2026-11-13 | Linha com `fim_previsto` no passado conta como encerrada; as consultas filtram `fim_previsto > now()`. `registrar_sessao` também apaga a linha, por garantia, mas só se o `inicio` dela for anterior ou igual ao fim da sessão registrada (uma sessão antiga da fila não apaga o status de um foco novo). | Cobre app fechado à força e falta de internet no fim, sem rotina de limpeza no servidor. |
+| 2026-11-13 | Publicar e encerrar o status rodam em segundo plano e nunca quebram a sessão. | Focar continua funcionando sem internet; só o status deixa de aparecer. |
+| 2026-11-13 | Tempo decorrido e restante calculados no aparelho de quem vê; lista recarregada ao abrir a aba Amigos e a cada 30 s. | Simples e sem custo extra. Supabase Realtime fica como melhoria futura. |
+| 2026-11-13 | O nome da tarefa fica visível para os seguidores. | Mostra no que o amigo está focando, que é o que gera conversa. A opção de esconder fica em aberto. |
 
 ## Decisões em aberto
 - **Geração do roteiro por IA:** avaliar depois do MVP, considerando custo por uso, internet e privacidade.
@@ -58,4 +65,9 @@ Formato: data, decisão, motivo. Decisões em aberto ficam na seção final.
 - **"Peixes" do mockup:** o cabeçalho do mockup tem um terceiro contador (🐟 85) sem mecânica definida.
 - **Personalização do Foque:** acessórios, cores e novas aparências; se itens serão desbloqueados por nível (os pontos não são gastos). Ver [aparencia-foque.md](aparencia-foque.md).
 - **Aparência na nuvem:** salvar a escolha no Supabase para valer em outros aparelhos e aparecer para os amigos.
+- **Privacidade do status de foco:** opção de esconder o status "Focando agora" ou só o nome da tarefa. Ver [status-de-foco.md](status-de-foco.md).
+- **Interação com quem está focando:** reagir ou mandar um incentivo ("🐟"), e notificação quando um amigo começa a focar.
+- **Realtime no status de foco:** trocar a recarga a cada 30 s pelo Supabase Realtime.
+- **Status preso depois de cancelar offline:** se a pessoa cancela sem internet, os amigos a veem "focando" até o `fim_previsto` ou até a fila enviar a sessão. Avaliar se é aceitável.
+- **Relógio de quem vê:** o tempo restante é calculado com o relógio do aparelho de quem vê, comparado a horários do servidor. Um relógio adiantado ou atrasado mostra o tempo errado.
 - **Tamanho das artes:** os GIFs somam ~33 MB no app. Avaliar comprimir as artes ou baixar as aparências sob demanda. Os WebP animados da pasta de artes têm bordas mais suaves, mas são maiores (~43 MB).

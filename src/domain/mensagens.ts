@@ -21,6 +21,10 @@ export const mensagens = {
   saiuDoApp: 'Você saiu do Foque e a sessão foi encerrada. Desta vez, sem pontos.',
   desistiu: 'Você encerrou a sessão antes do tempo. Desta vez, sem pontos.',
   subiuDeNivel: (nivel: number) => `Você subiu para o nível ${nivel} de foco!`,
+  /** Aba Amigos, seção "Focando agora" sem ninguém. */
+  ninguemFocando: 'Ninguém focando agora. Que tal dar o exemplo? 🧊',
+  /** Aba Amigos: a seção "Focando agora" não carregou. */
+  erroFocando: 'Não deu para ver quem está focando agora. 🧊',
 };
 
 /** Falas do Foque em cada momento. Uma é sorteada a cada vez. */

@@ -6,11 +6,15 @@ import { Botao } from '../../../components/Botao';
 import { CabecalhoApp } from '../../../components/CabecalhoApp';
 import { Campo } from '../../../components/Campo';
 import { Chip } from '../../../components/Chip';
+import { LinhaFocando } from '../../../components/LinhaFocando';
 import { LinhaPessoa } from '../../../components/LinhaPessoa';
-import { pts } from '../../../domain/mensagens';
+import { useAgora } from '../../../components/useAgora';
+import { focoEstaAtivo } from '../../../domain/focoAtivo';
+import { mensagens, pts } from '../../../domain/mensagens';
 import { tituloDoNivel } from '../../../domain/niveis';
 import { nivelPorPontos } from '../../../domain/pontos';
 import { normalizarUsername } from '../../../domain/usuario';
+import { type FocoAtivo, listarFocandoAgora } from '../../../services/focoAtivo';
 import {
   buscarPessoas,
   ErroSocial,
@@ -22,12 +26,19 @@ import {
 import { useAuth } from '../../../store/auth';
 import { cartao, cores, espaco, rotuloSecao, tipografia } from '../../../theme';
 
+/** De quanto em quanto tempo a seção "Focando agora" recarrega com a aba aberta. */
+const RECARGA_FOCANDO_MS = 30_000;
+
 export default function TelaAmigos() {
   const router = useRouter();
   const meuId = useAuth((s) => s.session?.user.id);
 
   const [seguindo, setSeguindo] = useState<PessoaComProgresso[] | null>(null);
   const [erroLista, setErroLista] = useState<string | null>(null);
+
+  // null: ainda não carregou.
+  const [focando, setFocando] = useState<FocoAtivo[] | null>(null);
+  const [erroFocando, setErroFocando] = useState(false);
 
   const [termo, setTermo] = useState('');
   const [resultados, setResultados] = useState<Pessoa[]>([]);
@@ -53,6 +64,35 @@ export default function TelaAmigos() {
       carregarSeguindo();
     }, [carregarSeguindo]),
   );
+
+  const carregarFocando = useCallback(async () => {
+    try {
+      setFocando(await listarFocandoAgora());
+      setErroFocando(false);
+    } catch {
+      // Não derruba a tela: mantém a última lista (os focos vencem sozinhos pelo relógio).
+      setErroFocando(true);
+    }
+  }, []);
+
+  // "Focando agora": carrega ao abrir a aba e a cada 30 s enquanto ela está aberta.
+  useFocusEffect(
+    useCallback(() => {
+      if (!meuId) return;
+      carregarFocando();
+      const intervalo = setInterval(carregarFocando, RECARGA_FOCANDO_MS);
+      return () => clearInterval(intervalo);
+    }, [meuId, carregarFocando]),
+  );
+
+  // Um relógio só para a tela toda; parado quando não há ninguém focando.
+  const agora = useAgora((focando?.length ?? 0) > 0);
+  // Focos que venceram no relógio local somem sem esperar a recarga.
+  const focandoAgora = useMemo(
+    () => (focando ?? []).filter((foco) => focoEstaAtivo(foco, agora)),
+    [focando, agora],
+  );
+  const idsFocando = useMemo(() => new Set(focandoAgora.map((foco) => foco.userId)), [focandoAgora]);
 
   function mudarTermo(texto: string) {
     const novo = normalizarUsername(texto);
@@ -96,6 +136,8 @@ export default function TelaAmigos() {
     try {
       await seguir(meuId, pessoa.id);
       await carregarSeguindo();
+      // A pessoa nova pode estar focando agora.
+      carregarFocando();
       setErroBusca(null);
     } catch (e) {
       setErroBusca(e instanceof ErroSocial ? e.message : 'Algo deu errado.');
@@ -111,6 +153,28 @@ export default function TelaAmigos() {
         <View>
           <Text style={styles.titulo}>Amigos 🦭</Text>
           <Text style={styles.subtitulo}>Siga seus amigos e acompanhe o foque deles.</Text>
+        </View>
+
+        {/* Quem eu sigo e está focando agora */}
+        <View style={styles.secao}>
+          <Text style={rotuloSecao}>
+            Focando agora{focandoAgora.length > 0 ? ` (${focandoAgora.length})` : ''}
+          </Text>
+          {focando === null && !erroFocando ? <ActivityIndicator color={cores.primary} /> : null}
+          {focando === null && erroFocando ? (
+            <Text style={styles.vazio}>{mensagens.erroFocando}</Text>
+          ) : null}
+          {focando !== null && focandoAgora.length === 0 ? (
+            <Text style={styles.vazio}>{mensagens.ninguemFocando}</Text>
+          ) : null}
+          {focandoAgora.map((foco) => (
+            <LinhaFocando
+              key={foco.userId}
+              foco={foco}
+              agora={agora}
+              onPress={() => router.push(`/usuario/${foco.username}`)}
+            />
+          ))}
         </View>
 
         {/* Encontrar amigos */}
@@ -179,6 +243,7 @@ export default function TelaAmigos() {
                 username={pessoa.username}
                 detalhe={`Nível ${nivel} · ${tituloDoNivel(nivel)}`}
                 destaque={pts(pessoa.pontosTotais)}
+                focando={idsFocando.has(pessoa.id)}
                 onPress={() => router.push(`/usuario/${pessoa.username}`)}
               />
             );

@@ -20,11 +20,16 @@
 | RF-15 | O usuário segue outra pessoa, sem precisar de aprovação, e pode deixar de seguir. | Alta | Implementado |
 | RF-16 | Quem segue alguém vê o nível de foco e os pontos de foco dessa pessoa. Outras informações virão depois. | Alta | Implementado (pontos do banco; ver nota) |
 | RF-17 | O usuário vê a lista de pessoas que segue, com nível e pontos. | Média | Implementado |
-
-**Nota:** os pontos vêm do banco (`progress`) e são somados pela função `registrar_sessao` (migration `0002`). As tarefas ficam no banco (`tasks`, migration `0003`), com cópia no aparelho.
 | RF-18 | O usuário sai da conta. | Alta | Implementado |
 | RF-19 | O usuário escolhe a aparência do Foque na aba Foque. A escolha vale em todas as telas e fica salva. A padrão é a Clássica. | Média | Implementado (salva no aparelho) |
 | RF-20 | O usuário personaliza o Foque com acessórios, cores e outros itens, além da aparência. | Baixa | Futuro |
+| RF-21 | Ao iniciar uma sessão, o app publica o status "focando agora" com a tarefa, o início e o fim previsto. Ao concluir, cancelar ou sair da conta, o status é removido. Sem internet, a sessão funciona igual e só não aparece para os amigos. Ver [status-de-foco.md](status-de-foco.md). | Alta | Em desenvolvimento |
+| RF-22 | Só o próprio usuário e quem o segue veem o status "focando agora". | Alta | Em desenvolvimento |
+| RF-23 | A aba Amigos mostra no topo a seção "Focando agora", com quem você segue que está focando: avatar, @, tarefa, tempo restante ao vivo e barra de progresso. Tocar abre o perfil. Sem ninguém focando, o Foque mostra uma mensagem curta. | Alta | Em desenvolvimento |
+| RF-24 | Na lista "Seguindo", quem está focando ganha o selo "focando". | Média | Em desenvolvimento |
+| RF-25 | No perfil de quem você segue, se a pessoa está focando, aparece o cartão "Focando agora" com a tarefa, o tempo focado, o tempo restante e a barra de progresso. | Alta | Em desenvolvimento |
+
+**Nota:** os pontos vêm do banco (`progress`) e são somados pela função `registrar_sessao` (migration `0002`). As tarefas ficam no banco (`tasks`, migration `0003`), com cópia no aparelho.
 
 ## Regras de pontos e níveis
 - **Pontos:** 1 ponto de foco por minuto completo de sessão concluída. Sessões canceladas dão 0 pontos. Os pontos são acumulados, não são gastos.

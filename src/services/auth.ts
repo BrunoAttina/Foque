@@ -1,3 +1,4 @@
+import { encerrarFocoAtivo } from './focoAtivo';
 import { supabase } from './supabase';
 
 export interface Perfil {
@@ -52,6 +53,8 @@ export async function entrar(email: string, senha: string): Promise<void> {
 }
 
 export async function sair(): Promise<void> {
+  // Antes do signOut: depois dele não há mais token para apagar o status "focando agora".
+  await encerrarFocoAtivo();
   await supabase.auth.signOut();
 }
 
