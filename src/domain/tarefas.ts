@@ -1,11 +1,9 @@
 // Regras de validação de tarefas. Funções puras.
 
 export const NOME_MAXIMO = 60;
-export const DURACAO_MINIMA = 1;
-export const DURACAO_MAXIMA = 240;
-
-/** Durações sugeridas na tela Focar ("tempo de mergulho"). */
+/** Durações possíveis de um foco, em minutos: no cadastro (aba Focos) e no "Tempo de Foco" (tela Focar). */
 export const TEMPOS_SUGERIDOS = [15, 30, 45, 60] as const;
+export const TEMPO_PADRAO = 30;
 
 /** Missões sugeridas para quem ainda não tem tarefas. */
 export const MISSOES_SUGERIDAS = ['Ler um livro', 'Codar', 'Estudar', 'Foco profundo'] as const;
@@ -31,22 +29,15 @@ export type ResultadoValidacao =
   | { ok: true; nome: string; duracaoMinutos: number }
   | { ok: false; erro: string };
 
-export function validarTarefa(nomeTexto: string, duracaoTexto: string): ResultadoValidacao {
+export function validarTarefa(nomeTexto: string, duracaoMinutos: number): ResultadoValidacao {
   const nome = nomeTexto.trim();
   if (!nome) return { ok: false, erro: 'Dê um nome para o foco.' };
   if (nome.length > NOME_MAXIMO) {
     return { ok: false, erro: `O nome pode ter até ${NOME_MAXIMO} caracteres.` };
   }
 
-  const texto = duracaoTexto.trim();
-  if (!/^\d+$/.test(texto)) return { ok: false, erro: 'Informe a duração em minutos.' };
-
-  const duracaoMinutos = Number(texto);
-  if (duracaoMinutos < DURACAO_MINIMA || duracaoMinutos > DURACAO_MAXIMA) {
-    return {
-      ok: false,
-      erro: `A duração deve ficar entre ${DURACAO_MINIMA} e ${DURACAO_MAXIMA} minutos.`,
-    };
+  if (!(TEMPOS_SUGERIDOS as readonly number[]).includes(duracaoMinutos)) {
+    return { ok: false, erro: `Escolha uma duração: ${TEMPOS_SUGERIDOS.join(', ')} minutos.` };
   }
 
   return { ok: true, nome, duracaoMinutos };
@@ -59,4 +50,19 @@ export function tempoSugeridoMaisProximo(minutos: number): number {
     if (Math.abs(opcao - minutos) <= Math.abs(melhor - minutos)) melhor = opcao;
   }
   return melhor;
+}
+
+/** Dia no calendário do aparelho, como "AAAA-MM-DD". */
+export function diaLocal(agora: number): string {
+  const d = new Date(agora);
+  const dois = (n: number) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${dois(d.getMonth() + 1)}-${dois(d.getDate())}`;
+}
+
+/** O foco diário já foi concluído hoje? Focos de uma vez nunca ficam "feitos": são apagados. */
+export function feitaHoje(
+  tarefa: { repeteDiariamente: boolean; concluidaEm: string | null },
+  agora: number,
+): boolean {
+  return tarefa.repeteDiariamente && tarefa.concluidaEm === diaLocal(agora);
 }

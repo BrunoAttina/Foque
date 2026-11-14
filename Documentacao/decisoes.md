@@ -61,6 +61,9 @@ Formato: data, decisão, motivo. Decisões em aberto ficam na seção final.
 | 2026-11-14 | **O nível de foco é público; os pontos, não.** A função `niveis_de` (migration `0007`) devolve só o nível de qualquer usuário. Os pontos (`progress`) seguem visíveis só para quem segue a pessoa. Substitui a decisão anterior, em que o nível de um seguidor só aparecia se o usuário também o seguisse. | Pedido do dono: ver o nível de todos na aba Amigos. A conta do nível fica repetida no SQL e em `src/domain/pontos.ts`: mudar nos dois. |
 | 2026-11-14 | O Foque Careca passa de 60 para 30 moedas, igual ao Bebê (migration `0008`). | Pedido do dono. |
 | 2026-11-14 | O "Tempo de Foco" da tela Focar tem só as opções fixas (15/30/45/60 min). A duração cadastrada no foco não vira mais opção extra (era de onde vinha o "25 min"): a tela marca a opção mais próxima. | Pedido do dono: remover a opção de 25 min. |
+| 2026-11-14 | **Durações fixas:** um foco só pode ter 15, 30, 45 ou 60 minutos, também no cadastro (antes era um número livre de 1 a 240). A migration `0009` levou os focos antigos para a opção mais próxima. | Pedido do dono, para o cadastro bater com o "Tempo de Foco" da tela Focar. |
+| 2026-11-14 | **Foco de uma vez ou diário:** no cadastro, a pessoa escolhe se o foco é apagado ao ser concluído ou se repete todo dia. O padrão é apagar. Os focos que já existiam viraram diários. | Pedido do dono: hábitos como "ler 30 minutos por dia". Os antigos viraram diários para não sumirem sem aviso. |
+| 2026-11-14 | O foco diário guarda só o dia da última conclusão (`concluida_em`), e "hoje" é o dia do aparelho. Quem apaga ou marca é o app, ao concluir a sessão; sem internet, fica pendente no aparelho. | Simples e funciona offline. Histórico e sequência de dias ficam para depois. |
 
 ## Decisões em aberto
 - **Geração do roteiro por IA:** avaliar depois do MVP, considerando custo por uso, internet e privacidade.

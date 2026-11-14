@@ -4,7 +4,7 @@ import { novoUuid } from '../domain/id';
 import { pontosDaSessao } from '../domain/pontos';
 import { encerrarFocoAtivo, publicarFocoAtivo } from '../services/focoAtivo';
 import { useLoja } from './loja';
-import type { Tarefa } from './tarefas';
+import { type Tarefa, useTarefas } from './tarefas';
 
 export type StatusSessao = 'idle' | 'running' | 'done' | 'cancelled';
 export type MotivoCancelamento = 'saiu' | 'desistiu';
@@ -83,6 +83,8 @@ export const useSessao = create<SessaoState>((set, get) => ({
     }));
     // Cada ponto vale uma moeda. Também otimista; o saldo do servidor substitui depois.
     useLoja.setState((estado) => ({ moedas: estado.moedas + ganhos }));
+    // O foco de uma vez sai da lista; o diário fica marcado como feito hoje.
+    useTarefas.getState().concluir(tarefa.id, Date.now());
     void encerrarFocoAtivo();
   },
 }));

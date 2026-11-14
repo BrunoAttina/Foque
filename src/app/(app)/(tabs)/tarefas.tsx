@@ -1,13 +1,14 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { useRouter } from 'expo-router';
-import { useState } from 'react';
+import { useFocusEffect, useRouter } from 'expo-router';
+import { useCallback, useState } from 'react';
 import { ActivityIndicator, FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Botao } from '../../../components/Botao';
 import { CabecalhoApp } from '../../../components/CabecalhoApp';
 import { Campo } from '../../../components/Campo';
+import { Chip } from '../../../components/Chip';
 import { pts } from '../../../domain/mensagens';
-import { emojiDaTarefa, validarTarefa } from '../../../domain/tarefas';
+import { emojiDaTarefa, feitaHoje, TEMPO_PADRAO, TEMPOS_SUGERIDOS, validarTarefa } from '../../../domain/tarefas';
 import { ErroTarefas } from '../../../services/tarefas';
 import { useSessao } from '../../../store/sessao';
 import { type Tarefa, useTarefas } from '../../../store/tarefas';
@@ -22,8 +23,17 @@ export default function TelaTarefas() {
   const iniciar = useSessao((s) => s.iniciar);
 
   const [nome, setNome] = useState('');
-  const [duracao, setDuracao] = useState('');
+  const [duracao, setDuracao] = useState<number>(TEMPO_PADRAO);
+  // false: o foco é apagado ao ser concluído. true: fica na lista e volta todo dia.
+  const [repete, setRepete] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
+  // Horário de quando a aba ganhou foco: define o que é "hoje" para os focos diários.
+  const [hoje, setHoje] = useState(() => Date.now());
+  useFocusEffect(
+    useCallback(() => {
+      setHoje(Date.now());
+    }, []),
+  );
   const [salvando, setSalvando] = useState(false);
 
   async function adicionarTarefa() {
@@ -34,9 +44,8 @@ export default function TelaTarefas() {
     }
     setSalvando(true);
     try {
-      await adicionar(resultado.nome, resultado.duracaoMinutos);
+      await adicionar(resultado.nome, resultado.duracaoMinutos, repete);
       setNome('');
-      setDuracao('');
       setErro(null);
     } catch (e) {
       setErro(e instanceof ErroTarefas ? e.message : 'Algo deu errado. Tente de novo.');
@@ -81,17 +90,37 @@ export default function TelaTarefas() {
                 value={nome}
                 onChangeText={setNome}
                 maxLength={60}
-                returnKeyType="next"
+                returnKeyType="done"
               />
-              <Campo
-                rotulo="Duração (minutos)"
-                placeholder="30"
-                value={duracao}
-                onChangeText={setDuracao}
-                keyboardType="number-pad"
-                maxLength={3}
-                onSubmitEditing={adicionarTarefa}
-              />
+
+              <View style={styles.grupo}>
+                <Text style={rotuloSecao}>Duração</Text>
+                <View style={styles.duracoes} accessibilityRole="radiogroup">
+                  {TEMPOS_SUGERIDOS.map((minutos) => (
+                    <View key={minutos} style={styles.duracao}>
+                      <Chip
+                        texto={`${minutos} min`}
+                        ativo={duracao === minutos}
+                        onPress={() => setDuracao(minutos)}
+                      />
+                    </View>
+                  ))}
+                </View>
+              </View>
+
+              <View style={styles.grupo}>
+                <Text style={rotuloSecao}>Depois de concluir</Text>
+                <View style={styles.opcoes} accessibilityRole="radiogroup">
+                  <Chip icone="looks-one" texto="Apagar o foco" ativo={!repete} onPress={() => setRepete(false)} />
+                  <Chip icone="repeat" texto="Repetir todo dia" ativo={repete} onPress={() => setRepete(true)} />
+                </View>
+                <Text style={styles.ajuda}>
+                  {repete
+                    ? 'O foco fica na lista e volta todo dia. Bom para um hábito, como ler 30 minutos por dia.'
+                    : 'O foco some da lista assim que você concluir. Bom para uma tarefa de uma vez só.'}
+                </Text>
+              </View>
+
               {erro ? <Text style={styles.erro}>{erro}</Text> : null}
               <Botao
                 titulo={salvando ? 'Salvando…' : 'Adicionar foco'}
@@ -121,6 +150,20 @@ export default function TelaTarefas() {
               <Text style={styles.itemDetalhe}>
                 {item.duracaoMinutos} min · +{pts(item.duracaoMinutos)}
               </Text>
+              <View style={styles.selo}>
+                <MaterialIcons
+                  name={feitaHoje(item, hoje) ? 'check-circle' : item.repeteDiariamente ? 'repeat' : 'looks-one'}
+                  size={14}
+                  color={feitaHoje(item, hoje) ? cores.secondary : cores.onSurfaceVariant}
+                />
+                <Text style={[styles.textoSelo, feitaHoje(item, hoje) && { color: cores.secondary }]}>
+                  {feitaHoje(item, hoje)
+                    ? 'Todo dia · feito hoje'
+                    : item.repeteDiariamente
+                      ? 'Todo dia'
+                      : 'Uma vez'}
+                </Text>
+              </View>
             </View>
             <Pressable
               onPress={() => removerTarefa(item.id)}
@@ -131,7 +174,7 @@ export default function TelaTarefas() {
             >
               <MaterialIcons name="delete-outline" size={22} color={cores.outline} />
             </Pressable>
-            <Botao titulo="Focar" onPress={() => focar(item)} />
+            <Botao titulo={feitaHoje(item, hoje) ? 'De novo' : 'Focar'} onPress={() => focar(item)} />
           </View>
         )}
       />
@@ -163,6 +206,34 @@ const styles = StyleSheet.create({
   },
   formulario: {
     gap: espaco.md,
+  },
+  grupo: {
+    gap: espaco.sm,
+  },
+  duracoes: {
+    flexDirection: 'row',
+    gap: espaco.xs,
+  },
+  duracao: {
+    flex: 1,
+  },
+  opcoes: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: espaco.sm,
+  },
+  ajuda: {
+    ...tipografia.bodySm,
+    color: cores.onSurfaceVariant,
+  },
+  selo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: espaco.xs,
+  },
+  textoSelo: {
+    ...tipografia.labelSm,
+    color: cores.onSurfaceVariant,
   },
   erro: {
     ...tipografia.bodySm,

@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
   chip: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     gap: espaco.xs,
     backgroundColor: cores.surfaceContainerLowest,
     borderRadius: raio.full,

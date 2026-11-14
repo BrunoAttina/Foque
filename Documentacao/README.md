@@ -10,6 +10,7 @@
 | [roteiro-foque.md](roteiro-foque.md) | Perguntas, sugestões e mensagens do assistente Foque |
 | [aparencia-foque.md](aparencia-foque.md) | Aparências do Foque, animações por momento e a personalização futura |
 | [loja.md](loja.md) | Loja e moedas: como ganhar, preços, compras e dados |
+| [focos.md](focos.md) | Focos (tarefas): durações, foco de uma vez ou diário, dados |
 | [status-de-foco.md](status-de-foco.md) | Status "Focando agora": quem você segue vê quando você está focando |
 | [design.md](design.md) | Design system "Glacial Focus Game": cores, tipografia, formas e componentes |
 | [arquitetura.md](arquitetura.md) | Stack técnica, estrutura de pastas e dados |

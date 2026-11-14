@@ -37,6 +37,8 @@
 | RF-32 | O Perfil mostra quantas pessoas o usuário segue e quantas o seguem. Tocar em um dos números abre a aba Amigos com a lista correspondente aberta. | Alta | Implementado |
 | RF-33 | A aba Amigos tem as listas "Seguindo" e "Seguidores", recolhidas por padrão, com a quantidade e a indicação de que abrem. Em Seguidores, quem o usuário ainda não segue tem o botão "Seguir". | Alta | Implementado |
 | RF-34 | O nível de foco de cada pessoa aparece em toda a aba Amigos (Focando agora, busca, Seguindo e Seguidores) e no perfil dela, mesmo sem segui-la. Os pontos continuam visíveis só para quem segue. | Alta | Implementado |
+| RF-35 | Um foco só pode ter 15, 30, 45 ou 60 minutos, no cadastro e na tela Focar. | Alta | Implementado |
+| RF-36 | Ao cadastrar um foco, o usuário escolhe se ele é apagado ao ser concluído (uma vez) ou se repete todo dia. O foco diário fica marcado como "feito hoje" e volta no dia seguinte. Ver [focos.md](focos.md). | Alta | Implementado |
 
 **Nota:** os pontos vêm do banco (`progress`) e são somados pela função `registrar_sessao` (migration `0002`). As tarefas ficam no banco (`tasks`, migration `0003`), com cópia no aparelho.
 

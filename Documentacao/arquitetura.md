@@ -74,7 +74,7 @@ A migração para o Expo Router já foi feita: o entry point é `expo-router/ent
 | `profiles` | id do usuário, `username` (@) único, `aparencia` (a foca em uso) | Qualquer usuário logado lê; cada um altera só o próprio @. A aparência só muda pela função `definir_aparencia` | Criada (`0001`); `aparencia` na `0006` |
 | `follows` | `follower_id`, `following_id` | Cada um vê as relações em que participa; segue e deixa de seguir em nome próprio | Criada (`0001`) |
 | `progress` | user_id, `pontos_totais` | O próprio usuário e quem o segue leem; só funções do servidor alteram | Criada (`0001`) |
-| `tasks` | id, user_id (automático), nome, duração | Só o dono lê e altera | Criada (`0003`) |
+| `tasks` | id, user_id (automático), nome, duração (15/30/45/60), `repete_diariamente`, `concluida_em` | Só o dono lê e altera | Criada (`0003`); repetição e durações fixas na `0009` |
 | `focus_sessions` | id (gerado no aparelho), user_id, tarefa, duração, início, fim, status, pontos | Só o dono lê; só a função `registrar_sessao` escreve | Criada (`0002`) |
 | `focos_ativos` | `user_id` (chave), `tarefa`, `duracao_minutos`, `inicio`, `fim_previsto`, `atualizado_em` | O próprio usuário e quem o segue leem; só as funções `iniciar_foco`, `encerrar_foco` e `registrar_sessao` escrevem | Criada (`0004`) |
 | `carteiras` | user_id, `moedas` | Só o dono lê; só as funções alteram | Criada (`0005`) |

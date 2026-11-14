@@ -1,6 +1,6 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { useRouter } from 'expo-router';
-import { useMemo, useState } from 'react';
+import { useFocusEffect, useRouter } from 'expo-router';
+import { useCallback, useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { BalaoFala } from '../../../components/BalaoFala';
@@ -9,7 +9,14 @@ import { CabecalhoApp } from '../../../components/CabecalhoApp';
 import { Chip } from '../../../components/Chip';
 import { Mascote } from '../../../components/Mascote';
 import { falas, pts } from '../../../domain/mensagens';
-import { emojiDaTarefa, MISSOES_SUGERIDAS, TEMPOS_SUGERIDOS, tempoSugeridoMaisProximo } from '../../../domain/tarefas';
+import {
+  emojiDaTarefa,
+  feitaHoje,
+  MISSOES_SUGERIDAS,
+  TEMPO_PADRAO,
+  TEMPOS_SUGERIDOS,
+  tempoSugeridoMaisProximo,
+} from '../../../domain/tarefas';
 import { ErroTarefas } from '../../../services/tarefas';
 import { useSessao } from '../../../store/sessao';
 import { useTarefas } from '../../../store/tarefas';
@@ -22,10 +29,23 @@ export default function TelaFocar() {
   const adicionar = useTarefas((s) => s.adicionar);
 
   const [selecionadaId, setSelecionadaId] = useState<string | null>(null);
-  const [tempo, setTempo] = useState(30);
+  const [tempo, setTempo] = useState<number>(TEMPO_PADRAO);
   const [erro, setErro] = useState<string | null>(null);
 
-  const tarefa = tarefas.find((t) => t.id === selecionadaId) ?? tarefas[0] ?? null;
+  // Horário de quando a aba ganhou foco: define o que é "hoje" para os focos diários.
+  const [hoje, setHoje] = useState(() => Date.now());
+  useFocusEffect(
+    useCallback(() => {
+      setHoje(Date.now());
+    }, []),
+  );
+
+  // Sem escolha: o primeiro foco que ainda não foi feito hoje.
+  const tarefa =
+    tarefas.find((t) => t.id === selecionadaId) ??
+    tarefas.find((t) => !feitaHoje(t, hoje)) ??
+    tarefas[0] ??
+    null;
 
   // Ao trocar de foco, o tempo vai para a opção mais próxima da duração dele (ajuste durante o render, sem efeito).
   const [missaoDoTempo, setMissaoDoTempo] = useState<string | undefined>(undefined);
@@ -44,7 +64,8 @@ export default function TelaFocar() {
 
   async function criarSugerida(nome: string) {
     try {
-      const criada = await adicionar(nome, tempo);
+      // Sugestão rápida: foco de uma vez (some ao concluir).
+      const criada = await adicionar(nome, tempo, false);
       setSelecionadaId(criada.id);
       setErro(null);
     } catch (e) {
@@ -114,13 +135,18 @@ export default function TelaFocar() {
                     onPress={() => setSelecionadaId(t.id)}
                     accessibilityRole="radio"
                     accessibilityState={{ checked: ativa }}
-                    accessibilityLabel={`${t.nome}, ${t.duracaoMinutos} minutos`}
+                    accessibilityLabel={`${t.nome}, ${t.duracaoMinutos} minutos${t.repeteDiariamente ? ', todo dia' : ''}${feitaHoje(t, hoje) ? ', feito hoje' : ''}`}
                     style={({ pressed }) => [styles.itemTarefa, ativa && styles.itemTarefaAtiva, pressed && { opacity: 0.7 }]}
                   >
                     <Text style={styles.emojiMissao}>{emojiDaTarefa(t.nome)}</Text>
                     <Text style={[styles.nomeTarefa, ativa && { color: cores.primary }]} numberOfLines={1}>
                       {t.nome}
                     </Text>
+                    {feitaHoje(t, hoje) ? (
+                      <MaterialIcons name="check-circle" size={18} color={cores.secondary} />
+                    ) : t.repeteDiariamente ? (
+                      <MaterialIcons name="repeat" size={18} color={cores.onSurfaceVariant} />
+                    ) : null}
                     <Text style={styles.duracaoTarefa}>{t.duracaoMinutos} min</Text>
                     <MaterialIcons
                       name={ativa ? 'radio-button-checked' : 'radio-button-unchecked'}
