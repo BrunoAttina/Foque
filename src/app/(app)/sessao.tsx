@@ -210,9 +210,15 @@ export default function TelaSessao() {
       </View>
 
       <View style={[styles.rodape, compacta && styles.rodapeCompacto]}>
-        <View style={styles.regra}>
-          <MaterialIcons name="warning" size={18} color={cores.tertiary} />
-          <Text style={styles.textoRegra}>Pode bloquear a tela. Sair do app quebra o gelo.</Text>
+        <View style={styles.regras}>
+          <View style={styles.regra}>
+            <MaterialIcons name="check-circle" size={18} color={cores.mint} />
+            <Text style={styles.textoRegra}>Pode bloquear a tela.</Text>
+          </View>
+          <View style={styles.regra}>
+            <MaterialIcons name="warning" size={18} color={cores.tertiary} />
+            <Text style={styles.textoRegra}>Não saia nem feche o app: o gelo quebra.</Text>
+          </View>
         </View>
         <Botao titulo="Desistir" icone="heart-broken" variante="secundario" onPress={() => cancelar('desistiu')} />
       </View>
@@ -313,6 +319,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: espaco.xs,
+  },
+  regras: {
+    gap: 2,
+    alignItems: 'center',
   },
   textoRegra: {
     ...tipografia.bodySm,
