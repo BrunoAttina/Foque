@@ -29,8 +29,9 @@ export function BarraProgresso({ fracao, altura = 16, fracaoAnterior }: BarraPro
         accessibilityValue={{ min: 0, max: 100, now: Math.round(total * 100) }}
       >
         <View style={[styles.doisTrechos, { width: largura }]}>
-          <View style={[styles.trechoAnterior, { flex: anterior }]} />
-          <View style={[styles.trechoNovo, { flex: total - anterior }]} />
+          {/* Pesos inteiros: com soma menor que 1, o flex não ocuparia a largura toda. */}
+          <View style={[styles.trechoAnterior, { flex: Math.round(anterior * 1000) }]} />
+          <View style={[styles.trechoNovo, { flex: Math.round((total - anterior) * 1000) }]} />
         </View>
       </View>
     );
