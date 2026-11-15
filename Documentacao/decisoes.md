@@ -64,6 +64,7 @@ Formato: data, decisão, motivo. Decisões em aberto ficam na seção final.
 | 2026-11-14 | **Durações fixas:** um foco só pode ter 15, 30, 45 ou 60 minutos, também no cadastro (antes era um número livre de 1 a 240). A migration `0009` levou os focos antigos para a opção mais próxima. | Pedido do dono, para o cadastro bater com o "Tempo de Foco" da tela Focar. |
 | 2026-11-14 | **Foco de uma vez ou diário:** no cadastro, a pessoa escolhe se o foco é apagado ao ser concluído ou se repete todo dia. O padrão é apagar. Os focos que já existiam viraram diários. | Pedido do dono: hábitos como "ler 30 minutos por dia". Os antigos viraram diários para não sumirem sem aviso. |
 | 2026-11-14 | O foco diário guarda só o dia da última conclusão (`concluida_em`), e "hoje" é o dia do aparelho. Quem apaga ou marca é o app, ao concluir a sessão; sem internet, fica pendente no aparelho. | Simples e funciona offline. Histórico e sequência de dias ficam para depois. |
+| 2026-11-14 | **Tela de resultado:** os pontos e as moedas ganhos ficaram menores e entraram no cartão de nível, junto da barra. A barra tem duas cores: azul para o que a pessoa já tinha no nível e verde para o que ganhou neste foco. Se o foco fez subir de nível, a barra do nível novo é toda verde. A frase "Rumo a ..." saiu dessa tela (continua no Perfil). | Pedido do dono: ver de relance quanto o foco acrescentou ao progresso. |
 
 ## Decisões em aberto
 - **Geração do roteiro por IA:** avaliar depois do MVP, considerando custo por uso, internet e privacidade.

@@ -8,7 +8,7 @@ import { BalaoFala } from '../../components/BalaoFala';
 import { Botao } from '../../components/Botao';
 import { CartaoNivel } from '../../components/CartaoNivel';
 import { Mascote } from '../../components/Mascote';
-import { falas, mensagens, pts } from '../../domain/mensagens';
+import { falas, mensagens } from '../../domain/mensagens';
 import { tituloDoNivel } from '../../domain/niveis';
 import { nivelPorPontos } from '../../domain/pontos';
 import { useSessao } from '../../store/sessao';
@@ -46,16 +46,6 @@ export default function TelaResultado() {
           <Mascote tamanho={150} estado={concluida ? 'comemorando' : 'triste'} />
         </View>
 
-        {concluida ? (
-          <View style={styles.pontos}>
-            <MaterialIcons name="diamond" size={28} color={cores.primaryContainer} />
-            <Text style={styles.textoPontos}>+{pts(pontosUltimaSessao)}</Text>
-            <View style={styles.divisor} />
-            <MaterialIcons name="paid" size={26} color={cores.amber} />
-            <Text style={styles.textoPontos}>+{pontosUltimaSessao}</Text>
-          </View>
-        ) : null}
-
         <Text style={styles.mensagem}>{mensagem}</Text>
 
         {subiuDeNivel ? (
@@ -67,7 +57,7 @@ export default function TelaResultado() {
           </View>
         ) : null}
 
-        <CartaoNivel pontos={pontosTotais} />
+        <CartaoNivel pontos={pontosTotais} semProximoTitulo ganhos={concluida ? pontosUltimaSessao : undefined} />
       </ScrollView>
 
       <Botao titulo={concluida ? 'Foque mais!' : 'Tentar de novo'} icone="ac-unit" grande onPress={voltar} />
@@ -94,29 +84,6 @@ const styles = StyleSheet.create({
   mascote: {
     alignItems: 'center',
     gap: espaco.xs,
-  },
-  pontos: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignSelf: 'center',
-    gap: espaco.sm,
-    backgroundColor: cores.surfaceContainerLowest,
-    borderRadius: raio.full,
-    borderWidth: 2,
-    borderColor: cores.iceBorder,
-    paddingHorizontal: espaco.lg,
-    paddingVertical: espaco.sm,
-  },
-  divisor: {
-    width: 2,
-    height: 24,
-    borderRadius: 1,
-    backgroundColor: cores.iceBorder,
-    marginHorizontal: espaco.xs,
-  },
-  textoPontos: {
-    ...tipografia.headlineLg,
-    color: cores.primary,
   },
   mensagem: {
     ...tipografia.bodyLg,
