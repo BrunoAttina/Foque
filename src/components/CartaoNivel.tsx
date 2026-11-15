@@ -53,18 +53,6 @@ export function CartaoNivel({ pontos, semProximoTitulo, ganhos }: CartaoNivelPro
         <Text style={styles.meta}>{pts(p.proximo)}</Text>
       </View>
       <BarraProgresso fracao={p.fracao} fracaoAnterior={fracaoAnterior} />
-      {ganhos !== undefined ? (
-        <View style={styles.legenda}>
-          <View style={styles.itemLegenda}>
-            <View style={[styles.ponto, { backgroundColor: cores.primaryContainer }]} />
-            <Text style={styles.textoLegenda}>Você já tinha</Text>
-          </View>
-          <View style={styles.itemLegenda}>
-            <View style={[styles.ponto, { backgroundColor: cores.mint }]} />
-            <Text style={styles.textoLegenda}>Ganhou neste foco</Text>
-          </View>
-        </View>
-      ) : null}
     </View>
   );
 }
@@ -105,26 +93,6 @@ const styles = StyleSheet.create({
     borderRadius: 1,
     backgroundColor: cores.iceBorder,
     marginHorizontal: espaco.xs,
-  },
-  legenda: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    columnGap: espaco.md,
-    rowGap: 2,
-  },
-  itemLegenda: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: espaco.xs,
-  },
-  ponto: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-  },
-  textoLegenda: {
-    ...tipografia.labelSm,
-    color: cores.onSurfaceVariant,
   },
   valores: {
     flexDirection: 'row',

@@ -26,8 +26,8 @@ export default function TelaResultado() {
   const nivelAtual = nivelPorPontos(pontosTotais);
   const subiuDeNivel = concluida && nivelPorPontos(pontosTotais - pontosUltimaSessao) < nivelAtual;
 
-  let mensagem = mensagens.sessaoConcluida(pontosUltimaSessao);
-  if (!concluida) mensagem = motivo === 'saiu' ? mensagens.saiuDoApp : mensagens.desistiu;
+  // Na conclusão, o cartão de nível já mostra o que foi ganho; a frase só aparece quando o foco é perdido.
+  const mensagem = concluida ? null : motivo === 'saiu' ? mensagens.saiuDoApp : mensagens.desistiu;
 
   function voltar() {
     if (router.canGoBack()) router.back();
@@ -46,7 +46,7 @@ export default function TelaResultado() {
           <Mascote tamanho={150} estado={concluida ? 'comemorando' : 'triste'} />
         </View>
 
-        <Text style={styles.mensagem}>{mensagem}</Text>
+        {mensagem ? <Text style={styles.mensagem}>{mensagem}</Text> : null}
 
         {subiuDeNivel ? (
           <View style={styles.subiu}>

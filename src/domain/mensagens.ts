@@ -22,8 +22,6 @@ export function moedas(quantidade: number) {
 
 export const mensagens = {
   inicioSessao: (tarefa: string) => `Sessão iniciada. Deixe o celular de lado e foque em: ${tarefa}.`,
-  sessaoConcluida: (pontos: number) =>
-    `Sessão concluída! Você ganhou ${pontosDeFoco(pontos)} e ${moedas(pontos)}.`,
   saiuDoApp: 'Você saiu do Foque e a sessão foi encerrada. Desta vez, sem pontos.',
   desistiu: 'Você encerrou a sessão antes do tempo. Desta vez, sem pontos.',
   subiuDeNivel: (nivel: number) => `Você subiu para o nível ${nivel} de foco!`,
