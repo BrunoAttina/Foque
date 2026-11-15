@@ -217,7 +217,7 @@ export default function TelaSessao() {
           </View>
           <View style={styles.regra}>
             <MaterialIcons name="warning" size={18} color={cores.tertiary} />
-            <Text style={styles.textoRegra}>Não saia nem feche o app: o gelo quebra.</Text>
+            <Text style={styles.textoRegra}>Não saia nem feche o app: você perde o foco.</Text>
           </View>
         </View>
         <Botao titulo="Desistir" icone="heart-broken" variante="secundario" onPress={() => cancelar('desistiu')} />
