@@ -66,6 +66,7 @@ Formato: data, decisão, motivo. Decisões em aberto ficam na seção final.
 | 2026-11-14 | O foco diário guarda só o dia da última conclusão (`concluida_em`), e "hoje" é o dia do aparelho. Quem apaga ou marca é o app, ao concluir a sessão; sem internet, fica pendente no aparelho. | Simples e funciona offline. Histórico e sequência de dias ficam para depois. |
 | 2026-11-14 | **Tela de resultado:** os pontos e as moedas ganhos ficaram menores e entraram no cartão de nível, junto da barra. A barra tem duas cores: azul para o que a pessoa já tinha no nível e verde para o que ganhou neste foco. Se o foco fez subir de nível, a barra do nível novo é toda verde. A frase "Rumo a ..." saiu dessa tela (continua no Perfil). | Pedido do dono: ver de relance quanto o foco acrescentou ao progresso. |
 | 2026-11-14 | Na tela de resultado de um foco concluído, saíram a frase "Sessão concluída! Você ganhou..." e a legenda das cores da barra. | Pedido do dono: o cartão já mostra os pontos e as moedas. |
+| 2026-11-19 | **Sem "Tempo de Foco" na tela Focar.** A sessão dura o tempo cadastrado no foco. Os botões com tempo e pontos foram para o cadastro da aba Focos, no lugar dos botões simples. Substitui as decisões anteriores sobre o "Tempo de Foco". | Pedido do dono: não fazia sentido escolher o tempo depois de escolher o foco, que já tem duração. |
 
 ## Decisões em aberto
 - **Geração do roteiro por IA:** avaliar depois do MVP, considerando custo por uso, internet e privacidade.

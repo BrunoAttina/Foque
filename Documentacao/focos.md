@@ -5,7 +5,7 @@ Um **foco** é uma tarefa que a pessoa cadastra para focar nela: tem nome, dura�
 **Status:** implementado. Migrations `0003_tarefas.sql` e `0009_focos_diarios.sql` aplicadas.
 
 ## Regras
-- **Duração:** só 15, 30, 45 ou 60 minutos. São as mesmas opções do "Tempo de Foco" da tela Focar. O padrão é 30.
+- **Duração:** só 15, 30, 45 ou 60 minutos, escolhida no cadastro em botões que mostram o tempo e os pontos. O padrão é 30. A sessão sempre dura o tempo cadastrado no foco: a tela Focar não tem escolha de tempo.
 - **Depois de concluir**, a pessoa escolhe no cadastro:
   - **Apagar o foco** (uma vez): o foco some da lista assim que uma sessão dele é concluída. É o padrão.
   - **Repetir todo dia** (diário): o foco fica na lista. Ao concluir, fica marcado como "feito hoje" e volta a ficar pendente no dia seguinte. Serve para hábitos, como ler 30 minutos por dia.
@@ -16,7 +16,7 @@ Um **foco** é uma tarefa que a pessoa cadastra para focar nela: tem nome, dura�
 - A lixeira da aba Focos continua apagando qualquer foco na hora.
 
 ## Telas
-- **Focos (`tarefas.tsx`):** o cadastro tem o nome, a **Duração** (quatro botões) e **Depois de concluir** ("Apagar o foco" ou "Repetir todo dia"), com uma frase explicando a opção marcada. Cada foco da lista mostra "Uma vez", "Todo dia" ou "Todo dia · feito hoje".
+- **Focos (`tarefas.tsx`):** o cadastro tem o nome, a **Duração** (quatro botões com o tempo e os pontos, componente `OpcaoTempo`) e **Depois de concluir** ("Apagar o foco" ou "Repetir todo dia"), com uma frase explicando a opção marcada. Cada foco da lista mostra "Uma vez", "Todo dia" ou "Todo dia · feito hoje".
 - **Focar (`index.tsx`):** na lista "Tarefas que precisam do seu foco", o foco diário tem o ícone de repetição, e o feito hoje, um check verde. Sem escolha da pessoa, a tela seleciona o primeiro foco que ainda não foi feito hoje.
 
 ## Dados (tabela `tasks`)

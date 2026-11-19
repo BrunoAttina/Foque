@@ -1,7 +1,7 @@
 // Regras de validação de tarefas. Funções puras.
 
 export const NOME_MAXIMO = 60;
-/** Durações possíveis de um foco, em minutos: no cadastro (aba Focos) e no "Tempo de Foco" (tela Focar). */
+/** Durações possíveis de um foco, em minutos (cadastro na aba Focos). */
 export const TEMPOS_SUGERIDOS = [15, 30, 45, 60] as const;
 export const TEMPO_PADRAO = 30;
 
@@ -41,15 +41,6 @@ export function validarTarefa(nomeTexto: string, duracaoMinutos: number): Result
   }
 
   return { ok: true, nome, duracaoMinutos };
-}
-
-/** Opção de tempo da tela Focar mais próxima da duração informada (no empate, a maior). */
-export function tempoSugeridoMaisProximo(minutos: number): number {
-  let melhor: number = TEMPOS_SUGERIDOS[0];
-  for (const opcao of TEMPOS_SUGERIDOS) {
-    if (Math.abs(opcao - minutos) <= Math.abs(melhor - minutos)) melhor = opcao;
-  }
-  return melhor;
 }
 
 /** Dia no calendário do aparelho, como "AAAA-MM-DD". */

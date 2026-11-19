@@ -8,15 +8,8 @@ import { Botao } from '../../../components/Botao';
 import { CabecalhoApp } from '../../../components/CabecalhoApp';
 import { Chip } from '../../../components/Chip';
 import { Mascote } from '../../../components/Mascote';
-import { falas, pts } from '../../../domain/mensagens';
-import {
-  emojiDaTarefa,
-  feitaHoje,
-  MISSOES_SUGERIDAS,
-  TEMPO_PADRAO,
-  TEMPOS_SUGERIDOS,
-  tempoSugeridoMaisProximo,
-} from '../../../domain/tarefas';
+import { falas } from '../../../domain/mensagens';
+import { emojiDaTarefa, feitaHoje, MISSOES_SUGERIDAS, TEMPO_PADRAO } from '../../../domain/tarefas';
 import { ErroTarefas } from '../../../services/tarefas';
 import { useSessao } from '../../../store/sessao';
 import { useTarefas } from '../../../store/tarefas';
@@ -29,7 +22,6 @@ export default function TelaFocar() {
   const adicionar = useTarefas((s) => s.adicionar);
 
   const [selecionadaId, setSelecionadaId] = useState<string | null>(null);
-  const [tempo, setTempo] = useState<number>(TEMPO_PADRAO);
   const [erro, setErro] = useState<string | null>(null);
 
   // Horário de quando a aba ganhou foco: define o que é "hoje" para os focos diários.
@@ -47,25 +39,15 @@ export default function TelaFocar() {
     tarefas[0] ??
     null;
 
-  // Ao trocar de foco, o tempo vai para a opção mais próxima da duração dele (ajuste durante o render, sem efeito).
-  const [missaoDoTempo, setMissaoDoTempo] = useState<string | undefined>(undefined);
-  if (tarefa && tarefa.id !== missaoDoTempo) {
-    setMissaoDoTempo(tarefa.id);
-    setTempo(tempoSugeridoMaisProximo(tarefa.duracaoMinutos));
-  }
-
-  // Só os tempos fixos: a duração cadastrada no foco não vira opção extra.
-  const opcoes = TEMPOS_SUGERIDOS;
-
   const fala = useMemo(
-    () => (tarefa ? falas.provocacao(tarefa.nome, tempo) : falas.semMissao()),
-    [tarefa, tempo],
+    () => (tarefa ? falas.provocacao(tarefa.nome, tarefa.duracaoMinutos) : falas.semMissao()),
+    [tarefa],
   );
 
   async function criarSugerida(nome: string) {
     try {
       // Sugestão rápida: foco de uma vez (some ao concluir).
-      const criada = await adicionar(nome, tempo, false);
+      const criada = await adicionar(nome, TEMPO_PADRAO, false);
       setSelecionadaId(criada.id);
       setErro(null);
     } catch (e) {
@@ -75,7 +57,8 @@ export default function TelaFocar() {
 
   function focar() {
     if (!tarefa) return;
-    iniciar({ ...tarefa, duracaoMinutos: tempo }, Date.now());
+    // A sessão dura o tempo cadastrado no foco.
+    iniciar(tarefa, Date.now());
     router.push('/sessao');
   }
 
@@ -86,29 +69,6 @@ export default function TelaFocar() {
         <View style={styles.mascote}>
           <BalaoFala texto={fala} />
           <Mascote tamanho={150} />
-        </View>
-
-        {/* Tempo de foco */}
-        <View style={styles.secao}>
-          <View style={styles.linhaSecao}>
-            <Text style={rotuloSecao}>Tempo de Foco</Text>
-            <View style={styles.recompensa}>
-              <MaterialIcons name="bolt" size={14} color={cores.secondary} />
-              <Text style={styles.textoRecompensa}>
-                {tempo >= 45 ? '+Recompensa alta' : '1 ponto por minuto'}
-              </Text>
-            </View>
-          </View>
-          <View style={styles.tempos}>
-            {opcoes.map((minutos) => (
-              <OpcaoTempo
-                key={minutos}
-                minutos={minutos}
-                ativa={minutos === tempo}
-                onPress={() => setTempo(minutos)}
-              />
-            ))}
-          </View>
         </View>
 
         {/* Tarefas que precisam do seu foco: a lista dos focos cadastrados. */}
@@ -200,32 +160,6 @@ export default function TelaFocar() {
   );
 }
 
-function OpcaoTempo({ minutos, ativa, onPress }: { minutos: number; ativa: boolean; onPress: () => void }) {
-  return (
-    <Pressable
-      onPress={onPress}
-      accessibilityRole="button"
-      accessibilityState={{ selected: ativa }}
-      accessibilityLabel={`${minutos} minutos, ${minutos} pontos`}
-      style={[styles.baseTempo, { backgroundColor: ativa ? cores.arcticDeep : cores.surfaceContainerHighest }]}
-    >
-      {({ pressed }) => (
-        <View
-          style={[
-            styles.faceTempo,
-            { backgroundColor: ativa ? cores.primaryContainer : cores.surfaceContainerLowest },
-            pressed ? { marginTop: 2, marginBottom: 1 } : { marginBottom: ativa ? 4 : 3 },
-          ]}
-        >
-          <Text style={[styles.minutos, ativa && { color: cores.onPrimaryContainer }]}>{minutos}</Text>
-          <Text style={[styles.min, ativa && { color: cores.onPrimaryContainer }]}>min</Text>
-          <Text style={[styles.pts, ativa && styles.ptsAtivo]}>+{pts(minutos)}</Text>
-        </View>
-      )}
-    </Pressable>
-  );
-}
-
 const styles = StyleSheet.create({
   tela: {
     flex: 1,
@@ -248,51 +182,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: espaco.xs,
-  },
-  recompensa: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 2,
-  },
-  textoRecompensa: {
-    ...tipografia.labelSm,
-    color: cores.secondary,
-  },
-  tempos: {
-    flexDirection: 'row',
-    gap: espaco.sm,
-  },
-  baseTempo: {
-    flex: 1,
-    borderRadius: raio.md,
-  },
-  faceTempo: {
-    borderRadius: raio.md,
-    alignItems: 'center',
-    paddingVertical: espaco.sm + 2,
-    borderWidth: 1,
-    borderColor: cores.iceBorder,
-  },
-  minutos: {
-    ...tipografia.headlineMd,
-    color: cores.onSurface,
-  },
-  min: {
-    ...tipografia.labelSm,
-    color: cores.onSurfaceVariant,
-  },
-  pts: {
-    ...tipografia.labelSm,
-    color: cores.primary,
-    marginTop: espaco.xs,
-    paddingHorizontal: 6,
-    paddingVertical: 1,
-  },
-  ptsAtivo: {
-    color: cores.onPrimaryContainer,
-    backgroundColor: 'rgba(255,255,255,0.45)',
-    borderRadius: raio.full,
-    overflow: 'hidden',
   },
   missao: {
     gap: espaco.sm,

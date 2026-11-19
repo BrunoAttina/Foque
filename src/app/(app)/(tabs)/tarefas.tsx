@@ -7,6 +7,7 @@ import { Botao } from '../../../components/Botao';
 import { CabecalhoApp } from '../../../components/CabecalhoApp';
 import { Campo } from '../../../components/Campo';
 import { Chip } from '../../../components/Chip';
+import { OpcaoTempo } from '../../../components/OpcaoTempo';
 import { pts } from '../../../domain/mensagens';
 import { emojiDaTarefa, feitaHoje, TEMPO_PADRAO, TEMPOS_SUGERIDOS, validarTarefa } from '../../../domain/tarefas';
 import { ErroTarefas } from '../../../services/tarefas';
@@ -97,13 +98,12 @@ export default function TelaTarefas() {
                 <Text style={rotuloSecao}>Duração</Text>
                 <View style={styles.duracoes} accessibilityRole="radiogroup">
                   {TEMPOS_SUGERIDOS.map((minutos) => (
-                    <View key={minutos} style={styles.duracao}>
-                      <Chip
-                        texto={`${minutos} min`}
-                        ativo={duracao === minutos}
-                        onPress={() => setDuracao(minutos)}
-                      />
-                    </View>
+                    <OpcaoTempo
+                      key={minutos}
+                      minutos={minutos}
+                      ativa={duracao === minutos}
+                      onPress={() => setDuracao(minutos)}
+                    />
                   ))}
                 </View>
               </View>
@@ -212,10 +212,7 @@ const styles = StyleSheet.create({
   },
   duracoes: {
     flexDirection: 'row',
-    gap: espaco.xs,
-  },
-  duracao: {
-    flex: 1,
+    gap: espaco.sm,
   },
   opcoes: {
     flexDirection: 'row',
