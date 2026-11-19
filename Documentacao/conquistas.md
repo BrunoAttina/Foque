@@ -158,8 +158,8 @@ Ao aplicar a migration, a verificação roda uma vez para todos os usuários (re
 - Toda conquista dá 10 moedas, sem progressão.
 - Retroativo: conquistas e moedas para quem já tem histórico.
 - A contagem das personalizadas é de focos concluídos ("concluiu 10 focos de ler livros").
+- A palavra é sempre **"focos"**: a pessoa não escolhe como chamar a contagem nem a conquista.
 - Sem conquistas de dias seguidos, tempo/duração, horários e amigos por enquanto.
 
 ### Em aberto
-1. **Unidade da personalizada (opcional).** Hoje a conquista diz "Concluiu 25 focos de ler livros". A ideia seria, ao criar o foco, a pessoa poder escrever **como chamar cada sessão**, por exemplo "capítulo". Aí a conquista diria "Concluiu 25 capítulos de ler livros". A contagem continua a mesma (1 sessão concluída = 1); muda só a palavra. *Sugestão:* não fazer agora e manter "focos".
-2. **Níveis e nomes das personalizadas:** os 7 níveis da seção 2 (metas, nomes e cores) estão bons? Troque o que quiser pelos nomes da lista de alternativas.
+1. **Níveis e nomes das personalizadas:** os 7 níveis da seção 2 (metas, nomes e cores) estão bons? Troque o que quiser pelos nomes da lista de alternativas.
