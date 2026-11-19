@@ -11,6 +11,7 @@
 | [aparencia-foque.md](aparencia-foque.md) | Aparências do Foque, animações por momento e a personalização futura |
 | [loja.md](loja.md) | Loja e moedas: como ganhar, preços, compras e dados |
 | [focos.md](focos.md) | Focos (tarefas): durações, foco de uma vez ou diário, dados |
+| [conquistas.md](conquistas.md) | Conquistas de Foco (fixas e personalizadas): plano para revisão |
 | [status-de-foco.md](status-de-foco.md) | Status "Focando agora": quem você segue vê quando você está focando |
 | [design.md](design.md) | Design system "Glacial Focus Game": cores, tipografia, formas e componentes |
 | [arquitetura.md](arquitetura.md) | Stack técnica, estrutura de pastas e dados |
