@@ -66,10 +66,15 @@ export default function TelaMeuPerfil() {
 
         <View style={styles.estatisticas}>
           <Estatistica valor={String(pontos)} rotulo="Pontos de foco" />
-          <Estatistica valor={sessoes === null ? '–' : String(sessoes)} rotulo="Sessões concluídas" />
+          <Estatistica
+            valor={sessoes === null ? '–' : String(sessoes)}
+            rotulo="Focos concluídos"
+            onPress={() => router.push('/historico')}
+          />
           <Estatistica valor={String(nivel)} rotulo="Nível de foco" />
         </View>
 
+        <Botao titulo="Histórico de focos" icone="history" variante="secundario" onPress={() => router.push('/historico')} />
         <Botao titulo="Encontrar amigos" icone="person-add" variante="secundario" onPress={() => router.push('/amigos')} />
         <Botao titulo="Sair da conta" icone="logout" variante="perigo" onPress={sair} />
       </ScrollView>
@@ -92,12 +97,23 @@ function Conexao({ valor, rotulo, onPress }: { valor: number | undefined; rotulo
   );
 }
 
-function Estatistica({ valor, rotulo }: { valor: string; rotulo: string }) {
-  return (
-    <View style={[cartao, styles.estatistica]}>
+function Estatistica({ valor, rotulo, onPress }: { valor: string; rotulo: string; onPress?: () => void }) {
+  const conteudo = (
+    <>
       <Text style={styles.valor}>{valor}</Text>
       <Text style={styles.rotulo}>{rotulo}</Text>
-    </View>
+    </>
+  );
+  if (!onPress) return <View style={[cartao, styles.estatistica]}>{conteudo}</View>;
+  return (
+    <Pressable
+      onPress={onPress}
+      accessibilityRole="button"
+      accessibilityLabel={`${valor} ${rotulo}. Abre o histórico.`}
+      style={({ pressed }) => [cartao, styles.estatistica, pressed && { opacity: 0.6 }]}
+    >
+      {conteudo}
+    </Pressable>
   );
 }
 

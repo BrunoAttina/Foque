@@ -22,6 +22,7 @@ export default function AppLayout() {
       <Stack.Screen name="sessao" options={{ gestureEnabled: false }} />
       <Stack.Screen name="resultado" options={{ gestureEnabled: false }} />
       <Stack.Screen name="usuario/[username]" options={{ headerShown: true, title: 'Perfil' }} />
+      <Stack.Screen name="historico" options={{ headerShown: true, title: 'Histórico de focos' }} />
     </Stack>
   );
 }

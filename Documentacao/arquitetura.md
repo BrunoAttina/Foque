@@ -127,6 +127,11 @@ Validações no servidor: duração de 1 a 240 min; fim não pode estar no futur
 - `src/services/loja.ts` e `src/store/loja.ts` guardam saldo, itens e compras, com cópia no aparelho. São recarregados junto com os pontos.
 - Detalhes em [loja.md](loja.md).
 
+### Histórico de focos
+- Lê a tabela `focus_sessions` (migration `0002`), que já guardava cada sessão. Mostra só as concluídas (`status = 'concluida'`), ordenadas por `fim`, 30 por página.
+- Antes de carregar, envia a fila offline, para as sessões concluídas sem internet aparecerem.
+- `src/services/sessoes.ts` (`listarFocosRealizados`) e `src/domain/historico.ts` (agrupamento por dia e textos de data).
+
 ## Aparência do Foque
 - Catálogo e estados em `src/domain/aparencias.ts`; mapa de GIFs em `src/components/imagensFoque.ts`; arquivos em `assets/foque/<aparência>/<estado>.gif`.
 - O nível de foco é público: a função `niveis_de(p_ids)` (migration `0007`) devolve só o nível, sem os pontos. A conta repete a de `src/domain/pontos.ts`; se a fórmula mudar, mudar nos dois.
