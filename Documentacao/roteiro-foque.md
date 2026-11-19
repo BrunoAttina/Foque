@@ -88,7 +88,7 @@ O Foque virou uma foca **exigente e sarcástica, mas que torce pela pessoa**. El
 | Antes de focar | "Se você largar o celular por 25 minutos, eu paro de te julgar. Talvez. 👀" |
 | Sem missão | "Nenhuma missão? Escolhe uma coisa importante pra hoje, humano. 🧊" |
 | Durante a sessão | "Tô de olho. Nem pense em sair do app. 👀" |
-| Concluída | "Gelo intacto. Peixe merecido. 🐟" |
+| Concluída | "Foco intacto. Peixe merecido. 🐟" |
 | Cancelada | "Tudo bem, até as focas escorregam. Bora de novo? 🧊" |
 | Dicas (aba Foque) | As sugestões desta página, reescritas na voz do Foque. |
 

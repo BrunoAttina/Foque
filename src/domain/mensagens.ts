@@ -54,7 +54,7 @@ export const falas = {
   concluida: () =>
     sortear([
       'Olha só, você conseguiu! Tô quase orgulhosa. 🎉',
-      'Gelo intacto. Peixe merecido. 🐟',
+      'Foco intacto. Peixe merecido. 🐟',
       'Isso sim é foco. Repete amanhã? 🧊',
     ]),
   cancelada: () =>
