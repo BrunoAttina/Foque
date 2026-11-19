@@ -14,35 +14,35 @@ As duas saem do **histórico de focos** (tabela `focus_sessions`): só conta o q
 
 ## 1. Conquistas Fixas
 
-Cada uma tem um nome, uma descrição, uma meta e uma recompensa em moedas. A recompensa é paga uma vez, quando a conquista é obtida.
+Cada uma tem um nome, uma descrição e uma meta. **Toda conquista dá 10 moedas**, pagas uma vez, quando é obtida.
 
 ### Pontos de foco
-| Conquista | Como ganhar | Moedas |
-| --- | --- | --- |
-| Foca Iniciante | Chegar a 50 pontos de foco | 10 |
-| Foca Experiente | Chegar a 150 pontos | 20 |
-| Foca Veterana | Chegar a 500 pontos | 50 |
-| Foca Lendária | Chegar a 1.000 pontos | 100 |
+| Conquista | Como ganhar |
+| --- | --- |
+| Foca Iniciante | Chegar a 50 pontos de foco |
+| Foca Experiente | Chegar a 150 pontos |
+| Foca Veterana | Chegar a 500 pontos |
+| Foca Lendária | Chegar a 1.000 pontos |
 
 ### Focos concluídos
-| Conquista | Como ganhar | Moedas |
-| --- | --- | --- |
-| Primeiro Mergulho | Concluir o primeiro foco | 5 |
-| Pegando o Ritmo | Concluir 10 focos | 15 |
-| Foca Dedicada | Concluir 50 focos | 40 |
-| Centenário de Gelo | Concluir 100 focos | 80 |
+| Conquista | Como ganhar |
+| --- | --- |
+| Primeiro Mergulho | Concluir o primeiro foco |
+| Pegando o Ritmo | Concluir 10 focos |
+| Foca Dedicada | Concluir 50 focos |
+| Centenário de Gelo | Concluir 100 focos |
 
 ### Variedade
-| Conquista | Como ganhar | Moedas |
-| --- | --- | --- |
-| Foca Versátil | Concluir focos de 5 tarefas diferentes | 20 |
+| Conquista | Como ganhar |
+| --- | --- |
+| Foca Versátil | Concluir focos de 5 tarefas diferentes |
 
 ### Loja (gasto de moedas)
-| Conquista | Como ganhar | Moedas |
-| --- | --- | --- |
-| Primeira Compra | Comprar o primeiro item na loja | 5 |
-| Foca Gastadora | Gastar 100 moedas no total | 15 |
-| Colecionadora | Ter todas as aparências do Foque | 50 |
+| Conquista | Como ganhar |
+| --- | --- |
+| Primeira Compra | Comprar o primeiro item na loja |
+| Foca Gastadora | Gastar 100 moedas no total |
+| Colecionadora | Ter todas as aparências do Foque |
 
 **Fora por enquanto (decidido em 2026-11-19):**
 - **Dias seguidos** (3, 7 e 30 dias) e **Hábito de Foca** (o mesmo foco diário 7 dias seguidos): precisam de um controle de dias seguidos que o app ainda não tem.
@@ -55,20 +55,20 @@ As conquistas fixas ficam em uma tabela no banco (como os preços da loja). Muda
 ## 2. Conquistas Personalizadas
 
 ### Como funciona
-Cada foco que a pessoa conclui tem uma **contagem**: quantos focos daquela tarefa ela já concluiu. Ao atingir uma meta, ganha a conquista daquele nível e as moedas. No nível seguinte, a mesma conquista **sobe de nível**: muda de cor e de nome.
+Cada foco que a pessoa conclui tem uma **contagem**: quantos focos daquela tarefa ela já concluiu. Ao atingir uma meta, ganha a conquista daquele nível e 10 moedas. No nível seguinte, a mesma conquista **sobe de nível**: muda de cor e de nome.
 
 ### Níveis (proposta, com mais nomes)
 Exemplo com o foco **"Ler livros"**. O nome segue o modelo "{título} em {nome do foco}", em letras minúsculas, que funciona com qualquer nome de foco ("Bom em ler livros", "Bom em academia").
 
-| Nível | Meta | Nome | Cor | Moedas |
-| --- | --- | --- | --- | --- |
-| 1 | 5 focos | Iniciante em ler livros | Gelo (branco-azulado) | 10 |
-| 2 | 10 focos | Aprendiz em ler livros | Bronze | 25 |
-| 3 | 25 focos | Bom em ler livros | Prata | 50 |
-| 4 | 50 focos | Ótimo em ler livros | Ouro | 100 |
-| 5 | 100 focos | Mestre em ler livros | Diamante (azul-gelo) | 200 |
-| 6 | 200 focos | Lenda em ler livros | Aurora (roxo) | 400 |
-| 7 | 365 focos | Foca Suprema em ler livros | Arco-íris polar | 750 |
+| Nível | Meta | Nome | Cor |
+| --- | --- | --- | --- |
+| 1 | 5 focos | Iniciante em ler livros | Gelo (branco-azulado) |
+| 2 | 10 focos | Aprendiz em ler livros | Bronze |
+| 3 | 25 focos | Bom em ler livros | Prata |
+| 4 | 50 focos | Ótimo em ler livros | Ouro |
+| 5 | 100 focos | Mestre em ler livros | Diamante (azul-gelo) |
+| 6 | 200 focos | Lenda em ler livros | Aurora (roxo) |
+| 7 | 365 focos | Foca Suprema em ler livros | Arco-íris polar |
 
 O nível 7 usa 365: um ano inteiro de um foco diário.
 
@@ -104,7 +104,7 @@ A descrição de cada nível diz a contagem: "Concluiu 25 focos de ler livros". 
 - **Qualquer usuário logado vê**, mesmo sem seguir a pessoa (decidido em 2026-11-19).
 
 ### Ao concluir um foco (tela de resultado)
-- Se o foco liberou uma conquista ou subiu o nível de uma personalizada, aparece um destaque: **"Conquista desbloqueada: Bom em ler livros! +50 moedas"**.
+- Se o foco liberou uma conquista ou subiu o nível de uma personalizada, aparece um destaque: **"Conquista desbloqueada: Bom em ler livros! +10 moedas"**.
 - Se a sessão foi concluída sem internet, o destaque aparece na próxima vez que o app enviar a sessão e abrir.
 
 ### Cores
@@ -116,7 +116,7 @@ As personalizadas usam a cor do nível (tabela acima). As fixas usam uma cor por
 - **Quem calcula é o servidor.** O app não consegue se dar conquistas nem moedas.
 - As conquistas são verificadas quando uma sessão é registrada e quando algo é comprado na loja.
 - **Cada conquista é ganha uma vez** e não se perde: apagar um foco não tira as conquistas dele.
-- **Fixas e personalizadas dão moedas** (decidido em 2026-11-19). As moedas entram na carteira na hora. Os **pontos de foco** não mudam (conquista não sobe nível).
+- **Toda conquista dá 10 moedas**, fixa ou personalizada, em qualquer nível (decidido em 2026-11-19). Não há progressão de moedas. As moedas entram na carteira na hora. Os **pontos de foco** não mudam (conquista não sobe nível).
 - **Retroativo** (decidido em 2026-11-19): ao aplicar a migration, quem já tem histórico recebe as conquistas e as moedas correspondentes.
 
 ---
@@ -125,15 +125,15 @@ As personalizadas usam a cor do nível (tabela acima). As fixas usam uma cor por
 
 | Tabela | Campos | Quem acessa |
 | --- | --- | --- |
-| `conquistas` | `id`, `categoria`, `titulo`, `descricao`, `meta`, `moedas`, `icone`, `ordem`, `ativa` | Catálogo das fixas. Qualquer usuário logado lê; ninguém altera pelo app. |
+| `conquistas` | `id`, `categoria`, `titulo`, `descricao`, `meta`, `icone`, `ordem`, `ativa` | Catálogo das fixas. Qualquer usuário logado lê; ninguém altera pelo app. |
 | `conquistas_obtidas` | `user_id`, `conquista_id`, `obtida_em`, `moedas`, `vista` | Fixas obtidas. Qualquer usuário logado lê; só as funções escrevem. |
 | `conquistas_foco` | `user_id`, `chave` (nome normalizado), `nome` (como a pessoa escreveu por último), `quantidade`, `nivel` (0 a 7), `atualizada_em`, `vista` | Personalizadas. Qualquer usuário logado lê; só as funções escrevem. |
-| `niveis_conquista_foco` | `nivel`, `meta`, `titulo`, `cor`, `moedas` | Os 7 níveis das personalizadas. Mudar um nome ou uma meta é um `update`. |
+| `niveis_conquista_foco` | `nivel`, `meta`, `titulo`, `cor` | Os 7 níveis das personalizadas. Mudar um nome ou uma meta é um `update`. |
 
 Funções:
 | Função | O que faz |
 | --- | --- |
-| `avaliar_conquistas(uid)` | Interna (o app não chama). Confere todas as metas, registra o que foi ganho e paga as moedas, tudo na mesma transação. |
+| `avaliar_conquistas(uid)` | Interna (o app não chama). Confere todas as metas, registra o que foi ganho e paga 10 moedas por conquista, tudo na mesma transação. O valor fica em uma constante da migration. |
 | `registrar_sessao(...)` | Igual a hoje; no fim, chama `avaliar_conquistas`. |
 | `comprar_item(...)` | Igual a hoje; no fim, chama `avaliar_conquistas`. |
 | `marcar_conquistas_vistas()` | O app chama depois de mostrar o destaque "Conquista desbloqueada". |
@@ -155,11 +155,11 @@ Ao aplicar a migration, a verificação roda uma vez para todos os usuários (re
 
 ### Tomadas (2026-11-19)
 - Qualquer usuário logado vê as conquistas de qualquer pessoa.
-- Fixas e personalizadas dão moedas.
+- Toda conquista dá 10 moedas, sem progressão.
 - Retroativo: conquistas e moedas para quem já tem histórico.
 - A contagem das personalizadas é de focos concluídos ("concluiu 10 focos de ler livros").
 - Sem conquistas de dias seguidos, tempo/duração, horários e amigos por enquanto.
 
 ### Em aberto
 1. **Unidade da personalizada (opcional).** Hoje a conquista diz "Concluiu 25 focos de ler livros". A ideia seria, ao criar o foco, a pessoa poder escrever **como chamar cada sessão**, por exemplo "capítulo". Aí a conquista diria "Concluiu 25 capítulos de ler livros". A contagem continua a mesma (1 sessão concluída = 1); muda só a palavra. *Sugestão:* não fazer agora e manter "focos".
-2. **Níveis e nomes das personalizadas:** os 7 níveis da seção 2 (metas, nomes, cores e moedas) estão bons? Troque o que quiser pelos nomes da lista de alternativas.
+2. **Níveis e nomes das personalizadas:** os 7 níveis da seção 2 (metas, nomes e cores) estão bons? Troque o que quiser pelos nomes da lista de alternativas.
