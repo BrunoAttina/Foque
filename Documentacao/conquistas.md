@@ -62,8 +62,8 @@ Exemplo com o foco **"Ler livros"**. O nome segue o modelo "{título} em {nome d
 
 | Nível | Meta | Nome | Cor |
 | --- | --- | --- | --- |
-| 1 | 5 focos | Iniciante em ler livros | Gelo (branco-azulado) |
-| 2 | 10 focos | Aprendiz em ler livros | Bronze |
+| 1 | 5 focos | Primeiros Mergulhos em ler livros | Gelo (branco-azulado) |
+| 2 | 10 focos | Iniciante em ler livros | Bronze |
 | 3 | 25 focos | Bom em ler livros | Prata |
 | 4 | 50 focos | Ótimo em ler livros | Ouro |
 | 5 | 100 focos | Mestre em ler livros | Diamante (azul-gelo) |
@@ -73,7 +73,7 @@ Exemplo com o foco **"Ler livros"**. O nome segue o modelo "{título} em {nome d
 O nível 7 usa 365: um ano inteiro de um foco diário.
 
 **Outros nomes, para trocar na tabela se preferir:**
-- Para o começo: "Curioso em", "Estreante em", "Dando os primeiros mergulhos em".
+- Para o começo: "Curioso em", "Estreante em", "Aprendiz em".
 - Para o meio: "Dedicado em", "Craque em", "Fera em", "Especialista em".
 - Para o topo: "Grão-mestre em", "Ícone de", "Referência em", "Foca Lendária de", "Rei/Rainha do gelo em".
 
