@@ -40,7 +40,7 @@
 | RF-35 | Um foco só pode ter 15, 30, 45 ou 60 minutos, no cadastro e na tela Focar. | Alta | Implementado |
 | RF-36 | Ao cadastrar um foco, o usuário escolhe se ele é apagado ao ser concluído (uma vez) ou se repete todo dia. O foco diário fica marcado como "feito hoje" e volta no dia seguinte. Ver [focos.md](focos.md). | Alta | Implementado |
 | RF-37 | O usuário vê o histórico dos focos concluídos (nome, horário, duração e pontos), do mais recente para o mais antigo, agrupado por dia com o total de minutos. Abre pelo Perfil. | Alta | Implementado |
-| RF-38 | O usuário ganha conquistas fixas (pontos, focos concluídos, dias seguidos, loja, amigos...), com moedas de recompensa. Ver [conquistas.md](conquistas.md). | Alta | Planejado |
+| RF-38 | O usuário ganha conquistas fixas (pontos, focos concluídos, variedade e loja), com moedas de recompensa. Ver [conquistas.md](conquistas.md). | Alta | Planejado |
 | RF-39 | O usuário ganha conquistas personalizadas por foco (ex.: "Bom em ler livros"), que sobem de nível com a quantidade de focos concluídos daquela tarefa. | Alta | Planejado |
 | RF-40 | As conquistas aparecem no Perfil do usuário e no perfil que os outros veem. | Alta | Planejado |
 
