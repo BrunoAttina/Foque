@@ -6,6 +6,7 @@ import { Avatar } from '../../../components/Avatar';
 import { Botao } from '../../../components/Botao';
 import { CabecalhoApp } from '../../../components/CabecalhoApp';
 import { CartaoNivel } from '../../../components/CartaoNivel';
+import { ResumoConquistas } from '../../../components/ResumoConquistas';
 import { tituloDoNivel } from '../../../domain/niveis';
 import { nivelPorPontos } from '../../../domain/pontos';
 import { sair } from '../../../services/auth';
@@ -63,6 +64,8 @@ export default function TelaMeuPerfil() {
         </View>
 
         <CartaoNivel pontos={pontos} />
+
+        {meuId ? <ResumoConquistas userId={meuId} username={username} meu /> : null}
 
         <View style={styles.estatisticas}>
           <Estatistica valor={String(pontos)} rotulo="Pontos de foco" />

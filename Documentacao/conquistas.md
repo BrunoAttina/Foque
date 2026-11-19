@@ -1,7 +1,7 @@
 # Conquistas de Foco
 
-> **Status:** plano para revisão. Nada disto está no código ainda.
-> Edite à vontade: nomes, metas, moedas e as decisões em aberto no fim do documento.
+> **Status:** implementado. Migration `0010_conquistas.sql` aplicada.
+> Nomes, metas e níveis ficam em tabelas do banco e podem ser ajustados com um `update` no SQL Editor.
 
 A pessoa ganha **conquistas** ao focar. Elas aparecem no Perfil dela e no perfil que os outros veem. Há dois tipos:
 
@@ -57,7 +57,7 @@ As conquistas fixas ficam em uma tabela no banco (como os preços da loja). Muda
 ### Como funciona
 Cada foco que a pessoa conclui tem uma **contagem**: quantos focos daquela tarefa ela já concluiu. Ao atingir uma meta, ganha a conquista daquele nível e 10 moedas. No nível seguinte, a mesma conquista **sobe de nível**: muda de cor e de nome.
 
-### Níveis (proposta, com mais nomes)
+### Níveis
 Exemplo com o foco **"Ler livros"**. O nome segue o modelo "{título} em {nome do foco}", em letras minúsculas, que funciona com qualquer nome de foco ("Bom em ler livros", "Bom em academia").
 
 | Nível | Meta | Nome | Cor |
@@ -92,11 +92,11 @@ A descrição de cada nível diz a contagem: "Concluiu 25 focos de ler livros". 
 ## 3. Onde aparece
 
 ### Perfil (o seu)
-- Nova seção **Conquistas**, logo abaixo do cartão de nível, com o número obtido ("7 de 12") e as últimas conquistas em selos (ícone + cor).
+- Seção **Conquistas** logo abaixo do cartão de nível, com o número obtido ("Conquistas (4)") e as 6 mais recentes em selos (ícone + cor) com o nome embaixo. Componente `ResumoConquistas`.
 - Botão **"Ver todas"** abre a tela de conquistas.
 
-### Tela Conquistas (`conquistas.tsx`, nova)
-- **Personalizadas** primeiro: um cartão por foco, com a cor do nível, o nome ("Bom em ler livros"), a contagem e a barra até o próximo nível.
+### Tela Conquistas (`conquistas.tsx`)
+- **Por foco** primeiro: um cartão por foco, com a cor do nível, o nome ("Bom em ler livros"), a contagem e a barra até o próximo nível. Do dono, aparecem também os focos que ainda não chegaram ao nível 1 (selo cinza, "1 de 5").
 - **Fixas** em seguida, separadas por categoria. As obtidas aparecem coloridas, com a data. As que faltam aparecem em cinza com o progresso ("32 de 50 pontos").
 
 ### Perfil de outro usuário
@@ -105,10 +105,12 @@ A descrição de cada nível diz a contagem: "Concluiu 25 focos de ler livros". 
 
 ### Ao concluir um foco (tela de resultado)
 - Se o foco liberou uma conquista ou subiu o nível de uma personalizada, aparece um destaque: **"Conquista desbloqueada: Bom em ler livros! +10 moedas"**.
-- Se a sessão foi concluída sem internet, o destaque aparece na próxima vez que o app enviar a sessão e abrir.
+- O app envia a sessão e busca as conquistas ainda não vistas algumas vezes (até 6 s), porque o envio corre em segundo plano. Depois de mostrar, marca como vistas e atualiza o saldo de moedas.
+- Se a sessão foi concluída sem internet, a conquista é dada quando a sessão chegar ao servidor e aparece no destaque do próximo foco concluído; no Perfil ela já aparece.
+- As conquistas retroativas (dadas pela migration) não viram destaque: já entram como vistas.
 
 ### Cores
-As personalizadas usam a cor do nível (tabela acima). As fixas usam uma cor por categoria. Tudo dentro da paleta do design ([design.md](design.md)).
+As personalizadas usam a cor do nível (tabela acima); o nível 7 tem o selo em faixas coloridas. As fixas usam uma cor por categoria: pontos azul, focos verde, variedade roxo e loja coral. Componente `SeloConquista`. Tudo dentro da paleta do design ([design.md](design.md)).
 
 ---
 
@@ -121,33 +123,33 @@ As personalizadas usam a cor do nível (tabela acima). As fixas usam uma cor por
 
 ---
 
-## 5. Dados (migration `0010`, proposta)
+## 5. Dados (migration `0010`)
 
 | Tabela | Campos | Quem acessa |
 | --- | --- | --- |
 | `conquistas` | `id`, `categoria`, `titulo`, `descricao`, `meta`, `icone`, `ordem`, `ativa` | Catálogo das fixas. Qualquer usuário logado lê; ninguém altera pelo app. |
 | `conquistas_obtidas` | `user_id`, `conquista_id`, `obtida_em`, `moedas`, `vista` | Fixas obtidas. Qualquer usuário logado lê; só as funções escrevem. |
-| `conquistas_foco` | `user_id`, `chave` (nome normalizado), `nome` (como a pessoa escreveu por último), `quantidade`, `nivel` (0 a 7), `atualizada_em`, `vista` | Personalizadas. Qualquer usuário logado lê; só as funções escrevem. |
+| `conquistas_foco` | `user_id`, `chave` (nome normalizado), `nome` (como a pessoa escreveu por último), `quantidade`, `nivel` (0 a 7), `nivel_em`, `atualizada_em`, `vista` | Personalizadas. Qualquer usuário logado lê as de nível 1 ou mais; o dono lê também as de nível 0 (progresso). Só as funções escrevem. |
 | `niveis_conquista_foco` | `nivel`, `meta`, `titulo`, `cor` | Os 7 níveis das personalizadas. Mudar um nome ou uma meta é um `update`. |
 
 Funções:
 | Função | O que faz |
 | --- | --- |
-| `avaliar_conquistas(uid)` | Interna (o app não chama). Confere todas as metas, registra o que foi ganho e paga 10 moedas por conquista, tudo na mesma transação. O valor fica em uma constante da migration. |
-| `registrar_sessao(...)` | Igual a hoje; no fim, chama `avaliar_conquistas`. |
-| `comprar_item(...)` | Igual a hoje; no fim, chama `avaliar_conquistas`. |
+| `avaliar_conquistas(uid, ja_vistas)` | Interna (o app não chama). Confere todas as metas, registra o que foi ganho e paga 10 moedas por conquista, tudo na mesma transação. O valor fica na constante `c_moedas`. |
+| Gatilhos `conquistas_ao_concluir_sessao` e `conquistas_ao_comprar` | Depois de inserir uma sessão concluída (`focus_sessions`) ou uma compra (`compras`), chamam `avaliar_conquistas`. `registrar_sessao` e `comprar_item` não mudaram. |
+| `meu_progresso_conquistas()` | Valores do usuário logado (pontos, focos, tarefas diferentes, compras, moedas gastas, aparências) para o progresso das que faltam. |
+| `chave_do_foco(nome)` | Nome normalizado de um foco (minúsculas, sem acentos e espaços sobrando). |
 | `marcar_conquistas_vistas()` | O app chama depois de mostrar o destaque "Conquista desbloqueada". |
 
 Ao aplicar a migration, a verificação roda uma vez para todos os usuários (retroativo).
 
 ---
 
-## 6. Etapas de implementação
-1. **Banco:** migration `0010` com o catálogo das fixas, os níveis das personalizadas, as tabelas, as funções e a verificação retroativa. Você roda no SQL Editor.
-2. **App, leitura:** serviço e store de conquistas; seção no Perfil, tela Conquistas e seção no perfil de outros usuários.
-3. **App, resultado:** destaque "Conquista desbloqueada".
-4. **Teste** com as duas contas de teste (@teste e @blambaa): conquistas retroativas, uma conquista nova ao concluir um foco, e a visão de outro usuário.
-5. **Documentação** atualizada com o que foi feito.
+## 6. No app
+- `src/domain/conquistas.ts`: textos ("Bom em ler livros"), cores, níveis e progresso.
+- `src/services/conquistas.ts`: lê o catálogo, os níveis, as conquistas de uma pessoa e as novas; marca como vistas.
+- `src/components/SeloConquista.tsx`, `ResumoConquistas.tsx` (seção do Perfil) e `useConquistasNovas.ts` (destaque do resultado).
+- `src/app/(app)/conquistas.tsx`: tela "Ver todas", com os parâmetros `id` e `username` da pessoa.
 
 ---
 
@@ -160,6 +162,4 @@ Ao aplicar a migration, a verificação roda uma vez para todos os usuários (re
 - A contagem das personalizadas é de focos concluídos ("concluiu 10 focos de ler livros").
 - A palavra é sempre **"focos"**: a pessoa não escolhe como chamar a contagem nem a conquista.
 - Sem conquistas de dias seguidos, tempo/duração, horários e amigos por enquanto.
-
-### Em aberto
-1. **Níveis e nomes das personalizadas:** os 7 níveis da seção 2 (metas, nomes e cores) estão bons? Troque o que quiser pelos nomes da lista de alternativas.
+- Níveis das personalizadas: Primeiros Mergulhos, Iniciante, Bom, Focado, Mestre, Lenda e Foca Suprema (5 a 365 focos).

@@ -27,6 +27,7 @@ Barra inferior com 5 abas: Amigos, Focos, Focar, Foque e Loja. O botão central,
 | Sessão de foco (`sessao.tsx`) | Timer em um "bloco de gelo", barra de progresso e fala do Foque. Sair do app cancela; o botão voltar e "Desistir" encerram como desistência. | Implementado |
 | Resultado (`resultado.tsx`) | "Parabéns pelo foco!" e o botão "Foque mais!", ou "O gelo quebrou". Na conclusão, o cartão de nível mostra os pontos e as moedas ganhos (em texto pequeno) junto da barra de progresso: **azul** para os pontos que a pessoa já tinha e **verde** para os ganhos neste foco (sem legenda). Não há a frase "Sessão concluída! Você ganhou...". Sem a frase "Rumo a ...". Avisa quando sobe de nível. | Implementado |
 | Histórico de focos (`historico.tsx`) | Os focos concluídos, do mais recente para o mais antigo, agrupados por dia ("Hoje", "Ontem", "Quarta, 12 de nov.") com o total de minutos do dia. Cada linha: emoji, nome, horário de início e fim, duração e pontos. Carrega 30 por vez ("Ver mais antigos"). Abre pelo Perfil. | Implementado |
+| Conquistas (`conquistas.tsx`) | Todas as conquistas de uma pessoa: por foco (nível, contagem e barra até o próximo) e fixas por categoria. Do usuário logado, mostra também as que faltam, em cinza, com o progresso. Abre pelo "Ver todas" da seção Conquistas do Perfil ou do perfil de outro usuário. Ver [conquistas.md](conquistas.md). | Implementado |
 | Perfil de usuário (`usuario/[username].tsx`) | @ e título; nível e pontos só se você segue a pessoa. Botão seguir ou deixar de seguir. **Novo:** se você segue a pessoa e ela está focando, cartão "Focando agora" com a tarefa, o tempo focado, o tempo restante e a barra de progresso. | Implementado; cartão "Focando agora" em desenvolvimento |
 | Perguntas iniciais | O Foque coleta profissão e rotina do usuário. | Rascunho |
 
@@ -52,6 +53,8 @@ O visual segue o design system "Glacial Focus Game" ([design.md](design.md)). Os
 | `Chip` | Pílula com ícone ou emoji (atalhos de missão). |
 | `CabecalhoApp` | Cabeçalho das abas: "Nv.N" com a barra de progresso até o próximo nível ("1 pt / 30 pts"); o @ e o avatar são clicáveis e levam ao Perfil. |
 | `CartaoNivel` | "Nível 4: Foca Ártica", com a barra até o próximo nível. Usado no Perfil, no Resultado e no Perfil de usuário. No Resultado recebe `ganhos` (pontos e moedas da sessão, barra em duas cores) e `semProximoTitulo` (esconde "Rumo a ..."). |
+| `SeloConquista` | Selo redondo de uma conquista: ícone sobre a cor da categoria ou do nível; cinza com cadeado se ainda falta. |
+| `ResumoConquistas` | Seção "Conquistas" do Perfil e do perfil de outro usuário: as 6 mais recentes e "Ver todas". |
 | `OpcaoTempo` | Botão de duração em "bloco de gelo": minutos e pontos. Usado no cadastro da aba Focos. |
 | `BalaoFala` + `Mascote` | Fala do Foque com a ponta apontando para a foca. |
 | `BarraProgresso` | Cápsula espessa, preenchimento menta. |

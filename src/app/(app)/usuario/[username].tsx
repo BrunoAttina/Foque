@@ -8,6 +8,7 @@ import { Avatar } from '../../../components/Avatar';
 import { Botao } from '../../../components/Botao';
 import { CartaoFocandoAgora } from '../../../components/CartaoFocandoAgora';
 import { CartaoNivel } from '../../../components/CartaoNivel';
+import { ResumoConquistas } from '../../../components/ResumoConquistas';
 import { useAgora } from '../../../components/useAgora';
 import { focoEstaAtivo } from '../../../domain/focoAtivo';
 import { tituloDoNivel } from '../../../domain/niveis';
@@ -166,6 +167,12 @@ export default function TelaUsuario() {
                 </Text>
               </View>
             )}
+
+            <ResumoConquistas
+              userId={estado.pessoa.id}
+              username={estado.pessoa.username}
+              meu={estado.pessoa.id === meuId}
+            />
 
             {estado.pessoa.id === meuId ? (
               <Botao titulo="Este é você · ver meu perfil" variante="secundario" onPress={() => router.push('/perfil')} />

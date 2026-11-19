@@ -8,9 +8,12 @@ import { BalaoFala } from '../../components/BalaoFala';
 import { Botao } from '../../components/Botao';
 import { CartaoNivel } from '../../components/CartaoNivel';
 import { Mascote } from '../../components/Mascote';
+import { SeloConquista } from '../../components/SeloConquista';
+import { useConquistasNovas } from '../../components/useConquistasNovas';
 import { falas, mensagens } from '../../domain/mensagens';
 import { tituloDoNivel } from '../../domain/niveis';
 import { nivelPorPontos } from '../../domain/pontos';
+import { useAuth } from '../../store/auth';
 import { useSessao } from '../../store/sessao';
 import { cores, espaco, raio, tipografia } from '../../theme';
 
@@ -22,6 +25,9 @@ export default function TelaResultado() {
   const pontosTotais = useSessao((s) => s.pontosTotais);
 
   const concluida = status === 'done';
+  const userId = useAuth((s) => s.session?.user.id);
+  // Conquistas que este foco liberou (o servidor confere ao registrar a sessão).
+  const novas = useConquistasNovas(userId, concluida);
   const [fala] = useState(() => (concluida ? falas.concluida() : falas.cancelada()));
   const nivelAtual = nivelPorPontos(pontosTotais);
   const subiuDeNivel = concluida && nivelPorPontos(pontosTotais - pontosUltimaSessao) < nivelAtual;
@@ -57,6 +63,18 @@ export default function TelaResultado() {
           </View>
         ) : null}
 
+        {novas.map((c) => (
+          <View key={c.chave} style={styles.conquista} accessible accessibilityLabel={`Conquista desbloqueada: ${c.titulo}. Mais ${c.moedas} moedas`}>
+            <SeloConquista icone={c.icone} cor={c.cor} tamanho={44} />
+            <View style={styles.textosConquista}>
+              <Text style={styles.rotuloConquista}>Conquista desbloqueada!</Text>
+              <Text style={styles.tituloConquista}>{c.titulo}</Text>
+            </View>
+            <Text style={styles.moedasConquista}>+{c.moedas}</Text>
+            <MaterialIcons name="paid" size={18} color={cores.amber} />
+          </View>
+        ))}
+
         <CartaoNivel pontos={pontosTotais} semProximoTitulo ganhos={concluida ? pontosUltimaSessao : undefined} />
       </ScrollView>
 
@@ -89,6 +107,32 @@ const styles = StyleSheet.create({
     ...tipografia.bodyLg,
     color: cores.onSurfaceVariant,
     textAlign: 'center',
+  },
+  conquista: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: espaco.sm,
+    backgroundColor: cores.surfaceContainerLowest,
+    borderRadius: raio.lg,
+    borderWidth: 2,
+    borderColor: cores.secondaryContainer,
+    padding: espaco.sm + 4,
+  },
+  textosConquista: {
+    flex: 1,
+  },
+  rotuloConquista: {
+    ...tipografia.labelSm,
+    color: cores.secondary,
+    textTransform: 'uppercase',
+  },
+  tituloConquista: {
+    ...tipografia.headlineSm,
+    color: cores.onSurface,
+  },
+  moedasConquista: {
+    ...tipografia.labelLg,
+    color: cores.primary,
   },
   subiu: {
     flexDirection: 'row',
