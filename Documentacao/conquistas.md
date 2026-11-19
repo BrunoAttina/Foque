@@ -65,7 +65,7 @@ Exemplo com o foco **"Ler livros"**. O nome segue o modelo "{título} em {nome d
 | 1 | 5 focos | Primeiros Mergulhos em ler livros | Gelo (branco-azulado) |
 | 2 | 10 focos | Iniciante em ler livros | Bronze |
 | 3 | 25 focos | Bom em ler livros | Prata |
-| 4 | 50 focos | Ótimo em ler livros | Ouro |
+| 4 | 50 focos | Focado em ler livros | Ouro |
 | 5 | 100 focos | Mestre em ler livros | Diamante (azul-gelo) |
 | 6 | 200 focos | Lenda em ler livros | Aurora (roxo) |
 | 7 | 365 focos | Foca Suprema em ler livros | Arco-íris polar |
