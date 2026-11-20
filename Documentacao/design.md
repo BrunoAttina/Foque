@@ -178,3 +178,15 @@ Buttons and floating streak chips utilize full pill contours (`border-radius: 99
 - **Focus Chips & Streak Badges**: Pill-shaped badges (`border-radius: 9999px`) containing high-contrast bold labels, flame icons, or XP gems. Encased with `2px` crisp outlines and micro-shadows.
 - **Session Progress Trackers**: Segmented thick bars with rounded capsules (`height: 16px`), using secondary mint (`#10B981`) fills over a frosted ice track (`#E2E8F0`).
 - **Mascot Speech Prompt Bubbles**: White elevated dialogue cards with `16px` radius, subtle ice-blue drops, and bold typography delivering sarcastic, motivational, or celebrating commentary.
+## Ícone do app
+
+O ícone é a foca Clássica sobre um fundo azul-gelo com flocos de neve. A arte original fica em `arte-foque/artes-gerais/icone/` (fora do repositório), com uma imagem de conferência dos recortes (`conferencia-recortes.png`).
+
+| Arquivo em `assets/` | Uso | Formato |
+| --- | --- | --- |
+| `icon.png` | Ícone geral e iPhone | 1024×1024, sem transparência, sem cantos arredondados |
+| `android-icon-foreground.png` | Android: a foca | 1024×1024, fundo transparente, foca dentro do círculo central de ~66% |
+| `android-icon-background.png` | Android: fundo azul-gelo com flocos | 1024×1024 |
+| `android-icon-monochrome.png` | Android 13+: ícone temático (uma cor) | 1024×1024, silhueta branca sobre transparente |
+
+Configurado em `app.json` (`icon` e `android.adaptiveIcon`). Trocar o ícone exige gerar o app de novo: `npx expo prebuild --platform android` e uma build nova (`npx expo run:android` ou o APK de release). O recarregamento automático não muda o ícone.
